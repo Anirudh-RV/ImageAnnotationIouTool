@@ -1,6 +1,7 @@
 # ImageAnnotationIoUTool : Application Phase-2 COMPLETE (Temporarily halted till phase-3 technology is learnt)
 How to start the application :
 
+# NEVER PUSH OR COMMIT WITH WEIGHTS IN THE FOLDER
 1. clone the git
 2. Download both weights from :
   https://drive.google.com/drive/folders/1pW4mKNOzOIf0Edyr4BppwnLpddCQ6Qch?usp=sharing
@@ -10,8 +11,9 @@ How to start the application :
 3. Place the weights in the Django/mlbackend folder with the other .py files
 
 Reactjs : 3000
-1. npm install
-2. cd Client npm start
+1. cd Client
+2. npm install
+3. npm start
 
 Go API: 8080
 1. cd API_Go
@@ -25,6 +27,8 @@ Django: 8000
 NodeServer: 4000
 1. cd NodeServer
 2. node server.js
+
+# if npm build is failing, install by : npm install <absent library>
 
 For building yolo9000 :
 $ pip install Cython
