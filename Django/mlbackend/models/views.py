@@ -128,7 +128,7 @@ def yolo(request):
     print(coordinates)
     coordinates.pop(0)
     print(coordinates)
-
+    numberofannotations = len(coordinates)
     url = imageurl
     response = requests.get(url)
     img = Image.open(BytesIO(response.content))
@@ -140,13 +140,14 @@ def yolo(request):
     imgcv = cv2.imread(saveimageindjango)
 
     result = tfnet.return_predict(imgcv)
-    count = 1
+    count = 0
 
     for res in result:
         print(res["label"])
         if res["label"] == "whole":
             continue
         elif res["label"] == "person":
+            count = count + 1
             color = int(255 * res["confidence"])
             top = (res["topleft"]["x"], res["topleft"]["y"])
             bottom = (res["bottomright"]["x"], res["bottomright"]["y"])
@@ -190,7 +191,15 @@ def yolo(request):
             cv2.rectangle(imgcv, top, bottom, (255,0,0) , 2)
             #cv2.putText(imgcv, res["label"], top, cv2.FONT_HERSHEY_DUPLEX, 1.0, (0,0,255))
             print(count)
-        count = count + 1
+
+    print("count : "+str(count))
+    print("annotations : "+str(numberofannotations))
+
+    if count != numberofannotations:
+        difference = numberofannotations-count
+        print("difference: "+str(difference))
+        for i in range(0,difference):
+            IoU.append(0)
 
     print("IoU : ")
     print(IoU)
