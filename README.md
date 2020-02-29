@@ -1,4 +1,4 @@
-# ImageAnnotation : Application Phase-2 COMPLETE (Temporarily halted till phase-3 technology is learnt)
+# ImageAnnotationIoUTool : Application Phase-2 COMPLETE (Temporarily halted till phase-3 technology is learnt)
 How to start the application :
 
 1. clone the git
