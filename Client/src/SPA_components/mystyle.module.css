@@ -1,0 +1,90 @@
+
+.Left{
+    width:50%;
+    height: 100%;
+    float: left;
+    background-color: grey;
+    padding : 0;
+
+}
+
+.LogoElement{
+  margin-right : 30%;
+}
+
+.Navielements{
+  margin-right : 0.05%;
+}
+.LeftMajor{
+    width:70%;
+    height: 100%;
+    float: left;
+    background-color: grey;
+    padding : 0;
+
+}
+
+.Right{
+    width:50%;
+    height: 100%;
+    float: right;
+    background-color: #cfcdc8;
+    padding : 0;
+}
+
+.RightMinor{
+    width:30%;
+    height: 100%;
+    float: right;
+    background-color: #cfcdc8;
+    padding : 0;
+
+}
+
+
+.collapse
+{
+  position: relative;
+
+  transition: all 1s;
+
+}
+.Body{
+  position:relative;
+  width:100%;
+  height: 100%;
+  padding : 0;
+  background-color : white;
+
+}
+
+.Navi{
+  width:100%;
+  height:5%;
+  font-size:100%;
+}
+
+.NaviText
+{
+  position : relative;
+  top: 50%;
+  color : white;
+  overflow: scroll;
+}
+
+.DropdownNavi
+{
+  color : white;
+  display:table;
+}
+
+
+.btnclass
+{
+  position : relative;
+  background-color : #22222a;
+  color : white;
+  border : 0px;
+  pointer-events: none;
+  margin-right : 50px;
+}

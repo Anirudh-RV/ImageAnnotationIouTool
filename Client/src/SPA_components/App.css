@@ -1,0 +1,431 @@
+.App {
+  text-align: center;
+}
+
+
+.App-logo {
+  height: 40vmin;
+}
+
+.name{
+  user-drag: none;
+  user-select: none;
+  -moz-user-select: none;
+  -webkit-user-drag: none;
+  -webkit-user-select: none;
+  -ms-user-select: none;
+}
+.Username
+{
+  position : absolute;
+  background-color : #22222a;
+  color : white;
+  border : 0px;
+  pointer-events: none;
+  float : right;
+  right : 50px;
+  margin-top : 0;
+  margin : 0;
+  z-index : 1;
+}
+
+
+.userNameElement
+{
+  margin : 0;
+}
+#input_upload
+        {
+          position:relative;
+          top:5px;
+          left:5px;
+          height:240px;
+          width:715px;
+          font-size:14pt;
+          background: #22222a;
+          color:white;
+        }
+
+#input_upload:hover
+{
+  background: #16161d;
+  transform:scale(1.01,1.01);
+  -webkit-transform:scale(1.01,1.01);
+  -moz-transform:scale(1.01,1.01);
+}
+
+
+.App-header {
+  background-color: #282c34;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  font-size: calc(10px + 2vmin);
+  color: white;
+}
+
+.LinkToSignIn{
+    font-weight : bold;
+}
+
+.LinkToSignUp{
+    font-weight : bold;
+}
+
+.LinkToSignIn:hover{
+  text-decoration : none;
+}
+
+.LinkToSignUp:hover{
+
+  text-decoration : none;
+}
+
+.AppName{
+  position : relative;
+  float:left;
+  top:-20%;
+  text-align:center;
+  left:10%;
+  align: center;
+  max-width:400px;
+
+}
+.App-link {
+  color: #09d3ac;
+}
+
+.navlink:hover{
+  text-decoration: none;
+  color: white;
+}
+
+
+.buttonclass{
+  padding:0.6em 2em;
+  border-radius: 8px;
+  color: white;
+  background-color:#22222a;
+  font-size:1.1em;
+  width: 500px;
+  border:0;
+  cursor:pointer;
+  margin:5px;
+  outline : none;
+}
+.buttonclass:focus {outline:0 !important;}
+
+.buttonclass:hover {
+    background: #16161d;
+    transform:scale(1.01,1.01);
+    -webkit-transform:scale(1.01,1.01);
+    -moz-transform:scale(1.01,1.01);
+}
+
+html {
+      box-sizing: border-box;
+    }
+
+    *, *::before, *::after {
+      box-sizing: inherit;
+      padding: 0;
+      margin: 0;
+    }
+
+    .app {
+      margin: 20 auto;
+      padding: 20px;
+    }
+
+    nav ul {
+      list-style: none;
+      display: flex;
+      background-color: #22222a;
+      margin-bottom: 20px;
+    }
+
+    nav ul li {
+      padding: 20px;
+    }
+
+    nav ul li a {
+      color: white;
+      text-decoration: none;
+    }
+
+    .current {
+      border-bottom: 4px solid white;
+    }
+
+    h1 {
+      margin-bottom: 20px;
+    }
+
+    p {
+      margin-bottom: 15px;
+      color : #000000;
+
+    }
+    body {
+      color : #eef3f6;
+    }
+
+    .columnLeft {
+      float: left;
+      width: 50%;
+      height : 100%;
+    }
+    .columnRight{
+      width: 50%;
+      height : 100%;
+      left: -500px;
+      top: 100px;
+      background-color : #6A6B6B;
+    }
+
+    /* Clear floats after the columns */
+    .row:after {
+      content: "";
+      display: table;
+      clear: both;
+    }
+
+
+    .navbar {
+  overflow: hidden;
+  background-color: #333;
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+.navbar a {
+  float: left;
+  font-size: 16px;
+  color: white;
+  text-align: center;
+  padding: 14px 16px;
+  text-decoration: none;
+}
+
+.dropdown {
+  float: left;
+  overflow: hidden;
+}
+
+.dropdown .dropbtn {
+  cursor: pointer;
+  font-size: 16px;
+  border: none;
+  outline: none;
+  color: white;
+  padding: 14px 16px;
+  background-color: inherit;
+  font-family: inherit;
+  margin: 0;
+}
+
+.navbar a:hover, .dropdown:hover .dropbtn, .dropbtn:focus {
+  background-color: red;
+}
+
+.dropdown-content {
+  display: none;
+  position: relative;
+  background-color: #f9f9f9;
+  min-width: 160px;
+  box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+  z-index: 1;
+}
+
+.dropdown-content a {
+  float: none;
+  color: #22222a;
+  padding: 12px 16px;
+  text-decoration: none;
+  display: block;
+  text-align: left;
+}
+
+.dropdown-content a:hover {
+  background-color: #ddd;
+}
+
+.btnclass
+{
+  background-color:black;
+  color : white;
+  padding: 0;
+  border: none;
+
+}
+.show {
+  display: block;
+}
+
+
+#canvas {
+    position:absolute;
+    top : 100px;
+    float : left;
+    left : 0px;
+    width: 50%;
+    height:2000px;
+    border: 10px solid transparent;
+    z-index: 2;
+}
+.rectangle {
+    border: 1px solid #FF0000;
+    position: absolute;
+}
+
+.LinkToImageAnnotation:hover{
+
+  text-decoration : none;
+}
+
+
+.LinkToImageAnnotation{
+  text-align : center;
+  margin : 0;
+  font-weight : bold;
+}
+
+.LinkToAccount{
+  text-align : center;
+  margin : 0;
+}
+
+.ErrorMessage{
+  opacity : 0.5;
+  color :#ff1a1a;
+  text-align : center;
+  margin-top : 0.1%;
+  margin-bottom : 0;
+}
+.Terms{
+  opacity : 0.5;
+  color :#000000;
+  text-align : center;
+  margin-top : 2%;
+}
+
+
+.Terms{
+  opacity : 0.5;
+  color :#000000;
+  text-align : center;
+  margin-top : 2%;
+}
+
+.SignUpHead{
+  float: left;
+  opacity : 0.8;
+  font-weight: bold;
+  color : #252528;
+  text-align : center;
+  margin-bottom : 10px;
+}
+
+.SignInHead{
+  float: center;
+  opacity : 0.8;
+  font-weight: bold;
+  color : #252528;
+  text-align : center;
+  margin-bottom : 5%;
+  font-size : 30px;
+
+}
+
+.BackgroundSign
+{
+
+}
+
+.SignIn {
+  background-color : #ffffff;
+  left : 20%;
+  position : relative;
+  float : center;
+  align: center;
+  padding: 60px 0;
+  max-width:350px;
+  margin: auto;
+  border-radius: 2px;
+  border: 1px solid #aaaabb;
+  margin-top : 5%;
+  margin-bottom : 10px;
+  z-index:2;
+}
+
+.Login {
+  background-color : #ffffff;
+  left : 20%;
+  position : relative;
+  float : center;
+  align: center;
+  padding: 60px 0;
+  max-width:400px;
+  margin: auto;
+  border-radius: 2px;
+  border: 1px solid #aaaabb;
+  margin-top : 5%;
+  margin-bottom : 10px;
+  z-index:2;
+}
+
+.SecondBox {
+  background-color : #ffffff;
+  left : 20%;
+  position : relative;
+  float : center;
+  align: center;
+  padding: 20px 0;
+  max-width:400px;
+  margin: auto;
+  border-radius: 2px;
+  border: 1px solid #aaaabb;
+  margin-top : 10px;
+  margin-bottom : 0px;
+}
+
+.SecondBoxSignIn {
+  background-color : #ffffff;
+  left : 20%;
+  position : relative;
+  float : center;
+  align: center;
+  padding: 20px 0;
+  max-width:350px;
+  margin: auto;
+  border-radius: 2px;
+  border: 1px solid #aaaabb;
+  margin-top : 10px;
+  margin-bottom : 0px;
+}
+
+.Login form {
+  margin: 0 auto;
+  max-width: 300px;
+}
+
+.SignIn form {
+  margin: 0 auto;
+  max-width: 300px;
+}
+
+.outputdiv {
+  opacity: 0;
+}
+.footer {
+  position: relative;
+  left: 0;
+  bottom: 0;
+  width: 100%;
+  margin-top : 10px;
+  margin-bottom : 0px;
+  background-color: #22222a;
+  color: white;
+  text-align: center;
+}
