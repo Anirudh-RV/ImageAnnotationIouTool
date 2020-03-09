@@ -137,9 +137,9 @@ cd polls mkdir templates touch index.html extras: Add static paths in settings.p
 16. WorkingArea.js : 257
 17. Views.py : 320
 18. Server.js : 127
-18. checkmloutput.py : 45
-19. iou.py : 177
-20. dividevideo.py : 68
+19. checkmloutput.py : 45
+20. iou.py : 177
+21. dividevideo.py : 68
 
 LOC : 2812
 
