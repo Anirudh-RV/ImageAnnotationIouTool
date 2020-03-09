@@ -63,9 +63,9 @@ How to start the application :
 # Steps to run the application (may involve downloading mongo,go libraries and setting up django environment)
 1. clone the git
 2. Download both weights from :
-  https://drive.google.com/drive/folders/1pW4mKNOzOIf0Edyr4BppwnLpddCQ6Qch?usp=sharing
+  1. https://drive.google.com/drive/folders/1pW4mKNOzOIf0Edyr4BppwnLpddCQ6Qch?usp=sharing
 
-  https://drive.google.com/open?id=1JupZYcQO7Jh5aiRQLwNzYZaX0uYGULdK
+  2. https://drive.google.com/open?id=1JupZYcQO7Jh5aiRQLwNzYZaX0uYGULdK
 
 3. Place the weights in the Django/mlbackend folder with the other .py files
 
