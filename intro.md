@@ -42,26 +42,26 @@
 9. The output of the machine learning algorithms can be seen by running checkmloutput.py, images will be stored in the mlimages folder
 
 **LOC and program list if needed :**
-main.go : 437
-CustomRouting.js : 53
-EditPage.js : 23
-Error.js : 27
-Footer.js : 14
-Home.js : 17
-IntroBar.js : 197
-Routes.js : 63
-Signin.js : 73
-SignUp.js : 233
-Test_Cookies.js : 53
-TestApi.js : 282
-TestDjango.js : 46
-TestNodeApi.js : 116
-UploadMultipleFiles.js : 164
-WorkingArea.js : 257
-Views.js : 145
-Server.js : 110
-checkmloutput.py : 45
-iou.py : 177
-dividevideo.py : 68
+1. main.go : 437
+2. CustomRouting.js : 53
+3. EditPage.js : 23
+4. Error.js : 27
+5. Footer.js : 14
+6. Home.js : 17
+7. IntroBar.js : 197
+8. Routes.js : 63
+9. Signin.js : 73
+10. SignUp.js : 233
+11. Test_Cookies.js : 53
+12. TestApi.js : 282
+13. TestDjango.js : 46
+14. TestNodeApi.js : 116
+15. UploadMultipleFiles.js : 164
+16. WorkingArea.js : 257
+17. Views.py : 320
+18. Server.js : 127
+18. checkmloutput.py : 45
+19. iou.py : 177
+20. dividevideo.py : 68
 
-LOC : 2620  
+LOC : 2812
