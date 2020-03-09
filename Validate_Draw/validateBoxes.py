@@ -1,3 +1,5 @@
+# DO NOT USE THIS, USING CHECKIOU INSTEAD
+
 #!/usr/bin/env python
 # coding: utf-8
 
@@ -5,16 +7,16 @@
 
 
 # Python program to validate boxes drawn in the website by checking against OpenCV outputs
-   
-# importing cv2  
-import cv2  
+
+# importing cv2
+import cv2
 import matplotlib.pyplot as plt
 
-   
-# path  
+
+# path
 path = r'<path-to-image>.jpeg'
-   
-# Reading an image in default mode 
+
+# Reading an image in default mode
 imgcv = cv2.imread(path)
 
 plt.imshow(imgcv)
@@ -32,19 +34,19 @@ plt.show()
 
 # represents the top left corner of rectangle
 top =(249,145)
-# represents the bottom right corner of rectangle 
+# represents the bottom right corner of rectangle
 bottom =(380,200)
-# Blue color in BGR 
-color = (255, 0, 0) 
-  
-# Line thickness of 2 px 
+# Blue color in BGR
+color = (255, 0, 0)
+
+# Line thickness of 2 px
 thickness = 2
-  
-# Using cv2.rectangle() method 
-# Draw a rectangle with blue line borders of thickness of 2 px 
+
+# Using cv2.rectangle() method
+# Draw a rectangle with blue line borders of thickness of 2 px
 cv2.rectangle(imgcv, top, bottom, (255,0,0) , 2)
-    
-# Displaying the image  
+
+# Displaying the image
 plt.imshow(imgcv)
 plt.show()
 
@@ -62,4 +64,3 @@ x1,y1 ------
 |          |
 |          |
 --------x2,y2
-

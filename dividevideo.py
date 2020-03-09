@@ -5,8 +5,8 @@ import time
 import random
 
 # Video file should be the full video name
-vid_file = "crowdsample1.mp4"
-vid_name = "crowdsample1"
+vid_file = "mgroad.mp4"
+vid_name = "mgroad"
 
 # for storing all the image names
 image_names = []
@@ -28,7 +28,7 @@ position = 1
 length = int(cap.get(cv2.CAP_PROP_FRAME_COUNT))
 print( length )
 frame_count = 1
-
+number_of_pictures = 0
 # Video Capture using OpenCV VideoCapture
 start_time = time.time()
 
@@ -55,6 +55,7 @@ while frame_count < length - 1:
     if frame is not None:
         image_names.append("output_"+str(vid_name)+"_"+str(position)+"."+image_type)
         cv2.imwrite("Dividedframes/output_"+str(vid_name)+"_"+str(position)+"."+image_type, frame)
+        number_of_pictures = number_of_pictures + 1
         position = position + 1
 
     print("frame_count : "+str(frame_count))
@@ -63,4 +64,5 @@ print("Images derived :")
 print(image_names)
 elapsed_time = time.time() - start_time
 print("Performace measure : "+str(elapsed_time))
+print("Number of pictures : "+str(number_of_pictures))
 print("PLEASE CLEAN THE Diviedframes FOLDER AFTER EACH ITERATION")
