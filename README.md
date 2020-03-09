@@ -42,6 +42,8 @@
 9. The output of the machine learning algorithms can be seen by running checkmloutput.py, images will be stored in the mlimages folder
 
 
+**System Architecture**
+system_architecture.jpeg
 
 # ImageAnnotationIoUTool : Application Phase-2 COMPLETE (Temporarily halted till phase-3 technology is learnt)
 How to start the application :

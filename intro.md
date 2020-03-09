@@ -41,6 +41,9 @@
     4. Run iou.py to check the IoU of all images and store it in the IoU folder in IoU.txt
 9. The output of the machine learning algorithms can be seen by running checkmloutput.py, images will be stored in the mlimages folder
 
+**System Architecture**
+system_architecture.jpeg
+
 **LOC and program list if needed :**
 1. main.go : 437
 2. CustomRouting.js : 53
