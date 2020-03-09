@@ -12,14 +12,14 @@
 9. matplotlib is being used for testing images (display of images)
 10. Vanilla Js for functions and bits of React code
 
-*How it works*
+**How it works**
 
-Downloading and processing video :
+*Downloading and processing video :*
 1. If a video is already available, place it in the main folder or download a video from YouTube(Y2 downloader or In-House application)
 2. Run the dividevideo.py to split the video into frames at random intervals between 2-5 seconds (considering 30 fps)
 3. The divided frames will be available in the Dividedframes folder
 
-Annotation System :
+*Annotation System :*
 1. The user signs up into the system by giving email,username,name and password
 2. Once the signUp is successful, the user is redirected to the upload page
 3. The user can upload upto 99 images at once and click viewimages
@@ -117,7 +117,7 @@ django-admin startproject mysite cd mysite python3 manage.py startapp polls pyth
 
 cd polls mkdir templates touch index.html extras: Add static paths in settings.py Add the installed apps in settings.py Add the cross origin request corsheaders in installed apps http://www.srikanthtechnologies.com/blog/python/enable_cors_for_django.aspx
 
-LOC for ImageAnnotation :
+**LOC and program list :**
 main.go : 437
 CustomRouting.js : 53
 EditPage.js : 23
