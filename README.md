@@ -46,7 +46,8 @@
 system_architecture.jpeg
 
 **IOU**
-For people label on dataset collected from mainly Indian sources : 0.3005834618310959
+1. For people label on dataset collected from mainly Indian sources : 0.3005834618310959
+2. Number of images in test data : 381
 
 # ImageAnnotationIoUTool : Application Phase-2 COMPLETE (Temporarily halted till phase-3 technology is learnt)
 How to start the application :
