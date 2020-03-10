@@ -34,7 +34,7 @@ def main():
         if images != ".DS_Store":
             count = count + 1
             try :
-                with open("mloutput/"+images+".txt") as f:
+                with open("mloutput/mloutput_"+images+".txt") as f:
                     coordinates = f.read()
                 print("images : "+images)
                 print("coordinates : \n"+coordinates)

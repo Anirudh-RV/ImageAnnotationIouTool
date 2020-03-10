@@ -64,113 +64,117 @@ def get_iou(bb1, bb2):
     return iou
 
 def yolo(img,coordinates):
-    imagename = img
-    print("coordinates : "+coordinates)
-    print("image : "+img)
-    start_time = time.time()
-    IoU = []
-    coordinates = coordinates.split("\n")
-    print(coordinates)
-    coordinates.pop(0)
-    print(coordinates)
-    numberofannotations = len(coordinates)
-    img = cv2.imread("images/"+img)
-    img = np.array(img)
-    img_h = img.shape[0]
-    img_w = img.shape[1]
-    imgcv = img
-    result = tfnet.return_predict(imgcv)
-    count = 0
-    for res in result:
-        if res["label"] == "whole":
-            continue
-        elif res["label"] == "person":
-            count = count + 1
-            color = int(255 * res["confidence"])
-            top = (res["topleft"]["x"],res["topleft"]["y"])
-            bottom = (res["bottomright"]["x"],res["bottomright"]["y"])
-            # for each person
-            print("top and bottom")
-            print(top)
-            print(bottom)
-            topstr = "("+str(res["topleft"]["x"])+","+str(res["topleft"]["y"])+")"
-            bottomstr = "("+str(res["bottomright"]["x"])+","+str(res["bottomright"]["y"])+")"
-            fileentry = topstr+" "+bottomstr
-            print("file entry : ")
-            print(fileentry)
-            f = open("mloutput/"+imagename+".txt", "a+")
-            f.write(fileentry+"\n")
-            f.close()
+    try :
+        imagename = img
+        print("coordinates : "+coordinates)
+        print("image : "+img)
+        start_time = time.time()
+        IoU = []
+        coordinates = coordinates.split("\n")
+        print(coordinates)
+        coordinates.pop(0)
+        print(coordinates)
+        numberofannotations = len(coordinates)
+        img = cv2.imread("images/"+img)
+        img = np.array(img)
+        img_h = img.shape[0]
+        img_w = img.shape[1]
+        imgcv = img
+        result = tfnet.return_predict(imgcv)
+        count = 0
+        for res in result:
+            if res["label"] == "whole":
+                continue
+            elif res["label"] == "person":
+                count = count + 1
+                color = int(255 * res["confidence"])
+                top = (res["topleft"]["x"],res["topleft"]["y"])
+                bottom = (res["bottomright"]["x"],res["bottomright"]["y"])
+                # for each person
+                print("top and bottom")
+                print(top)
+                print(bottom)
+                topstr = "("+str(res["topleft"]["x"])+","+str(res["topleft"]["y"])+")"
+                bottomstr = "("+str(res["bottomright"]["x"])+","+str(res["bottomright"]["y"])+")"
+                fileentry = topstr+" "+bottomstr
+                print("file entry : ")
+                print(fileentry)
+                f = open("mloutput/mloutput_"+imagename+".txt", "a+")
+                f.write(fileentry+"\n")
+                f.close()
 
 
-            # Calculate IoU here with top and bottom, compare each drawn image with top and bottom, select the max IoU
-            bb2 = {}
-            bb2['x1'] = top[0]
-            bb2['x2'] = bottom[0]
-            bb2['y1'] = top[1]
-            bb2['y2'] = bottom[1]
+                # Calculate IoU here with top and bottom, compare each drawn image with top and bottom, select the max IoU
+                bb2 = {}
+                bb2['x1'] = top[0]
+                bb2['x2'] = bottom[0]
+                bb2['y1'] = top[1]
+                bb2['y2'] = bottom[1]
 
-            currentIou = 0
-            for boxes in coordinates:
-                boxesarr = boxes.split(" ")
-                top = ast.literal_eval(boxesarr[0])
-                bottom = ast.literal_eval(boxesarr[1])
-                bb1 = {}
-                bb1['x1'] = top[0]
-                bb1['x2'] = bottom[0]
-                bb1['y1'] = top[1]
-                bb1['y2'] = bottom[1]
-                result = get_iou(bb1,bb2)
-                print(result)
-                currentIou = max(result,currentIou)
+                currentIou = 0
+                for boxes in coordinates:
+                    boxesarr = boxes.split(" ")
+                    top = ast.literal_eval(boxesarr[0])
+                    bottom = ast.literal_eval(boxesarr[1])
+                    bb1 = {}
+                    bb1['x1'] = top[0]
+                    bb1['x2'] = bottom[0]
+                    bb1['y1'] = top[1]
+                    bb1['y2'] = bottom[1]
+                    result = get_iou(bb1,bb2)
+                    print(result)
+                    currentIou = max(result,currentIou)
 
-            IoU.append(currentIou)
-            crop_img = imgcv[res["topleft"]["y"]:res["bottomright"]["y"],res["topleft"]["x"]:res["bottomright"]["x"]]
+                IoU.append(currentIou)
+                crop_img = imgcv[res["topleft"]["y"]:res["bottomright"]["y"],res["topleft"]["x"]:res["bottomright"]["x"]]
 
-            print(res["label"])
-            if len(crop_img) != 0:
-                #print("results/crp_"+res["label"]+"_"+str(count)+str(imgname))
-                pass
-            cv2.rectangle(imgcv, top, bottom, (255,0,0) , 2)
-            #cv2.putText(imgcv, res["label"], top, cv2.FONT_HERSHEY_DUPLEX, 1.0, (0,0,255))
-            print(count)
+                print(res["label"])
+                if len(crop_img) != 0:
+                    #print("results/crp_"+res["label"]+"_"+str(count)+str(imgname))
+                    pass
+                cv2.rectangle(imgcv, top, bottom, (255,0,0) , 2)
+                #cv2.putText(imgcv, res["label"], top, cv2.FONT_HERSHEY_DUPLEX, 1.0, (0,0,255))
+                print(count)
 
-    print("person count : "+str(count))
-    print("person annotations : "+str(numberofannotations))
+        print("person count : "+str(count))
+        print("person annotations : "+str(numberofannotations))
 
-    if count != numberofannotations:
-        difference = numberofannotations-count
-        for i in range(0,difference):
-            IoU.append(0)
+        if count != numberofannotations:
+            difference = numberofannotations-count
+            for i in range(0,difference):
+                IoU.append(0)
 
-    print("IoU : ")
-    print(IoU)
-    averageIoU = np.mean(IoU)
-    print("Average : "+str(averageIoU))
-    if math.isnan(averageIoU):
-        # do nothing
-        pass
-    else:
-        # save averageIoU in IoU.txt
-        with open("IoU/Iou.txt","a+") as myfile:
-            myfile.write(str(averageIoU)+"\n")
+        print("IoU : ")
+        print(IoU)
+        averageIoU = np.mean(IoU)
+        print("Average : "+str(averageIoU))
+        if math.isnan(averageIoU):
+            # do nothing
+            pass
+        else:
+            # save averageIoU in IoU.txt
+            with open("IoU/Iou.txt","a+") as myfile:
+                myfile.write(str(averageIoU)+"\n")
 
-    elapsed_time = time.time() - start_time
-    print("Performace measure : "+str(elapsed_time))
-    print("Backend Process Complete")
+        elapsed_time = time.time() - start_time
+        print("Performace measure : "+str(elapsed_time))
+        print("Backend Process Complete")
+    except:
+        print("Skipping image...\n")
 
 def main():
     count = 0
     listofimages = os.listdir("images")
+    print(len(listofimages))
     for images in listofimages:
         if images != ".DS_Store":
-            count = count + 1
             try :
                 with open("output/output_"+images+".txt") as f:
                     coordinates = f.read()
                 print("images : "+images)
                 print("coordinates : \n"+coordinates)
                 yolo(images,coordinates)
+                count = count + 1
             except FileNotFoundError:
                 print("File not saved...\nSkipping image\n")
     print("total count : "+str(count))
