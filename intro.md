@@ -1,5 +1,17 @@
 # Introduction to ImageAnnotationIoUTool
 
+**Process of measuring IoU**
+1. Each bounding box with label : "people" is considered (Iterated through)
+2. The bounding box is checked with all the ground truths for IoU
+3. The maximum IoU is considered for that bounding box (non-max suppression)
+4. The above process is repeated for each bounding box detected by the YOLO algorithm
+5. To add the possibility that people in the ground truth are completely ignored by the yolo algorithm
+  a.The difference between the number of people detected by yolo and the number of people annotated for ground truth is considered
+  b.This is added as extra 0's to the list of the IoU's
+6. The average of all the maximum IoU's of each bounding box and the additional 0's is taken for overall IoU for an image
+7. The average of all the IoU's for each image is taken as the average IoU for the dataset (~400 images)
+8. check code in CheckIoU/iou.py for source code
+
 **Technologies used**
 1. ReactJs for Frontend (3000)
 2. NodeJs for Backend (4000)
