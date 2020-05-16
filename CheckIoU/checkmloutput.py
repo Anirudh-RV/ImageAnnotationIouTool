@@ -13,7 +13,7 @@ def drawboxes(images,coordinates):
     print(coordinates)
     coordinates = coordinates.split("\n")
     print(coordinates)
-    coordinates.pop()
+    coordinates.pop(0)
 
     for boxes in coordinates:
         boxesarr = boxes.split(" ")
@@ -34,7 +34,7 @@ def main():
         if images != ".DS_Store":
             count = count + 1
             try :
-                with open("mloutput/mloutput_"+images+".txt") as f:
+                with open("mloutput/output_"+images+".txt") as f:
                     coordinates = f.read()
                 print("images : "+images)
                 print("coordinates : \n"+coordinates)

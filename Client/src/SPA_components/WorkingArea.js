@@ -108,6 +108,7 @@ NextImage= () => {
     if(this.ImageTag) {
      this.ImageTag.src = "http://localhost:4000/img/"+this.props.name+"/images/"+this.state.ImageNames[this.state.index];
       }
+      this.saveastextfile();
     }
   this.outputdiv.innerHTML = "";
 }

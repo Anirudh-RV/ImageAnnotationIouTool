@@ -43,7 +43,7 @@ Logout = () =>{
   }
   maxSelectFile=(event)=>{
     let files = event.target.files
-        if (files.length > 101) {
+        if (files.length > 1001) {
            const msg = 'Only 10 images can be uploaded at a time'
            event.target.value = null
            return false;

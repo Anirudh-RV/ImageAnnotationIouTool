@@ -7,6 +7,7 @@ const bodyParser = require('body-parser')
 var zip = require('express-zip');
 const child_process = require('child_process');
 var zipFolder = require('zip-folder');
+var serveIndex = require('serve-index');
 var port = 4000;
 
 app.use(cors())
@@ -14,8 +15,10 @@ app.use(cors())
 //Serve static content for the app from the "public" directory in the application directory.
 app.use(express.static(__dirname + '/public'));
 app.use('/static', express.static(__dirname + '/public'));
+app.use('/videos',express.static(__dirname+ '/public/Downloaded'))
 app.use('/img',express.static(path.join(__dirname, 'public/uploaded')));
 app.use('/file',express.static(path.join(__dirname,'public/file')));
+app.use('/listimages', serveIndex(__dirname + 'public/Database'));
 app.use(
   bodyParser.urlencoded({
     extended: true
@@ -27,14 +30,20 @@ app.use(bodyParser.json())
 // for scaling it to multiple users, send user_id to the backend and save under a new folder with the user_id name.
 var storage = multer.diskStorage({
     destination: function (req, file, cb) {
-      var fs = require('fs');
-      var dir = 'public/uploaded/'+req.headers['username'];
-      if (!fs.existsSync(dir)){
-          fs.mkdirSync(dir);
+      console.log(req.headers['type'])
+      if(req.headers['type'] == 'CompareFaces'){
+        var dir = 'public/Database/';
       }
-      var dir = 'public/uploaded/'+req.headers['username']+'/images';
-      if (!fs.existsSync(dir)){
-          fs.mkdirSync(dir);
+      else{
+        var fs = require('fs');
+        var dir = 'public/uploaded/'+req.headers['username'];
+        if (!fs.existsSync(dir)){
+            fs.mkdirSync(dir);
+        }
+        var dir = 'public/uploaded/'+req.headers['username']+'/images';
+        if (!fs.existsSync(dir)){
+            fs.mkdirSync(dir);
+        }
       }
       cb(null,dir)
     },
@@ -44,7 +53,6 @@ var storage = multer.diskStorage({
   })
 
 var upload = multer({ storage: storage }).array('file')
-
 
 app.post('/saveIoU',function(req,res){
     var dir = 'public/uploaded/'+req.headers['username']+"/IoU";
@@ -106,6 +114,43 @@ app.post('/downloadfiles', function(req, res) {
 
 app.get('/',function(req,res){
     return res.send('Hello Server')
+})
+
+app.post('/download',function(req,res){
+
+  var username = req.body.username
+  var videoname = req.body.videoname
+  var videourl = req.body.videourl
+  console.log(username);
+  var dir = 'public/Downloaded/'+username;
+  console.log(dir)
+
+  const fs = require('fs')
+  const youtubedl = require('youtube-dl')
+
+  if (!fs.existsSync(dir)){
+      fs.mkdirSync(dir);
+  }
+  var dir = 'public/Downloaded/'+username+'/downloads';
+  if (!fs.existsSync(dir)){
+      fs.mkdirSync(dir);
+  }
+
+  const video = youtubedl(videourl,
+  // Optional arguments passed to youtube-dl.
+  ['--format=18'],
+  // Additional options can be given for calling `child_process.execFile()`.
+  { cwd: __dirname })
+
+  // Will be called when the download starts.
+  video.on('info', function(info) {
+    console.log('Download started')
+    console.log('filename: ' + info._filename)
+    console.log('size: ' + info.size)
+  })
+video.pipe(fs.createWriteStream(dir+'/'+videoname+'.mp4'))
+return res.send('Done')
+
 })
 
 app.post('/upload',function(req, res) {

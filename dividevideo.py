@@ -5,8 +5,8 @@ import time
 import random
 
 # Video file should be the full video name
-vid_file = "mgroad.mp4"
-vid_name = "mgroad"
+vid_file = "twoPeopleWalking.mp4"
+vid_name = "twoPeopleWalking"
 
 # for storing all the image names
 image_names = []
@@ -26,7 +26,7 @@ frame_height = int(cap.get(4))
 # getting the frame length of the video
 position = 1
 length = int(cap.get(cv2.CAP_PROP_FRAME_COUNT))
-print( length )
+print("number of frames : "+str(length))
 frame_count = 1
 number_of_pictures = 0
 # Video Capture using OpenCV VideoCapture
@@ -40,6 +40,7 @@ if not cap.isOpened():
 while frame_count < length - 1:
     # selecting a random number of skip frames within the range (low,high)
     # per second 30 frames
+    '''
     skip = random.randint(low*30,high*30)
     current_count = 1
     print("skip : "+str(skip))
@@ -48,8 +49,8 @@ while frame_count < length - 1:
         ret, frame = cap.read()
         frame_count = frame_count + 1
         current_count = current_count + 1
-
     print("current_count : "+str(current_count))
+    '''
     ret, frame = cap.read()
     frame_count = frame_count + 1
     if frame is not None:
@@ -62,6 +63,7 @@ while frame_count < length - 1:
 
 print("Images derived :")
 print(image_names)
+print("Number of images : "+str(len(image_names)))
 elapsed_time = time.time() - start_time
 print("Performace measure : "+str(elapsed_time))
 print("Number of pictures : "+str(number_of_pictures))

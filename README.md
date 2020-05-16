@@ -1,5 +1,18 @@
 # Introduction to ImageAnnotationIoUTool
 
+**Feature list**
+1. Upload Video
+2. Uploade photos
+3. Draw boxes
+4. Check IoU
+5. Check ML output image
+6. Save output in .txt format
+7. Download ZIP
+a. Images
+b. Annotations
+c. IoU
+d. ML output
+
 **Process of measuring IoU**
 1. Each bounding box with label : "people" is considered (Iterated through)
 2. The bounding box is checked with all the ground truths for IoU
