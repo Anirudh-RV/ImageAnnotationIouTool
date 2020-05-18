@@ -1,16 +1,5 @@
-Resources :
-https://docs.docker.com/docker-for-mac/
-https://docs.docker.com/compose/gettingstarted/
-https://medium.com/travis-on-docker/how-to-dockerize-your-go-golang-app-542af15c27a2
-https://hostadvice.com/how-to/how-to-use-docker-containers-with-aws-ec2/
-https://medium.com/fredwong-it/aws-cloudfront-url-return-accessdenied-in-front-of-s3-react-app-a4bad7d3e4f2
-
 # AWS COMMANDS
-<br />**Important :**
-<br />
-update atlas with the public IP of Go API for Permissions
-<br />
-**S3 - ReactJS Always set up with CloudFront for URL redirecting**
+**S3 - ReactJS set up with CloudFront for URL redirecting**
 1. Create bucket
 2. Allow public access
 3. Change bucket policy to : (Permissions/bucketpolicy)<br />
@@ -26,11 +15,12 @@ update atlas with the public IP of Go API for Permissions
 &nbsp;&nbsp;    }<br />
 &nbsp;  ]<br />
 }<br />
-
 <br />
-**NOTE :**
+
+**NOTE**
 <br />
 The \ in the bucket policy is ignored before asterisk and angle brackets of BUCKET-NAME
+<br />
 <br />
 4. build the static website : Change all the urls according to the EC2 instances
 npm run build
@@ -39,23 +29,18 @@ npm run build
 <br />
 6. Check the index.html file for Link
 <br />
-**ERRORS**
-1. Problem with refreshing error occurs (ADD ROUTES WITH CLOUDFRONT)
-<br />
-2. Problem with downloading files (Stop ADBLOCK ON WEBSITE)
 
-To run : **Update atlas with the public key for Permissions**
-1. ssh -i reactjs.pem ec2-user@54.175.125.107
+**To run : WebApp on EC2**
+1. ssh -i CreatedKey.pem ec2-user@54.175.125.107
 2. sudo service docker start
 3. docker run -p 80:3000 anirudhrv1234/reactjs
 
 
 **CloudFront**
-// surveillancesystembmsce
 
 1. Setup a user using the CloudFront serivce
-2. Set the origin domain name as : 1bm16cs016react.s3.amazonaws.com
-3. Set the origin path : /https://1bm16cs016react.s3.amazonaws.com/index.html
+2. Set the origin domain name as : bucketname.s3.amazonaws.com
+3. Set the origin path : https://bucketname.s3.amazonaws.com/index.html
 4. Click create
 5. Select the ID and go to Error pages
 6. Click create custom error response
@@ -67,6 +52,7 @@ Ex: d3sn2yu94s8xdo.cloudfront.net
 The solution is go to Cloud front -> Select you cloud distribution detail -> select tab General -> Select edit -> In this form Setup the property Default Root Object to index.html
 
 **EC2 - GO API IP:GET IP WHEN INSTANCE IS RUNNING**
+
 1. Create an EC2 instance and allow HTTP:80 connections in the security options
 2. chmod 400 goapikey.pem
 3. ssh -i goapikey.pem ec2-user@<IP-Address>
@@ -77,8 +63,10 @@ The solution is go to Cloud front -> Select you cloud distribution detail -> sel
 8. exit
 9. ssh -i goapikey.pem ec2-user@54.197.42.159
 10. docker run -p 80:8080 anirudhrv1234/goapi
+*Important :*
+update atlas with the public IP of Go API for Permissions
 
-To run : **Update atlas with the public key for Permissions**
+**To run : Update atlas with the public key for Permissions**
 1. ssh -i goapikey.pem ec2-user@34.227.160.149
 2. sudo service docker start
 3. docker run -p 80:8080 anirudhrv1234/goapi
@@ -95,12 +83,12 @@ To run : **Update atlas with the public key for Permissions**
 9. ssh -i Detectanamolyoutputvideo.pem ec2-user@<IP-Address>
 10. docker run -p 80:4000 anirudhrv1234/nodeserver
 
-To run :
+**To run :**
 1. ssh -i Detectanamolyoutputvideo.pem ec2-user@52.204.217.170
 2. sudo service docker start
 3. docker run -p 80:4000 anirudhrv1234/nodeserver
 
-# For localtunnel (Making local server port publicly avaiable):
+**For localtunnel (Making local server port publicly avaiable):**
 1. brew install ruby
 2. echo 'export PATH="/usr/local/opt/ruby/bin:$PATH"' >> ~/.bash_profile
 3. gem install localtunnel
@@ -118,32 +106,11 @@ To run:
 1. Always push to dockerhub - docker push UserName/ProjectName
 1. Try using nginx for serving static folder
 
-**Important**
-1. docker stop CONTAINERID
-
-2. lsof -P | grep ':80' | awk '{print $2}' | xargs kill -9
-
-3. Problem with API_Go : Until a static IP Address for the mongodb server is not found, for each system
-the user has to build the API_Go container by changing the IP Address to their Computer IP in
-  a. HandleUsers/UserFunc.go
-  b. HandleImages/ImageFunc.go
-  (Problem solved by migrating mongodb to cloud)
-
 **To run from docker  :(Build Inside respective folders)**
 1. 1. To build: docker build -t **-Name-** .
 
-
 **Start MongoDB**
-Using Mongo Atlas for cloud monogoDB
-1. https://cloud.mongodb.com/v2/5e900ec2a7d1747f28c16087#metrics/replicaSet/5e900fc72e84e918f3bbb59c/explorer/GoDB/UserData/find
-1. Local: docker run -d -p 27017-27019:27017-27019 --name mongodb mongo
-
-cd74ed0cd946717155f47b95bcd85bcc8371a561a8f672c8e2506555c20d8ac4
-*if error occurs saying container already running*
-
-1. Local: docker run -d -p 27017-27019:27017-27019 --name CONTAINER ID mongo
-
-2. Important : Make sure mongo is running on <ip-address>:27017 before running GO API
+Use Mongo Atlas for cloud monogoDB
 
 **To run GO API**
 1. To build: docker build -t anirudhrv1234/goapi .
@@ -152,7 +119,7 @@ cd74ed0cd946717155f47b95bcd85bcc8371a561a8f672c8e2506555c20d8ac4
 
 3. Local: docker run --rm -p 8080:8080 anirudhrv1234/goapi
 
-**To run NodeServer (Node JS)** RUNNING ON AWS CURRENTLY
+**To run NodeServer (Node JS)**
 1. To build: docker build -t anirudhrv/nodeserver .
 
 2. Local: docker run -p 80:4000 anirudhrv1234/nodeserver
@@ -191,21 +158,19 @@ cd74ed0cd946717155f47b95bcd85bcc8371a561a8f672c8e2506555c20d8ac4
 **Run the App**
 1. docker-compose up
 
-**To delete images**
+**To delete all images**
 1. docker system prune
+
+**To stop an image**
+1. docker stop CONTAINERID
 
 <br />
 **RAW**
-PublicReadForGetBucketObjects
-{
-   "Version": "2012-10-17",
-  "Statement":[
-  {
-   "Sid":"AddPerm",
-    "Effect":"Allow",
-    "Principal": "*",
-    "Action":["s3:GetObject"],
-    "Resource":["arn:aws:s3:::<BUCKET-NAME>/*"]
-   }
-  ]
-}
+Find in bucketpolicy.txt
+
+# Resources :
+1. https://docs.docker.com/docker-for-mac/
+2. https://docs.docker.com/compose/gettingstarted/
+3. https://medium.com/travis-on-docker/how-to-dockerize-your-go-golang-app-542af15c27a2
+4. https://hostadvice.com/how-to/how-to-use-docker-containers-with-aws-ec2/
+5. https://medium.com/fredwong-it/aws-cloudfront-url-return-accessdenied-in-front-of-s3-react-app-a4bad7d3e4f2

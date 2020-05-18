@@ -4,17 +4,13 @@ cfg/
 *.weights
 *.avi
 *.jpeg
-*.png
 node_modules/
 Data/
 *.mp4
 *.jpg
 Yolo-9000/
 *.pyc
-Documentation/DEMO
 *.zip
 *.jpeg
 *.jpg
-Dividedframes/
-CheckIou/
 *.pdf
