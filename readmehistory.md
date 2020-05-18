@@ -1,3 +1,20 @@
+# Features to Develop
+
+**TODO**
+1. Fix the check IoU outputs
+2. Fix the type of data being sent through API, make everything into JSON
+3. Removing boxes and annotation of each box
+4. IoU check for each particular annotation
+5. Make Textbox++ to work
+6. Improve UI
+7. Fix the static links in the ReactJS part. Make the links dynamic by pulling them from API each time.
+8. Uploading multiple videos and dividing into frames
+9. Fix LOGOUT
+10. Fix the asynchoronous problem in uploading images, dividing videos, downloading youtube video and dividing
+
+**DONE**
+8. Uploading multiple videos and dividing into frames
+
 # README HISTORY
 ########--------------------------------------------------------------------------------------------------
 

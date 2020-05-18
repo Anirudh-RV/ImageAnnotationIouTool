@@ -22,4 +22,5 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     url(r'index/',v.index),
     url(r'yolo/',v.yolo),
+    url(r'dividetheframes/',v.dividetheframes),
 ]

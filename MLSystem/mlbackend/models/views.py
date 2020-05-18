@@ -13,11 +13,14 @@ from django.http import HttpResponse
 from django.views.decorators.csrf import csrf_exempt
 from django.views.decorators.csrf import csrf_exempt
 import json
+
 # to read images from urls
 import os
 import time
 import matplotlib.pyplot as plt
 import ast
+import urllib.request
+
 # to read images from urls
 import PIL
 from PIL import Image
@@ -29,9 +32,11 @@ import tensorflow as tf
 print(tf.__version__)
 import numpy as np
 from timeit import default_timer as timer
+
 # textbox++ models
 from tbpp_model import TBPP512, TBPP512_dense
 from tbpp_utils import PriorUtil
+
 # ssd for help
 from ssd_data import preprocess
 from sl_utils import rbox3_to_polygon, polygon_to_rbox, rbox_to_polygon
@@ -214,38 +219,34 @@ def yolo(request):
     imageurl = dictdata["imageurl"]
     coordinates = dictdata["coordinates"]
     print("coordinates : "+coordinates)
+
     start_time = time.time()
     IoU = []
     coordinates = coordinates.split("\n")
-    print(coordinates)
     coordinates.pop(0)
-    print(coordinates)
     numberofannotations = len(coordinates)
+
+    # img1 will be entry from user
     url = imageurl
-    response = requests.get(url)
-    img = Image.open(BytesIO(response.content))
-    img = np.array(img)
-    saveimageindjango = 'assets/mloutput_'+username+"_"+imagename
-    cv2.imwrite(saveimageindjango, img)
+    req = urllib.request.urlopen(url)
+    arr = np.asarray(bytearray(req.read()), dtype=np.uint8)
+    img = cv2.imdecode(arr, -1) # 'Load it as it is'
     img_h = img.shape[0]
     img_w = img.shape[1]
-    imgcv = cv2.imread(saveimageindjango)
+    imgcv = img
 
     result = tfnet.return_predict(imgcv)
     count = 0
-
     for res in result:
-        print(res["label"])
         if res["label"] == "whole":
             continue
         elif res["label"] == "person":
+            print("Deteced person")
             count = count + 1
             color = int(255 * res["confidence"])
             top = (res["topleft"]["x"], res["topleft"]["y"])
             bottom = (res["bottomright"]["x"], res["bottomright"]["y"])
-            # for each person
-            print(top)
-            print(bottom)
+            cv2.rectangle(imgcv, top, bottom, (255,0,0) , 2)
 
             # Calculate IoU here with top and bottom, compare each drawn image with top and bottom, select the max IoU
             bb2 = {}
@@ -253,26 +254,22 @@ def yolo(request):
             bb2['x2'] = bottom[0]
             bb2['y1'] = top[1]
             bb2['y2'] = bottom[1]
-            print(bb2)
 
             currentIou = 0
             for boxes in coordinates:
+                print("box: "+str(boxes))
                 boxesarr = boxes.split(" ")
                 top = ast.literal_eval(boxesarr[0])
                 bottom = ast.literal_eval(boxesarr[1])
-                print("top : ")
-                print(top)
-                print("bottom : ")
-                print(bottom)
                 bb1 = {}
                 bb1['x1'] = top[0]
                 bb1['x2'] = bottom[0]
                 bb1['y1'] = top[1]
                 bb1['y2'] = bottom[1]
                 result = get_iou(bb1,bb2)
-                print(result)
                 currentIou = max(result,currentIou)
 
+            print("IoU: "+str(currentIou))
             IoU.append(currentIou)
             crop_img = imgcv[res["topleft"]["y"]:res["bottomright"]["y"],res["topleft"]["x"]:res["bottomright"]["x"]]
 
@@ -280,7 +277,6 @@ def yolo(request):
             if len(crop_img) != 0:
                 #print("results/crp_"+res["label"]+"_"+str(count)+str(imgname))
                 pass
-            cv2.rectangle(imgcv, top, bottom, (255,0,0) , 2)
             #cv2.putText(imgcv, res["label"], top, cv2.FONT_HERSHEY_DUPLEX, 1.0, (0,0,255))
             print(count)
 
@@ -289,20 +285,21 @@ def yolo(request):
 
     if count != numberofannotations:
         difference = numberofannotations-count
-        print("difference: "+str(difference))
-        for i in range(0,difference):
-            IoU.append(0)
+        if difference > 0:
+            print("difference: "+str(difference))
+            for i in range(0,difference):
+                IoU.append(0)
 
     print("IoU : ")
     print(IoU)
     averageIoU = np.mean(IoU)
     print("Average : "+str(averageIoU))
-    # draw
-    saveimageindjango = 'assets/mloutput_'+username+"_"+imagename
-    cv2.imwrite(saveimageindjango, imgcv)
+
     elapsed_time = time.time() - start_time
     print("Performace measure : "+str(elapsed_time))
     print("Sending to back end...")
+    saveimageindjango = 'assets/mloutput_'+username+"_"+imagename
+    cv2.imwrite(saveimageindjango, imgcv)
     files = {'file': open(saveimageindjango, 'rb')}
     headers = {
         'username': username,

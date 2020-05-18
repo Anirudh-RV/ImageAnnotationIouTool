@@ -30,9 +30,20 @@ app.use(bodyParser.json())
 // for scaling it to multiple users, send user_id to the backend and save under a new folder with the user_id name.
 var storage = multer.diskStorage({
     destination: function (req, file, cb) {
-      console.log(req.headers['type'])
+      console.log('Request Header'+req.headers['type'])
       if(req.headers['type'] == 'CompareFaces'){
         var dir = 'public/Database/';
+      }
+      else if(req.headers['type'] == 'VideoUpload'){
+        var fs = require('fs');
+        var dir = 'public/uploaded/'+req.headers['username'];
+        if (!fs.existsSync(dir)){
+            fs.mkdirSync(dir);
+        }
+        var dir = 'public/uploaded/'+req.headers['username']+'/videos';
+        if (!fs.existsSync(dir)){
+            fs.mkdirSync(dir);
+        }
       }
       else{
         var fs = require('fs');
