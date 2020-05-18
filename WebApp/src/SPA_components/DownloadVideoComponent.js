@@ -23,7 +23,7 @@ class DownloadVideoComponent extends Component {
 }
 
 componentDidMount(){
-this.heading.innerHTML = this.props.location.state.userName+"</br>Start Your Data Science Jounrney with AppName";
+this.heading.innerHTML = this.props.location.state.userName+"</br>Annotate Data Directly From Videos";
 }
 
 dividetheframes = (type,name,current,total) =>{
@@ -199,11 +199,24 @@ handleSubmit = () =>{
 render() {
     return (
       <div className = "BackgroundSign">
-      <h1 className = "AppName" ref = {c => this.heading = c}></h1>
+      <h2 className = "AppName" ref = {c => this.heading = c}></h2>
+
+
+      <div className="VideoUpload">
+        <label>Upload Videos from your System</label>
+        <input id="Video_Upload" type="file" class="form-control" multiple onChange={this.onChangeHandler}/>
+        <div class="form-group">
+          <Progress max="100" color="success" value={this.state.loaded} >{Math.round(this.state.loaded,2) }%</Progress>
+        </div>
+        <button type="button" class="buttonclass" onClick={this.onClickHandler}>Upload</button>
+
+      </div>
+
+
       <div className="SignIn">
         <form onSubmit={this.handleSubmit}>
         <p class = "SignInHead">Annotation Tool</p>
-        <p class = "SignUpHead">Begin the data gathering process with just a few steps.</p>
+        <p class = "SignUpHead">Upload Video From YouTube</p>
         &nbsp;
           <FormGroup controlId="url" bsSize="large">
             <FormControl
@@ -228,8 +241,6 @@ render() {
           <Button className="StartButton" block bsSize="large" onClick={this.dividetheframes} type="button">
             Start Annotation
           </Button>
-
-          <button type="button" class="buttonclass" onClick={this.onClickHandler}>Upload</button>
           <br/>
           <p className = "ErrorMessage" ref = {c => this.Message = c}></p>
         </form>
@@ -240,14 +251,6 @@ render() {
           <Link className="LinkToSignUp" onClick={this.dividetheframes}>Redirect</Link>
         </p>
       </div>
-      <div className="VideoUpload" class="form-group files">
-        <label>Upload Video</label>
-        <input id="input_upload" type="file" class="form-control" multiple onChange={this.onChangeHandler}/>
-        <div class="form-group">
-          <Progress max="100" color="success" value={this.state.loaded} >{Math.round(this.state.loaded,2) }%</Progress>
-        </div>
-      </div>
-
       </div>
     );
   }

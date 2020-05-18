@@ -17,7 +17,6 @@ import json
 # to read images from urls
 import os
 import time
-import matplotlib.pyplot as plt
 import ast
 import urllib.request
 
@@ -41,10 +40,7 @@ from tbpp_utils import PriorUtil
 from ssd_data import preprocess
 from sl_utils import rbox3_to_polygon, polygon_to_rbox, rbox_to_polygon
 from io import BytesIO
-import matplotlib.pyplot as plt
-import requests
 from ssd_data import preprocess
-import numpy as np
 
 #for yolo9000
 yolo9000 = {"model" : "cfg/yolo9000.cfg", "load" : "yolo9000.weights", "threshold": 0.01}
@@ -218,6 +214,9 @@ def yolo(request):
     imagename = dictdata["imagename"]
     imageurl = dictdata["imageurl"]
     coordinates = dictdata["coordinates"]
+    imagetype = imagename.split('.')[1]
+    print("ImageType: "+imagetype)
+    saveimageindjango = 'assets/mloutput_'+username+"_"+imagename
     print("coordinates : "+coordinates)
 
     start_time = time.time()
@@ -231,12 +230,23 @@ def yolo(request):
     req = urllib.request.urlopen(url)
     arr = np.asarray(bytearray(req.read()), dtype=np.uint8)
     img = cv2.imdecode(arr, -1) # 'Load it as it is'
+
+    print("SHAPE OF IMAGE (BEFORE): "+str(img.shape))
     img_h = img.shape[0]
     img_w = img.shape[1]
+    img_d = img.shape[2]
+
+    if imagetype == "png" or img_d == 4:
+        cv2.imwrite(saveimageindjango, img)
+
+    img = cv2.imread(saveimageindjango)
+    print("SHAPE OF IMAGE (AFTER): "+str(img.shape))
+
     imgcv = img
 
     result = tfnet.return_predict(imgcv)
     count = 0
+
     for res in result:
         if res["label"] == "whole":
             continue

@@ -34,6 +34,46 @@
 {
   margin : 0;
 }
+
+.VideoUpload {
+  background-color : #ffffff;
+  left : 10%;
+  top : 15%;
+  position : absolute;
+  float : center;
+  align: center;
+  padding: 60px 0;
+  max-width:550px;
+  margin: auto;
+  border-radius: 2px;
+  border: 1px solid #aaaabb;
+  margin-top : 5%;
+  margin-bottom : 10px;
+  z-index:2;
+  padding : 10px;
+}
+
+#Video_Upload
+        {
+          position:relative;
+          top:5px;
+          left:5px;
+          height:240px;
+          width:500px;
+          font-size:14pt;
+          background: #22222a;
+          color:white;
+        }
+
+#Video_Upload:hover
+{
+  background: #16161d;
+  transform:scale(1.01,1.01);
+  -webkit-transform:scale(1.01,1.01);
+  -moz-transform:scale(1.01,1.01);
+}
+
+
 #input_upload
         {
           position:relative;
@@ -86,11 +126,10 @@
 .AppName{
   position : relative;
   float:left;
-  top:-20%;
   text-align:center;
   left:10%;
   align: center;
-  max-width:400px;
+  max-width:800px;
 
 }
 .App-link {
@@ -319,7 +358,7 @@ html {
 }
 
 .SignUpHead{
-  float: left;
+  float: center;
   opacity : 0.8;
   font-weight: bold;
   color : #252528;

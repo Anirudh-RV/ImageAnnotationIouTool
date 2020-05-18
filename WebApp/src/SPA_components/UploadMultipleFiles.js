@@ -110,6 +110,7 @@ RedirecToEditPage = () =>{
 })
 
 }
+
 onClickHandlerVideo = () =>{
   var userName = this.props.location.state.userName;
   this.props.history.push({
@@ -164,7 +165,6 @@ render() {
                 <Progress max="100" color="success" value={this.state.loaded} >{Math.round(this.state.loaded,2) }%</Progress>
               </div>
               <button type="button" class="buttonclass" onClick={this.onClickHandler}>Upload</button>
-              <button type="button" class="buttonclass" onClick={this.onClickHandlerVideo}>Upload Video</button>
               <button type="button" class="buttonclass" onClick={this.RedirecToEditPage}>View Images</button>
               <button type="button" class="buttonclass" onClick={this.Logout}>Log out</button>
 	      </div>
