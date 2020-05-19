@@ -17,6 +17,20 @@
 1. Fix the check IoU outputs, now also works in PNG files
 9. Uploading multiple videos and dividing into frames
 
+**TODO**
+1) Fancy the readme.md file
+2) remove all .DS_Store files and include it in the .gitignore
+3) I don't think Dockerfiles need to be in the repo - will verify
+4) the .yml files look empty - what is it for?
+5) /WebApp/src/SPA_components - maybe move all the css files into one folder and all js files into another
+6) /CheckIoU/Dividedframes, /CheckIoU/mlimages - If these folders are automatically created from some functionality within the app, delete it, or include it in the readme.md about creating such directory paths
+7) /CheckIoU/IoU, /CheckIoU/mloutput, /CheckIoU/Iou.txt - looks like the IoU output and could be produced on execution so, delete it, or include it in the readme.md about creating such directory paths
+8) /MLSystem/mlbackend - there is licensed stuff in this... I'll read up on this, but if my guess is right - I don't think you can include the licensed thing like that in your repo, probably include instructions on how they can acquire it and step it up to this in the readme.md. But I'll confirm once
+9) remove _init_ if it is created at compile time
+10) /MLSystem/mlbackend/assets, /MLSystem/mlbackend/models/migrations, /MLSystem/mlbackend/models/templates - looks empty. If it's created at initialisation/compilation delete it and include instruction on setup.
+11) /Server - everything looks like it's created to establish directory structure... probably delete it and keep instructions on how the directory structure should be. Keep server.js.
+
+**DONE**
 # README HISTORY
 ########--------------------------------------------------------------------------------------------------
 
