@@ -10,7 +10,7 @@ import Bootstrap from "react-bootstrap";
 import {FormGroup, FormControl} from "react-bootstrap";
 import { Link } from 'react-router-dom';
 
-class welcomePage extends Component {
+class WelcomePage extends Component {
 
 componentDidMount(){
 // OnLoad function
@@ -37,22 +37,21 @@ StartAnnotation = () =>{
 })
 }
 
-Logout = () =>{
+logOut = () =>{
     const cookies = new Cookies()
-    cookies.remove('username');
+    cookies.remove('userName');
     window.location.reload(false);
 }
 
 
 render() {
     return (
-      <div className = "BackgroundSign">
-      <h1 className = "AppName" ref = {c => this.heading = c}></h1>
-      <div className="SignIn">
+      <div>
+      <h1 className = "appName" ref = {c => this.heading = c}></h1>
+      <div className="signIn">
         <form>
-        <p class = "SignInHead">Annotation Tool</p>
+        <p class = "signInHead">Annotation Tool</p>
         &nbsp;
-
           <FormGroup controlId="url" bsSize="large">
           <Button className="StartButton" block bsSize="large" onClick={this.StartAnnotation} type="button">
             Upload Images
@@ -66,12 +65,12 @@ render() {
           </FormGroup>
 
           <br/>
-          <p className = "ErrorMessage" ref = {c => this.Message = c}></p>
+          <p className = "errorMessage" ref = {c => this.Message = c}></p>
         </form>
       </div>
-      <div className="SecondBoxSignIn" ref = {c => this.Info = c}>
-        <p className = "LinkToAccount"> Click here when done &nbsp;
-          <Link className="LinkToSignUp" onClick={this.Logout}>LOGOUT</Link>
+      <div className="signIn" ref = {c => this.Info = c}>
+        <p className = "linkToAccount"> Click here when done &nbsp;
+          <Link className="linkToSignUp" onClick={this.logOut}>logOut</Link>
         </p>
       </div>
       </div>
@@ -79,4 +78,4 @@ render() {
   }
 }
 
-export default welcomePage;
+export default WelcomePage;

@@ -1,4 +1,3 @@
-
 .Left{
     width:50%;
     height: 100%;
@@ -8,14 +7,14 @@
 
 }
 
-.LogoElement{
+.logoElement{
   margin-right : 30%;
 }
 
-.Navielements{
+.naviElements{
   margin-right : 0.05%;
 }
-.LeftMajor{
+.leftMajor{
     width:70%;
     height: 100%;
     float: left;
@@ -32,7 +31,7 @@
     padding : 0;
 }
 
-.RightMinor{
+.rightMinor{
     width:30%;
     height: 100%;
     float: right;
@@ -41,14 +40,14 @@
 
 }
 
-
-.collapse
+.Collapse
 {
   position: relative;
 
   transition: all 1s;
 
 }
+
 .Body{
   position:relative;
   width:100%;
@@ -64,7 +63,7 @@
   font-size:100%;
 }
 
-.NaviText
+.naviText
 {
   position : relative;
   top: 50%;
@@ -72,14 +71,13 @@
   overflow: scroll;
 }
 
-.DropdownNavi
+.dropDownNavi
 {
   color : white;
   display:table;
 }
 
-
-.btnclass
+.btnClass
 {
   position : relative;
   background-color : #22222a;

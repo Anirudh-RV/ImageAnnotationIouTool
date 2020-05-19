@@ -1,8 +1,9 @@
 import React, { Component } from 'react';
 import '../cssComponents/App.css';
 import axios from 'axios';
+import Button from 'react-bootstrap/Button'
 
-class workingArea extends Component {
+class WorkingArea extends Component {
 //TODO : ADD INTRODUCTION TO PROJECT
 
 constructor(){
@@ -84,12 +85,12 @@ initDraw= (drawElement,flag,outputdiv) => {
   }
 }
 
-saveastextfile = () =>{
+saveAsTextFile = () =>{
   // send to nodejs to save
-  axios.post(this.nodeserverurl+"/saveastextfile/",{
-    username : this.props.name,
-    imagename : this.state.ImageNames[this.state.index],
-    imagedata : this.outputdiv.innerHTML
+  axios.post(this.nodeServerUrl+"/saveastextfile/",{
+    userName : this.props.name,
+    imageName : this.state.imageNames[this.state.index],
+    imageData : this.outputdiv.innerHTML
     })
     .then(res => { // then print response status
       console.log(res)
@@ -103,18 +104,17 @@ NextImage= () => {
   // clearing out previously draw boxes and adding back the image tag
   this.divCanvas.innerHTML = "";
   this.divCanvas.appendChild(this.ImageTag);
-  if(this.state.index>this.state.ImageNames.length-2) {
+  if(this.state.index>this.state.imageNames.length-2) {
     // Do nothing
   }
   else {
     this.state.index = this.state.index + 1
     if(this.ImageTag) {
-     this.ImageTag.src = this.nodeserverurl+"/img/"+this.props.name+"/images/"+this.state.ImageNames[this.state.index];
+     this.ImageTag.src = this.nodeServerUrl+"/img/"+this.props.name+"/images/"+this.state.imageNames[this.state.index];
       }
     }
   this.outputdiv.innerHTML = "";
 }
-
 
 PrevImage= () => {
   // clearing out previously draw boxes and adding back the image tag
@@ -125,15 +125,15 @@ PrevImage= () => {
   else {
   this.state.index = this.state.index - 1
   if(this.ImageTag) {
-   this.ImageTag.src = this.nodeserverurl+"/img/"+this.props.name+"/images/"+this.state.ImageNames[this.state.index];
+   this.ImageTag.src = this.nodeServerUrl+"/img/"+this.props.name+"/images/"+this.state.imageNames[this.state.index];
     }
   }
   this.outputdiv.innerHTML = "";
 }
 
 testSaveText = () =>{
-  var data = this.state.ImageNames[this.state.index]+","+ this.outputdiv.innerHTML
-  axios.post(this.goapiurl+"/saveastextfile",data)
+  var data = this.state.imageNames[this.state.index]+","+ this.outputdiv.innerHTML
+  axios.post(this.goApiUrl+"/saveAsTextFile",data)
     .then(res => { // then print response status
       console.log(res)
     })
@@ -142,49 +142,50 @@ testSaveText = () =>{
     })
 }
 
-getyolomloutput = () =>{
-  var username = this.props.name
-  var imagename = this.state.ImageNames[this.state.index]
-  var url = this.nodeserverurl+"/img/"+this.props.name+"/images/"+this.state.ImageNames[this.state.index]
-  var mloutputurl = this.nodeserverurl+"/img/"+this.props.name+"/images/mloutput_"+this.props.name+"_"+imagename
-  var data = {'username':username,'imagename':imagename,'imageurl':url,'coordinates':this.outputdiv.innerHTML}
+getYoloMlOutPut = () =>{
+  var userName = this.props.name
+  var imageName = this.state.imageNames[this.state.index]
+  var url = this.nodeServerUrl+"/img/"+this.props.name+"/images/"+this.state.imageNames[this.state.index]
+  var mlOutPutUrl = this.nodeServerUrl+"/img/"+this.props.name+"/images/mloutput_"+this.props.name+"_"+imageName
+  var data = {'userName':userName,'imageName':imageName,'imageUrl':url,'Coordinates':this.outputdiv.innerHTML}
 
-  axios.post(this.pythonbackendurl+"/yolo/",data)
+  axios.post(this.pythonBackEndUrl+"/yolo/",data)
     .then(res => { // then print response status
       console.log(res)
-      window.open(mloutputurl, '_blank');
+      window.open(mlOutPutUrl, '_blank');
     })
     .catch(err => { // then print response status
     console.log(err)
     })
 }
 
-getmloutput = () =>{
-  var username = this.props.name
-  var imagename = this.state.ImageNames[this.state.index]
-  var url = this.nodeserverurl+"/img/"+this.props.name+"/images/"+this.state.ImageNames[this.state.index]
-  var mloutputurl = this.nodeserverurl+"/img/"+this.props.name+"/images/mloutput_"+this.props.name+"_"+imagename
-  var data = {'username':username,'imagename':imagename,'imageurl':url}
+getMlOutPut = () =>{
+  var userName = this.props.name
+  var imageName = this.state.imageNames[this.state.index]
+  var url = this.nodeServerUrl+"/img/"+this.props.name+"/images/"+this.state.imageNames[this.state.index]
+  var mlOutPutUrl = this.nodeServerUrl+"/img/"+this.props.name+"/images/mloutput_"+this.props.name+"_"+imageName
+  var data = {'userName':userName,'imageName':imageName,'imageUrl':url}
 
-  axios.post(this.pythonbackendurl+"/index/",data)
+  axios.post(this.pythonBackEndUrl+"/index/",data)
     .then(res => { // then print response status
       console.log(res)
-      window.open(mloutputurl, '_blank');
+      window.open(mlOutPutUrl, '_blank');
     })
     .catch(err => { // then print response status
     console.log(err)
-    })
+  })
 }
-Apifuncgetimages = (userName) => {
-  // data is going to be the username
-  axios.post(this.goapiurl+"/getimages",userName)
+
+apiFuncGetImages = (userName) => {
+  // data is going to be the userName
+  axios.post(this.goApiUrl+"/getimages",userName)
     .then(res => { // then print response status
       console.log(res)
-       var ImageNames = res.data["data"].split("</br>");
-       ImageNames.pop();
-       this.state.ImageNames = ImageNames
+       var imageNames = res.data["data"].split("</br>");
+       imageNames.pop();
+       this.state.imageNames = imageNames
          if(this.ImageTag) {
-          this.ImageTag.src = this.nodeserverurl+"/img/"+this.props.name+"/images/"+this.state.ImageNames[this.state.index];
+          this.ImageTag.src = this.nodeServerUrl+"/img/"+this.props.name+"/images/"+this.state.imageNames[this.state.index];
        }
     })
     .catch(err => { // then print response status
@@ -192,14 +193,14 @@ Apifuncgetimages = (userName) => {
     })
   }
 
-downloadfiles = () =>{
-    axios.post(this.nodeserverurl+"/downloadfiles/",{
-      username : this.props.name
+downloadFiles = () =>{
+    axios.post(this.nodeServerUrl+"/downloadfiles/",{
+      userName : this.props.name
     })
       .then(res => { // then print response status
         console.log(res)
         // after creating the zip file, now download
-        window.open(this.nodeserverurl+'/img/'+this.props.name+'.zip', '_blank');
+        window.open(this.nodeServerUrl+'/img/'+this.props.name+'.zip', '_blank');
 
       })
       .catch(err => {
@@ -208,37 +209,37 @@ downloadfiles = () =>{
       })
 }
 
-wait = (ms) =>{
+Wait = (ms) =>{
 var d = new Date();
 var d2 = null;
 do { d2 = new Date(); }
 while(d2-d < ms);
 }
 
-downloadallfiles = () =>{
-  axios.post(this.nodeserverurl+"/downloadallfiles/",{
-    username : this.props.name
+downloadAllFiles = () =>{
+  axios.post(this.nodeServerUrl+"/downloadallfiles/",{
+    userName : this.props.name
   })
     .then(res => { // then print response status
       //toast.success('upload success')
       console.log(res)
       // after creating the zip file, now download, delay for zip file creation
-      this.wait(5000);
-      this.testall();
+      this.Wait(5000);
+      this.openZipLink();
     })
     .catch(err => {
     // then print response status
     console.log(err)
-    })
+  })
 }
 
-testall = () =>{
-  window.open(this.nodeserverurl+'/img/all_'+this.props.name+'.zip');
+openZipLink = () =>{
+  window.open(this.nodeServerUrl+'/img/all_'+this.props.name+'.zip');
 }
 
 componentDidMount(){
-    // Call GO API to get all the image names of username
-    this.Apifuncgetimages(this.props.name)
+    // Call GO API to get all the image names of userName
+    this.apiFuncGetImages(this.props.name)
     // setting environment variables
     this.flag = false;
     this.startX = 0;
@@ -259,16 +260,41 @@ render() {
         </div>
         <div className = "columnRight">
         <p>Right Side</p>
-          <button type="button" class="buttonclass" onClick={this.NextImage}>NEXT</button>
-          <button type="button" class="buttonclass" onClick={this.PrevImage}>PREVIOUS</button>
-          <button className="buttonclass" onClick={this.onButton}>ON</button>
-          <button className="buttonclass" onClick={this.offButton}>OFF</button>
-          <button className="buttonclass" onClick={this.saveastextfile}>SAVE</button>
-          <button className="buttonclass" onClick={this.getmloutput}>CHECK TEXTBOX++ ML OUTPUT</button>
-          <button className="buttonclass" onClick={this.getyolomloutput}>CHECK YOLO ML OUTPUT</button>
+        <Button className="StartButton" block bsSize="large" onClick={this.NextImage} type="button">
+         NEXT
+       </Button>
 
-          <button className="buttonclass" onClick={this.downloadfiles}>DOWNLOAD DATA</button>
-          <button className="buttonclass" onClick={this.downloadallfiles}>DOWNLOAD ALL-Please disable adblock for download</button>
+       <Button className="StartButton" block bsSize="large" onClick={this.PrevImage} type="button">
+         PREVIOUS
+       </Button>
+
+       <Button className="StartButton" block bsSize="large" onClick={this.onButton} type="button">
+         ON
+       </Button>
+
+       <Button className="StartButton" block bsSize="large" onClick={this.offButton} type="button">
+         OFF
+       </Button>
+
+       <Button className="StartButton" block bsSize="large" onClick={this.saveAsTextFile} type="button">
+         SAVE
+       </Button>
+
+       <Button className="StartButton" block bsSize="large" onClick={this.getMlOutPut} type="button">
+         CHECK TEXTBOX++ OUTPUT
+       </Button>
+
+       <Button className="StartButton" block bsSize="large" onClick={this.getYoloMlOutPut} type="button">
+         CHECK YOLO OUTPUT
+       </Button>
+
+       <Button className="StartButton" block bsSize="large" onClick={this.downloadFiles} type="button">
+         DOWNLOAD ANNOTATIONS
+       </Button>
+
+       <Button className="StartButton" block bsSize="large" onClick={this.downloadAllFiles} type="button">
+         DOWNLOAD ALL-Please disable adblock for download
+       </Button>
         </div>
         <p hidden ref = {c =>this.outputdiv = c}>
         </p>
@@ -277,4 +303,4 @@ render() {
   }
 }
 
-export default workingArea;
+export default WorkingArea;

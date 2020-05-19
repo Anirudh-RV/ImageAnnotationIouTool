@@ -2,7 +2,6 @@ import React,{ useState}  from 'react';
 import { NavLink, Switch, Route } from 'react-router-dom';
 import '../cssComponents/App.css';
 import styles from '../cssComponents/myStyle.module.css'
-import navstyle from '../cssComponents/navBarCss.css'
 import ReactDOM, {render} from 'react-dom';
 import PropTypes from 'prop-types';
 import {Navbar, Nav, NavItem, NavDropdown,Form,FormControl,Button} from 'react-bootstrap';
@@ -125,15 +124,15 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 
    return (
      <nav>
-       <ul className={styles.NaviText}>
-        <li className={styles.LogoElement}>
-        <button id="btnFile" className={styles.btnclass}>Annotation Tool</button>
+       <ul className={styles.naviText}>
+        <li className={styles.logoElement}>
+        <button id="btnFile" className={styles.btnClass}>Annotation Tool</button>
         </li>
 
-       <li className={styles.Navielements} onClick={toggle1open} onMouseLeave = {toggle1close}>
-       <button id="btnFile" className={styles.btnclass}>Product</button>
-       <Collapse className={styles.collapse} isOpen={isOpen1}>
-       <ul className={styles.DropdownNavi}>
+       <li className={styles.naviElements} onClick={toggle1open} onMouseLeave = {toggle1close}>
+       <button id="btnFile" className={styles.btnClass}>Product</button>
+       <Collapse className={styles.Collapse} isOpen={isOpen1}>
+       <ul className={styles.dropDownNavi}>
          <li><NavLink class="navlink" exact activeClassName="current" to='/'>Home1</NavLink></li>
          <li><NavLink class="navlink" exact activeClassName="current" to='/about'>About1</NavLink></li>
          <li><NavLink class="navlink" exact activeClassName="current" to='/contact'>Contact1</NavLink></li>
@@ -141,10 +140,10 @@ import 'bootstrap/dist/css/bootstrap.min.css';
        </Collapse>
        </li>
 
-       <li className={styles.Navielements} onClick={toggle2open} onMouseLeave = {toggle2close}>
-       <button className={styles.btnclass}>Pricing</button>
-       <Collapse className={styles.collapse} isOpen={isOpen2}>
-       <ul className={styles.DropdownNavi}>
+       <li className={styles.naviElements} onClick={toggle2open} onMouseLeave = {toggle2close}>
+       <button className={styles.btnClass}>Pricing</button>
+       <Collapse className={styles.Collapse} isOpen={isOpen2}>
+       <ul className={styles.dropDownNavi}>
          <li><NavLink class="navlink" exact activeClassName="current" to='/'>Home2</NavLink></li>
          <li><NavLink class="navlink" exact activeClassName="current" to='/about'>About2</NavLink></li>
          <li><NavLink class="navlink" exact activeClassName="current" to='/contact'>Contact2</NavLink></li>
@@ -152,10 +151,10 @@ import 'bootstrap/dist/css/bootstrap.min.css';
        </Collapse>
        </li>
 
-       <li className={styles.Navielements} onClick={toggle3open} onMouseLeave = {toggle3close}>
-       <button className={styles.btnclass}>Resources</button>
+       <li className={styles.naviElements} onClick={toggle3open} onMouseLeave = {toggle3close}>
+       <button className={styles.btnClass}>Resources</button>
        <Collapse className={styles.collapse} isOpen={isOpen3}>
-       <ul className={styles.DropdownNavi}>
+       <ul className={styles.dropDownNavi}>
          <li><NavLink class="navlink" exact activeClassName="current" to='/'>Home3</NavLink></li>
          <li><NavLink class="navlink" exact activeClassName="current" to='/about'>About3</NavLink></li>
          <li><NavLink class="navlink" exact activeClassName="current" to='/contact'>Contact3</NavLink></li>
@@ -163,17 +162,17 @@ import 'bootstrap/dist/css/bootstrap.min.css';
        </Collapse>
        </li>
 
-         <li className={styles.Navielements} onClick={toggle4open} onMouseLeave = {toggle4close}>
-         <button className={styles.btnclass}>Support</button>
+         <li className={styles.naviElements} onClick={toggle4open} onMouseLeave = {toggle4close}>
+         <button className={styles.btnClass}>Support</button>
          <Collapse className={styles.collapse} isOpen={isOpen4}>
-         <ul className={styles.DropdownNavi}>
+         <ul className={styles.dropDownNavi}>
            <li><NavLink class="navlink" exact activeClassName="current" to='/'>Home4</NavLink></li>
            <li><NavLink class="navlink" exact activeClassName="current" to='/about'>About4</NavLink></li>
            <li><NavLink class="navlink" exact activeClassName="current" to='/Contact'>Contact4</NavLink></li>
         </ul>
          </Collapse>
          </li>
-          <li className={styles.Navielements}>
+          <li className={styles.naviElements}>
             <NavLink class="navlink" exact activeClassName="current" to='/signin'>Login</NavLink>
           </li>
        </ul>
@@ -182,10 +181,10 @@ import 'bootstrap/dist/css/bootstrap.min.css';
    );
  }
 
-const introBar = () => (
+const IntroBar = () => (
   <div>
       <NavigationBarComp />
   </div>
 );
 
-export default introBar;
+export default IntroBar;

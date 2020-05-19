@@ -51,7 +51,7 @@
 4. python3 setup.py build_ext --inplace
 5. pip install .
 
-**To get mongo working :**
+**To setup mongo collections :**
 1. use GoDB
 2. db.createCollection("ImageNames")
 3. db.createCollection("UserData")
@@ -60,7 +60,7 @@
 
 **Feature list**
 1. Upload Video
-2. Uploade photos
+2. Upload photos
 3. Draw boxes
 4. Check IoU
 5. Check ML output image

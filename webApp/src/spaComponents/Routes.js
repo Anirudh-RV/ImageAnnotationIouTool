@@ -4,10 +4,10 @@ import Cookies from 'universal-cookie';
 import { Link } from 'react-router-dom';
 import axios from 'axios';
 import Home from './Home';
-import uploadMultipleFiles from './uploadMultipleFiles';
-import signIn from './signIn';
-import signUp from './signUp';
-import customRouting from './customRouting';
+import UploadMultipleFiles from './uploadMultipleFiles';
+import SignIn from './signIn';
+import SignUp from './signUp';
+import CustomRouting from './customRouting';
 import Error from './Error';
 
 // Routes for the webpages in the project
@@ -15,36 +15,35 @@ import Error from './Error';
 class Routes extends Component {
   render() {
     const cookies = new Cookies()
-    if(cookies.get('username')){
-      console.log(cookies.get('username'))
+    if(cookies.get('userName')){
+      console.log(cookies.get('userName'))
       return (
         <BrowserRouter>
          <div>
            <Switch />
              <Switch>
-             <Route path="/customRouting" component = {customRouting} />
+             <Route path="/customrouting" component = {CustomRouting} />
              <Redirect to={{
-                       pathname: '/customRouting',
-                       state: {usercredentials: cookies.get('username'),checkval : "Yes"}
+                       pathname: '/customrouting',
+                       state: {userCredentials: cookies.get('userName'),checkval : "Yes"}
                        }}
              />
             </Switch>
          </div>
        </BrowserRouter>
       );
-    }else{
+    }
+    else{
       return (
            <BrowserRouter>
             <div>
               <Switch />
                 <Switch>
                  <Route exact path="/" component={Home} />
-                 <Route path="/customRouting" component = {customRouting} />
-                 <Route path="/signUp" component = {signUp} />
-                 <Route path="/signIn" component= {signIn} />
+                 <Route path="/customrouting" component = {CustomRouting} />
+                 <Route path="/signup" component = {SignUp} />
+                 <Route path="/signin" component= {SignIn} />
                  <Route exact path = "/index.html" component = {Home} />
-                 <Route path = "/error" component = {Error} />
-                 <Route exact path = "/error.html" component = {Error} />
                  <Route component={Error} />
                </Switch>
             </div>

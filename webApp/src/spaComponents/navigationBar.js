@@ -12,7 +12,7 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 
 const Navigationclass = () => (
    <nav>
-     <ul className={styles.NaviText}>
+     <ul className={styles.naviText}>
        <li><NavLink exact activeClassName="current" to='/'>Home</NavLink></li>
        <li><NavLink exact activeClassName="current" to='/about'>About</NavLink></li>
        <li><NavLink exact activeClassName="current" to='/contact'>Contact</NavLink></li>
@@ -47,7 +47,7 @@ const Navigationclass = () => (
        // closed already.
      }
    }
-   const [collapse1, setCollapse1] = useState(false);
+   const [Collapse1, setCollapse1] = useState(false);
 
    // 2nd element.
    const [isOpen2, setIsOpen2] = useState(false);
@@ -75,7 +75,7 @@ const Navigationclass = () => (
        // closed already.
      }
    }
-   const [collapse2, setCollapse2] = useState(false);
+   const [Collapse2, setCollapse2] = useState(false);
 
    // 3rd element.
    const [isOpen3, setIsOpen3] = useState(false);
@@ -103,7 +103,7 @@ const Navigationclass = () => (
       // closed already.
     }
 }
-    const [collapse3, setCollapse3] = useState(false);
+    const [Collapse3, setCollapse3] = useState(false);
 
     // 4th element.
     const [isOpen4, setIsOpen4] = useState(false);
@@ -131,15 +131,15 @@ const Navigationclass = () => (
         // closed already.
       }
     }
-   const [collapse4, setCollapse4] = useState(false);
+   const [Collapse4, setCollapse4] = useState(false);
 
    return (
      <nav>
-       <ul className={styles.NaviText}>
-       <li className={styles.Navielements} onClick={toggle1open} onMouseLeave = {toggle1close}>
-       <button id="btnFile" className={styles.btnclass}>FILE</button>
-       <Collapse className={styles.collapse} isOpen={isOpen1}>
-       <ul className={styles.DropdownNavi}>
+       <ul className={styles.naviText}>
+       <li className={styles.naviElements} onClick={toggle1open} onMouseLeave = {toggle1close}>
+       <button id="btnFile" className={styles.btnClass}>FILE</button>
+       <Collapse className={styles.Collapse} isOpen={isOpen1}>
+       <ul className={styles.dropDownNavi}>
          <li><NavLink exact activeClassName="current" to='/'>Home1</NavLink></li>
          <li><NavLink exact activeClassName="current" to='/about'>About1</NavLink></li>
          <li><NavLink exact activeClassName="current" to='/contact'>Contact1</NavLink></li>
@@ -147,10 +147,10 @@ const Navigationclass = () => (
        </Collapse>
        </li>
 
-       <li className={styles.Navielements} onClick={toggle2open} onMouseLeave = {toggle2close}>
-       <button className={styles.btnclass}>EDIT</button>
-       <Collapse className={styles.collapse} isOpen={isOpen2}>
-       <ul className={styles.DropdownNavi}>
+       <li className={styles.naviElements} onClick={toggle2open} onMouseLeave = {toggle2close}>
+       <button className={styles.btnClass}>EDIT</button>
+       <Collapse className={styles.Collapse} isOpen={isOpen2}>
+       <ul className={styles.dropDownNavi}>
          <li><NavLink exact activeClassName="current" to='/'>Home2</NavLink></li>
          <li><NavLink exact activeClassName="current" to='/about'>About2</NavLink></li>
          <li><NavLink exact activeClassName="current" to='/contact'>Contact2</NavLink></li>
@@ -158,10 +158,10 @@ const Navigationclass = () => (
        </Collapse>
        </li>
 
-       <li className={styles.Navielements} onClick={toggle3open} onMouseLeave = {toggle3close}>
-       <button className={styles.btnclass}>VIEW</button>
-       <Collapse className={styles.collapse} isOpen={isOpen3}>
-       <ul className={styles.DropdownNavi}>
+       <li className={styles.naviElements} onClick={toggle3open} onMouseLeave = {toggle3close}>
+       <button className={styles.btnClass}>VIEW</button>
+       <Collapse className={styles.Collapse} isOpen={isOpen3}>
+       <ul className={styles.dropDownNavi}>
          <li><NavLink exact activeClassName="current" to='/'>Home3</NavLink></li>
          <li><NavLink exact activeClassName="current" to='/about'>About3</NavLink></li>
          <li><NavLink exact activeClassName="current" to='/contact'>Contact3</NavLink></li>
@@ -169,10 +169,10 @@ const Navigationclass = () => (
        </Collapse>
        </li>
 
-       <li className={styles.Navielements} onClick={toggle4open} onMouseLeave = {toggle4close}>
-       <button className={styles.btnclass}>HELP</button>
-       <Collapse className={styles.collapse} isOpen={isOpen4}>
-       <ul className={styles.DropdownNavi}>
+       <li className={styles.naviElements} onClick={toggle4open} onMouseLeave = {toggle4close}>
+       <button className={styles.btnClass}>HELP</button>
+       <Collapse className={styles.Collapse} isOpen={isOpen4}>
+       <ul className={styles.dropDownNavi}>
           <li><NavLink exact activeClassName="current" to='/'>Home4</NavLink></li>
           <li><NavLink exact activeClassName="current" to='/about'>About4</NavLink></li>
           <li><NavLink exact activeClassName="current" to='/contact'>Contact4</NavLink></li>
@@ -184,10 +184,10 @@ const Navigationclass = () => (
    );
  }
 
-const navigationBar = () => (
+const NavigationBar = () => (
   <div>
     <NavigationBarComp />
   </div>
 );
 
-export default navigationBar;
+export default NavigationBar;

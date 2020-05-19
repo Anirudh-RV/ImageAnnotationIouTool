@@ -8,24 +8,24 @@ import { Link } from 'react-router-dom';
 import axios from 'axios';
 import Cookies from 'universal-cookie';
 
-class signIn extends Component {
+class SignIn extends Component {
 //TODO : ADD Footer information
 handleSubmit = () =>{
   this.nodeServerUrl = "http://localhost:4000"
   this.goApiUrl = "http://localhost:8080"
   this.pythonBackEndUrl = "http://localhost:8000"
-  var data = this.usercredentials.value+","+this.Password.value
+  var data = this.userCredentials.value+","+this.Password.value
 
-  axios.post(this.goapiurl+"/authorizeuser",data)
+  axios.post(this.goApiUrl+"/authorizeuser",data)
     .then(res => { // then print response status
       if(res.data["message"] == "No"){
         this.Error.innerHTML = "UserName or Password incorrect."
       }else{
         const cookies = new Cookies()
-        cookies.set('username',this.usercredentials.value, { path: '/' })
+        cookies.set('userName',this.userCredentials.value, { path: '/' })
         this.props.history.push({
-          pathname: '/customrouting',
-          state: {usercredentials: this.usercredentials.value, checkval : res.data["message"]}
+          pathname: '/customRouting',
+          state: {userCredentials: this.userCredentials.value, checkval : res.data["message"]}
         })
       }
     })
@@ -37,17 +37,17 @@ handleSubmit = () =>{
 
   render() {
     return (
-      <div className = "BackgroundSign">
-      <h1 className = "AppName" >Annotation Tool</h1>
+      <div>
+      <h1 className = "appName" >Annotation Tool</h1>
       <div className="signIn">
         <form onSubmit={this.handleSubmit}>
         <p class = "signInHead">Streamlining Manual Annotations</p>
-        <p class = "SignUpHead">Sign In for some usage for the customer.</p>
+        <p class = "signUpHead">Sign In for some usage for the customer.</p>
           <FormGroup controlId="email" bsSize="large">
             <FormControl
               autoFocus
               placeholder="Username, or email"
-              ref = {c => this.usercredentials = c}
+              ref = {c => this.userCredentials = c}
             />
           </FormGroup>
           <FormGroup controlId="password" bsSize="large">
@@ -61,16 +61,16 @@ handleSubmit = () =>{
             Log In
           </Button>
           <br/>
-          <p className = "ErrorMessage" ref = {c => this.Error = c}></p>
+          <p className = "errorMessage" ref = {c => this.Error = c}></p>
         </form>
       </div>
-      <div className="SecondBoxsignIn">
-        <p className = "LinkToAccount"> Don't have an account?&nbsp;
-          <Link className="LinkToSignUp" to = './signup'>Sign up</Link>
+      <div className="signIn">
+        <p className = "linkToAccount"> Don't have an account?&nbsp;
+          <Link className="linkToSignUp" to = './signup'>Sign up</Link>
         </p>
       </div>
       </div>
     );
   }
 }
-export default signIn;
+export default SignIn;

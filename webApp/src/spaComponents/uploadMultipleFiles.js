@@ -1,11 +1,13 @@
 import React, { Component } from 'react';
 import axios from 'axios';
+import '../cssComponents/App.css';
 import {Progress} from 'reactstrap';
 import { BrowserRouter, Route, Switch, Redirect } from 'react-router-dom';
 import Cookies from 'universal-cookie';
 import Home from './Home';
+import Button from 'react-bootstrap/Button';
 
-class uploadMultipleFiles extends Component {
+class UploadMultipleFiles extends Component {
   constructor(props) {
     super(props);
       this.state = {
@@ -15,11 +17,15 @@ class uploadMultipleFiles extends Component {
       this.nodeServerUrl = "http://localhost:4000"
       this.goApiUrl = "http://localhost:8080"
       this.pythonBackEndUrl = "http://localhost:8000"
-  }
+}
 
-Logout = () =>{
+componentDidMount(){
+this.heading.innerHTML = this.props.location.state.userName+"</br>Annotate Images";
+}
+
+logOut = () =>{
     const cookies = new Cookies()
-    cookies.remove('username');
+    cookies.remove('userName');
     window.location.reload(false);
 }
 
@@ -43,7 +49,8 @@ checkMimeType=(event)=>{
         event.target.value = null
     }
    return true;
-  }
+}
+
 maxSelectFile=(event)=>{
     let files = event.target.files
         if (files.length > 101) {
@@ -71,26 +78,25 @@ return true;
 
 // using Api, add names of the images being uploaded to a database
 addToBackendUsingApi = (files) =>{
-
       var userName = this.props.location.state.userName;
-
       var fileNames = userName+",";
+
       for(var x =0; x<files.length-1;x++)
       {
         fileNames = fileNames +files[x].name+ ",";
       }
       fileNames = fileNames + files[files.length-1].name;
       // api call
-      axios.post(this.goapiurl+"/insertimagedata",fileNames)
+      axios.post(this.goApiUrl+"/insertimagedata",fileNames)
         .then(res => { // then print response status
           console.log(res)
-        })
-        .catch(err => { // then print response status
+      })
+      .catch(err => { // then print response status
         console.log(err)
-        })
+    })
 }
 
-// &&    this.checkFileSize(event) taken out for unlimited uploads
+// && this.checkFileSize(event) taken out for unlimited uploads
 onChangeHandler=event=>{
   var files = event.target.files
   if(this.maxSelectFile(event) && this.checkMimeType(event)){
@@ -98,43 +104,34 @@ onChangeHandler=event=>{
      this.setState({
      selectedFile: files,
      loaded:0
-  })
-}
+   })
+  }
 }
 
 RedirecToEditPage = () =>{
   var userName = this.props.location.state.userName;
   this.props.history.push({
-    pathname: '/EditPage',
+    pathname: '/editPage',
     state: {userName: this.props.location.state.userName}
-})
-
-}
-
-onClickHandlerVideo = () =>{
-  var userName = this.props.location.state.userName;
-  this.props.history.push({
-    pathname: '/DownloadVideoComponent',
-    state: {userName: this.props.location.state.userName}
-})
+  })
 }
 
 onClickHandler = () => {
     const data = new FormData()
-
-    // getting username from input
+    // getting userName from input
     var userName = this.props.location.state.userName;
-
+    console.log("UserName "+userName)
     // filling FormData with selectedFiles(Array of objects)
     for(var x = 0; x<this.state.selectedFile.length; x++) {
       data.append('file', this.state.selectedFile[x])
     }
-
-    // header carries information of username to backend with data
-    axios.post(this.nodeserverurl+"/upload",data,
+    // header carries information of userName to backend with data
+    axios.post(this.nodeServerUrl+"/upload",data,
     {
     headers: {
-      userName: userName
+      userName: this.props.location.state.userName,
+      userCredentials: userName,
+      type : 'imageUpload'
     },
       onUploadProgress: ProgressEvent => {
         this.setState({
@@ -142,36 +139,42 @@ onClickHandler = () => {
         })
       },
     })
-      .then(res => { // then print response status
+    .then(res => { // then print response status
         this.addToBackendUsingApi(this.state.selectedFile)
         // redirect to WorkingArea.js for viewing images
-      })
-      .catch(err => { // then print response status
+    })
+    .catch(err => { // then print response status
       console.log(err)
-      })
-
-    }
+    })
+}
 
 render() {
     return (
-    <div class="container">
-	     <div class="row">
-          <div class="offset-md-3 col-md-6">
+    <div>
+      <h2 className = "appName" ref = {c => this.heading = c}></h2>
+      <div className="uploadImages">
               <div class="form-group files">
                 <label>Upload Your File </label>
-                <input id="input_upload" type="file" class="form-control" multiple onChange={this.onChangeHandler}/>
+                <input id="inputUploadID" type="file" class="form-control" multiple onChange={this.onChangeHandler}/>
               </div>
               <div class="form-group">
-                <Progress max="100" color="success" value={this.state.loaded} >{Math.round(this.state.loaded,2) }%</Progress>
+                <Progress id="progressBar" max="100" color="success" value={this.state.loaded} >{Math.round(this.state.loaded,2) }%</Progress>
               </div>
-              <button type="button" class="buttonclass" onClick={this.onClickHandler}>Upload</button>
-              <button type="button" class="buttonclass" onClick={this.RedirecToEditPage}>View Images</button>
-              <button type="button" class="buttonclass" onClick={this.Logout}>Log out</button>
+
+              <Button className="StartButton" block bsSize="large" onClick={this.onClickHandler} type="button">
+                Upload
+              </Button>
+
+              <Button className="StartButton" block bsSize="large" onClick={this.RedirecToEditPage} type="button">
+                View Images
+              </Button>
+              <Button className="StartButton" block bsSize="large" onClick={this.logOut} type="button">
+                Log out
+              </Button>
 	      </div>
       </div>
-    </div>
     );
   }
 }
 
-export default uploadMultipleFiles;
+export default UploadMultipleFiles;

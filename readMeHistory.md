@@ -1,5 +1,3 @@
-# Features to Develop
-
 **TODO**
 1. Fix the check IoU outputs (DONE)
 2. Fix the type of data being sent through API, make everything into JSON
@@ -52,7 +50,12 @@ Action: Nothing - Needed for Django
 
 11) /Server - everything looks like it's created to establish directory structure... probably delete it and keep instructions on how the directory structure should be. Keep server.js.
 Action : Kept the public/uploaded folders, all other files and folders created at runtime have been removed
-**DONE**
+
+12) Naming: Changed Varible names to either
+1. Camel Casing - variables in js
+2. Pascal Casing - variables in Go (It is necessary to keep it as Pascal Casing)
+3. Normal lower case - weblinks are all lower case
+
 # README HISTORY
 ########--------------------------------------------------------------------------------------------------
 

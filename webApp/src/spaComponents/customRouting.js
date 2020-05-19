@@ -1,18 +1,16 @@
 import React, { Component } from 'react';
-import '../cssComponents/App.css';
-import styles from '../cssComponents/myStyle.module.css'
 import { BrowserRouter, Switch, Route, Redirect } from "react-router-dom";
 import { connect } from "react-redux";
-import uploadMultipleFiles from './uploadMultipleFiles';
-import editPage from './editPage';
+import UploadMultipleFiles from './uploadMultipleFiles';
+import EditPage from './editPage';
 import Home from './Home';
-import downloadVideoComponent from './downloadVideoComponent';
-import welcomePage from './welcomePage';
+import DownloadVideoComponent from './downloadVideoComponent';
+import WelcomePage from './welcomePage';
 import Error from './Error';
 
 import { useLocation } from 'react-router-dom'
 
-class customRouting extends Component {
+class CustomRouting extends Component {
 //TODO : ADD Footer information
 
   render() {
@@ -25,13 +23,13 @@ class customRouting extends Component {
           <div>
             <Switch />
               <Switch>
-              <Route path="/upload" component={uploadMultipleFiles}/>
-              <Route path="/editPage" component={editPage}/>
-              <Route path="/downloadVideoComponent" component={downloadVideoComponent}/>
-              <Route path="/welcomePage" component={welcomePage}/>
+              <Route path="/upload" component={UploadMultipleFiles}/>
+              <Route path="/editpage" component={EditPage}/>
+              <Route path="/downloadvideocomponent" component={DownloadVideoComponent}/>
+              <Route path="/welcomepage" component={WelcomePage}/>
               <Redirect to={{
-            pathname: '/welcomePage',
-            state: {userName:this.props.location.state.usercredentials}
+            pathname: '/welcomepage',
+            state: {userName:this.props.location.state.userCredentials}
         }}
 />
              </Switch>
@@ -60,4 +58,4 @@ class customRouting extends Component {
     }
   }
 }
-export default customRouting;
+export default CustomRouting;

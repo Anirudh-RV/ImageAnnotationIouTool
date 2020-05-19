@@ -9,7 +9,7 @@ import introBar from './introBar';
 import axios from 'axios';
 import Cookies from 'universal-cookie';
 
-class signUp extends Component {
+class SignUp extends Component {
 //TODO : ADD Footer information
 
 componentDidMount(){
@@ -26,18 +26,18 @@ this.pythonBackEndUrl = "http://localhost:8000"
 //addusertodatabase
 signUpUser = () =>{
     var email = this.emailId.value;
-    var username = this.userName.value;
-    var fullname = this.fullName.value;
-    var password = this.Password.value;
-    var data = email+","+username+","+fullname+","+password
-    axios.post(this.goapiurl+"/addusertodatabase",data)
+    var userName = this.userName.value;
+    var fullName = this.fullName.value;
+    var Password = this.Password.value;
+    var data = email+","+userName+","+fullName+","+Password
+    axios.post(this.goApiUrl+"/addusertodatabase",data)
       .then(res => { // then print response status
         const cookies = new Cookies()
-        cookies.set('username',this.userName.value, { path: '/' })
+        cookies.set('userName',this.userName.value, { path: '/' })
         // redirect to CustomRouting with data
         this.props.history.push({
-          pathname: '/customrouting',
-          state: {usercredentials: username,checkval : res.data["message"]}
+          pathname: '/customRouting',
+          state: {userCredentials: userName,checkval : res.data["message"]}
       })
       })
       .catch(err => { // then print response status
@@ -55,16 +55,16 @@ validateEmail = (email) => {
   return re.test(email);
 }
 
-checkforexistingUsername = (field,value) =>{
+checkForExistingUserName = (field,value) =>{
   var data = field+","+value;
-  axios.post(this.goapiurl+"/validateinfo",data)
+  axios.post(this.goApiUrl+"/validateinfo",data)
     .then(res => { // then print response status
       if(res.data["message"] == "Yes"){
         // existing emailID
-        this.userNameError.innerHTML = "UserName already taken, please try another.";
+        this.userNameError.innerHTML = "userName already taken, please try another.";
       }
       else{
-        // EmailID,UserName,FullName,Password : good
+        // EmailID,userName,fullName,Password : good
         // call signUpUser
         this.signUpUser();
       }
@@ -74,17 +74,17 @@ checkforexistingUsername = (field,value) =>{
     })
 }
 
-checkforexistingEmail = (field,value,username) =>{
+checkForExistingEmail = (field,value,userName) =>{
   var data = field+","+value;
-  axios.post(this.goapiurl+"/validateinfo",data)
+  axios.post(this.goApiUrl+"/validateinfo",data)
     .then(res => { // then print response status
       if(res.data["message"] == "Yes"){
         // existing emailID
         this.emailError.innerHTML = "Already existing email, do you want to login?";
       }
       else{
-        // EmailID is good, check for UserName
-        this.checkforexistingUsername("username",username);
+        // EmailID is good, check for userName
+        this.checkForExistingUserName("userName",userName);
       }
 
     })
@@ -106,19 +106,19 @@ handleEmail = (email,flag) => {
   return flag;
 }
 
-handleuserName = (username,flag) => {
-  if(this.len(username)>=4){
+handleuserName = (userName,flag) => {
+  if(this.len(userName)>=4){
   this.userNameError.innerHTML = "";
   }
   else{
     flag = false;
-    this.userNameError.innerHTML = "Invalid Username";
+    this.userNameError.innerHTML = "Invalid userName";
   }
   return flag;
 }
 
-handlefullName = (fullname,flag) => {
-  if(this.len(fullname)!=0){
+handlefullName = (fullName,flag) => {
+  if(this.len(fullName)!=0){
   this.fullNameError.innerHTML = "";
   }
   else{
@@ -128,8 +128,8 @@ handlefullName = (fullname,flag) => {
   return flag;
 }
 
-handlePassword = (password,flag) => {
-  if(this.len(password)>=6){
+handlePassword = (Password,flag) => {
+  if(this.len(Password)>=6){
   this.PasswordError.innerHTML = "";
   }
   else{
@@ -140,44 +140,42 @@ handlePassword = (password,flag) => {
   return flag;
 }
 
-
 handleSubmit = () =>{
-
   var email = this.emailId.value;
-  var username = this.userName.value;
-  var fullname = this.fullName.value;
-  var password = this.Password.value;
+  var userName = this.userName.value;
+  var fullName = this.fullName.value;
+  var Password = this.Password.value;
   var flag = true;
 
   // validating email
   flag = this.handleEmail(email,flag);
 
-  // validating username
-  flag = this.handleuserName(username,flag);
+  // validating userName
+  flag = this.handleuserName(userName,flag);
 
   // validating fullName
-  flag = this.handlefullName(fullname,flag);
+  flag = this.handlefullName(fullName,flag);
 
-  // validating passWord
-  flag = this.handlePassword(password,flag);
+  // validating Password
+  flag = this.handlePassword(Password,flag);
 
   if(flag){
     // allow to pass through the API
-    this.checkforexistingEmail("email",email,username);
+    this.checkForExistingEmail("email",email,userName);
   }
   else{
     // show error (do nothing)
     console.log("invalid entry");
   }
-
 }
+
 render() {
     return (
       <div className = "BackgroundSign">
-      <h1 className = "AppName" >Annotation Tool</h1>
-      <div className="Login">
+      <h1 className = "appName" >Annotation Tool</h1>
+      <div className="logIn">
         <form>
-        <p class = "SignInHead">Streamlining Manual Annotations</p>
+        <p class = "signInHead">Streamlining Manual Annotations</p>
         <p class = "signUpHead">Sign Up for some usage for the customer.</p>
 
         <FormGroup controlId="email" bsSize="large">
@@ -187,16 +185,16 @@ render() {
             ref = {c => this.emailId = c}
           />
         </FormGroup>
-        <p className = "ErrorMessage" ref = {c => this.emailError = c}></p>
+        <p className = "errorMessage" ref = {c => this.emailError = c}></p>
 
-        <FormGroup controlId="Username" bsSize="large">
+        <FormGroup controlId="userName" bsSize="large">
           <FormControl
             autoFocus
-            placeholder="Username"
+            placeholder="userName"
             ref = {c => this.userName = c}
           />
         </FormGroup>
-        <p className = "ErrorMessage" ref = {c => this.userNameError = c}></p>
+        <p className = "errorMessage" ref = {c => this.userNameError = c}></p>
 
         <FormGroup controlId="Name" bsSize="large">
           <FormControl
@@ -205,16 +203,15 @@ render() {
             ref = {c => this.fullName = c}
           />
         </FormGroup>
-        <p className = "ErrorMessage" ref = {c => this.fullNameError = c}></p>
+        <p className = "errorMessage" ref = {c => this.fullNameError = c}></p>
 
-
-        <FormGroup controlId="password" bsSize="large">
+        <FormGroup controlId="Password" bsSize="large">
           <FormControl
               placeholder="Password"
               ref = {c => this.Password = c}
-              type="password"
+              type="Password"
           />
-          <p className = "ErrorMessage" ref = {c => this.PasswordError = c}></p>
+          <p className = "errorMessage" ref = {c => this.PasswordError = c}></p>
 
         </FormGroup>
           <Button block bsSize="large" onClick={this.handleSubmit} type="button">
@@ -224,9 +221,9 @@ render() {
         </form>
       </div>
 
-      <div className="SecondBox">
-        <p className = "LinkToAccount">  Have an account?&nbsp;
-          <Link className="LinkToSignIn" to = './signin'>Log in</Link>
+      <div className="signUpSecondBox">
+        <p className = "linkToAccount">  Have an account?&nbsp;
+          <Link className="linkToSignIn" to = './signin'>Log in</Link>
         </p>
       </div>
     </div>
@@ -234,4 +231,4 @@ render() {
   }
 }
 
-export default signUp;
+export default SignUp;

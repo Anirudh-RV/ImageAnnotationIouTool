@@ -117,13 +117,13 @@ def get_iou(bb1, bb2):
 def dividetheframes(request):
     decodeddata = request.body.decode('utf-8')
     dictdata = ast.literal_eval(decodeddata)
-    username = dictdata["username"]
+    username = dictdata["userName"]
 
     # Video input
-    vid_name = dictdata["videoname"]
-    vid_url = dictdata["videourl"]
+    vid_name = dictdata["videoName"]
+    vid_url = dictdata["videoUrl"]
     #provide the image type
-    img_type = dictdata["imagetype"]
+    img_type = dictdata["imageType"]
     #provide the random range in secs
     low = int(dictdata["low"])
     high = int(dictdata["high"])
@@ -210,11 +210,12 @@ def dividetheframes(request):
 def yolo(request):
     decodeddata = request.body.decode('utf-8')
     dictdata = ast.literal_eval(decodeddata)
-    username = dictdata["username"]
-    imagename = dictdata["imagename"]
-    imageurl = dictdata["imageurl"]
-    coordinates = dictdata["coordinates"]
+    username = dictdata["userName"]
+    imagename = dictdata["imageName"]
+    imageurl = dictdata["imageUrl"]
+    coordinates = dictdata["Coordinates"]
     imagetype = imagename.split('.')[1]
+    print("ImageUrl: "+imageurl)
     print("ImageType: "+imagetype)
     saveimageindjango = 'assets/mloutput_'+username+"_"+imagename
     print("coordinates : "+coordinates)

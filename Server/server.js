@@ -18,7 +18,6 @@ app.use('/static', express.static(__dirname + '/public'));
 app.use('/videos',express.static(__dirname+ '/public/Downloaded'))
 app.use('/img',express.static(path.join(__dirname, 'public/uploaded')));
 app.use('/file',express.static(path.join(__dirname,'public/file')));
-app.use('/listimages', serveIndex(__dirname + 'public/Database'));
 app.use(
   bodyParser.urlencoded({
     extended: true
@@ -30,11 +29,16 @@ app.use(bodyParser.json())
 // for scaling it to multiple users, send user_id to the backend and save under a new folder with the user_id name.
 var storage = multer.diskStorage({
     destination: function (req, file, cb) {
-      console.log('Request Header'+req.headers['type'])
-      if(req.headers['type'] == 'CompareFaces'){
-        var dir = 'public/Database/';
+      console.log('Request Header'+req.headers['type']);
+      console.log('username: '+req.headers['username']);
+      console.log('headers: ');
+/*
+      for(var key in req.headers) {
+          var value = req.headers[key];
+          console.log("key: "+key+"value: "+value)
       }
-      else if(req.headers['type'] == 'VideoUpload'){
+*/
+      if(req.headers['type'] == 'videoUpload'){
         var fs = require('fs');
         var dir = 'public/uploaded/'+req.headers['username'];
         if (!fs.existsSync(dir)){
@@ -82,33 +86,33 @@ app.post('/saveIoU',function(req,res){
 })
 
 app.post('/saveastextfile',function(req,res){
-    var dir = 'public/uploaded/'+req.body.username+"/output";
+    var dir = 'public/uploaded/'+req.body.userName+"/output";
     var fs = require('fs');
     if (!fs.existsSync(dir)){
         fs.mkdirSync(dir);
     }
-    fs.writeFile(dir+"/output_"+req.body.imagename+".txt",req.body.imagedata, function(err) {
+    fs.writeFile(dir+"/output_"+req.body.imageName+".txt",req.body.imageData, function(err) {
         if(err) {
             return console.log(err);
         }
         console.log("File Saved");
     });
 
-    return res.send(req.body.username)
+    return res.send(req.body.userName)
 })
 
 var folderpath = './public/uploaded';
 
 app.post('/downloadallfiles', function(req, res) {
-  var userfolderpath = folderpath+"/"+req.body.username
-   zipFolder(userfolderpath, folderpath+'/all_'+req.body.username+'.zip', function(err) {
+  var userfolderpath = folderpath+"/"+req.body.userName
+   zipFolder(userfolderpath, folderpath+'/all_'+req.body.userName+'.zip', function(err) {
      if(err) {
          console.log('error: ', err);
      } else {
          console.log('Done');
      }
    });
-   res.download(folderpath + '/all_'+req.body.username+'.zip');
+   res.download(folderpath + '/all_'+req.body.userName+'.zip');
 });
 
 app.post('/downloadfiles', function(req, res) {

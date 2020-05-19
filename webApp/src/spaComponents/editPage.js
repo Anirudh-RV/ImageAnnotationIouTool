@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
 import '../cssComponents/App.css';
-import styles from '../cssComponents/myStyle.module.css'
-import navigationBar from './navigationBar'
-import workingArea from './workingArea'
+import styles from '../cssComponents/myStyle.module.css';
+import NavigationBar from './navigationBar';
+import WorkingArea from './workingArea';
 
 class EditPage extends Component {
 //TODO : ADD Footer information
@@ -10,10 +10,10 @@ class EditPage extends Component {
   render() {
     return (
       <div>
-      <p className="Username" ref = {c => this.UserTag = c}>{this.props.location.state.userName}</p>
+      <p className="userName" ref = {c => this.UserTag = c}>{this.props.location.state.userName}</p>
       <body>
-         <navigationBar/>
-         <workingArea name={this.props.location.state.userName}/>
+         <NavigationBar/>
+         <WorkingArea name={this.props.location.state.userName}/>
       </body>
      </div>
     );
