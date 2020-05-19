@@ -14,3 +14,8 @@ Yolo-9000/
 *.jpeg
 *.jpg
 *.pdf
+*.DS_Store
+CheckIoU/mloutput
+CheckIoU/mlimages
+CheckIoU/Dividedframes
+CheckIoU/images
