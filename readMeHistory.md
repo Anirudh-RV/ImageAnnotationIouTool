@@ -18,23 +18,49 @@
 9. Uploading multiple videos and dividing into frames
 
 **TODO**
-1) Fancy the readme.md file - IDK HOW
-2) remove all .DS_Store files and include it in the .gitignore
-3) I don't think Dockerfiles need to be in the repo - will verify, kept it so that people can deploy easily
-4) the .yml files look empty - what is it for? Removed
-5) /WebApp/src/SPA_components - maybe move all the css files into one folder and all js files into another
-6) /CheckIoU/Dividedframes, /CheckIoU/mlimages - If these folders are automatically created from some functionality within the app, delete it, or include it in the readme.md about creating such directory paths
-7) /CheckIoU/IoU, /CheckIoU/mloutput, /CheckIoU/Iou.txt - looks like the IoU output and could be produced on execution so, delete it, or include it in the readme.md about creating such directory paths
-8) /MLSystem/mlbackend - there is licensed stuff in this... I'll read up on this, but if my guess is right - I don't think you can include the licensed thing like that in your repo, probably include instructions on how they can acquire it and step it up to this in the readme.md. But I'll confirm once
-9) remove _init_ if it is created at compile time
-10) /MLSystem/mlbackend/assets, /MLSystem/mlbackend/models/migrations, /MLSystem/mlbackend/models/templates - looks empty. If it's created at initialisation/compilation delete it and include instruction on setup.
-11) /Server - everything looks like it's created to establish directory structure... probably delete it and keep instructions on how the directory structure should be. Keep server.js.
+1) Fancy the readme.md file
+Action: IDK HOW
 
+2) remove all .DS_Store files and include it in the .gitignore
+Action: Removed
+
+3) I don't think Dockerfiles need to be in the repo - will verify
+Action: kept it so that people can deploy easily
+
+4) the .yml files look empty - what is it for?
+Action: Removed
+
+5) /WebApp/src/SPA_components - maybe move all the css files into one folder and all js files into another
+Action: Moved all the js and css files to separate folders
+
+6) /CheckIoU/Dividedframes, /CheckIoU/mlimages - If these folders are automatically created from some functionality within the app, delete it, or include it in the readme.md about creating such directory paths
+Action: No change - They are needed, not created. All the created stuff has been removed
+
+7) /CheckIoU/IoU, /CheckIoU/mloutput, /CheckIoU/Iou.txt - looks like the IoU output and could be produced on execution so, delete it, or include it in the readme.md about creating such directory paths
+Action: Removed it, only .py files are there
+
+8) /MLSystem/mlbackend - there is licensed stuff in this... I'll read up on this, but if my guess is right - I don't think you can include the licensed thing like that in your repo, probably include instructions on how they can acquire it and step it up to this in the readme.md. But I'll confirm once
+Action: I have ML algorithms here which I have to changed to fit my functions, idk let me know
+the project needs those to function.
+
+9) remove _init_ if it is created at compile time
+Action: Nothing - It is needed to compile when migrations are initiated during runtime. Do not want to change
+stuff with Django
+
+10) /MLSystem/mlbackend/assets, /MLSystem/mlbackend/models/migrations, /MLSystem/mlbackend/models/templates - looks empty. If it's created at initialisation/compilation delete it and include instruction on setup.
+Action: Nothing - Needed for Django
+
+11) /Server - everything looks like it's created to establish directory structure... probably delete it and keep instructions on how the directory structure should be. Keep server.js.
+Action : Kept the public/uploaded folders, all other files and folders created at runtime have been removed
 **DONE**
 # README HISTORY
 ########--------------------------------------------------------------------------------------------------
 
 General guide : To Kill Ports : lsof -P | grep ':8000' | awk '{print $2}' | xargs kill -9
+
+To remove cache:
+git rm -r --cached .
+git add .
 
 Reactjs :
 
