@@ -1,14 +1,14 @@
 import React, { Component } from 'react';
 import logo from './logo.svg';
-import './App.css';
-import IntroBar from './IntroBar'
+import '../cssComponents/App.css';
+import introBar from './introBar'
 
 class Home extends Component {
 //TODO : ADD INTRODUCTION TO PROJECT
   render() {
     return (
       <div className="App">
-      <IntroBar/>
+      <introBar/>
       <h1>Annotation Tool</h1>
       </div>
     );

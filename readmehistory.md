@@ -18,10 +18,10 @@
 9. Uploading multiple videos and dividing into frames
 
 **TODO**
-1) Fancy the readme.md file
+1) Fancy the readme.md file - IDK HOW
 2) remove all .DS_Store files and include it in the .gitignore
-3) I don't think Dockerfiles need to be in the repo - will verify
-4) the .yml files look empty - what is it for?
+3) I don't think Dockerfiles need to be in the repo - will verify, kept it so that people can deploy easily
+4) the .yml files look empty - what is it for? Removed
 5) /WebApp/src/SPA_components - maybe move all the css files into one folder and all js files into another
 6) /CheckIoU/Dividedframes, /CheckIoU/mlimages - If these folders are automatically created from some functionality within the app, delete it, or include it in the readme.md about creating such directory paths
 7) /CheckIoU/IoU, /CheckIoU/mloutput, /CheckIoU/Iou.txt - looks like the IoU output and could be produced on execution so, delete it, or include it in the readme.md about creating such directory paths

@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import './App.css';
+import '../cssComponents/App.css';
 import Form from 'react-bootstrap/Form'
 import Button from 'react-bootstrap/Button'
 import Bootstrap from "react-bootstrap";
@@ -8,13 +8,14 @@ import { Link } from 'react-router-dom';
 import axios from 'axios';
 import Cookies from 'universal-cookie';
 
-class Signin extends Component {
+class signIn extends Component {
 //TODO : ADD Footer information
 handleSubmit = () =>{
-  this.nodeserverurl = "http://localhost:4000"
-  this.goapiurl = "http://localhost:8080"
-  this.pythonbackendurl = "http://localhost:8000"
+  this.nodeServerUrl = "http://localhost:4000"
+  this.goApiUrl = "http://localhost:8080"
+  this.pythonBackEndUrl = "http://localhost:8000"
   var data = this.usercredentials.value+","+this.Password.value
+
   axios.post(this.goapiurl+"/authorizeuser",data)
     .then(res => { // then print response status
       if(res.data["message"] == "No"){
@@ -38,9 +39,9 @@ handleSubmit = () =>{
     return (
       <div className = "BackgroundSign">
       <h1 className = "AppName" >Annotation Tool</h1>
-      <div className="SignIn">
+      <div className="signIn">
         <form onSubmit={this.handleSubmit}>
-        <p class = "SignInHead">Streamlining Manual Annotations</p>
+        <p class = "signInHead">Streamlining Manual Annotations</p>
         <p class = "SignUpHead">Sign In for some usage for the customer.</p>
           <FormGroup controlId="email" bsSize="large">
             <FormControl
@@ -63,7 +64,7 @@ handleSubmit = () =>{
           <p className = "ErrorMessage" ref = {c => this.Error = c}></p>
         </form>
       </div>
-      <div className="SecondBoxSignIn">
+      <div className="SecondBoxsignIn">
         <p className = "LinkToAccount"> Don't have an account?&nbsp;
           <Link className="LinkToSignUp" to = './signup'>Sign up</Link>
         </p>
@@ -72,4 +73,4 @@ handleSubmit = () =>{
     );
   }
 }
-export default Signin;
+export default signIn;

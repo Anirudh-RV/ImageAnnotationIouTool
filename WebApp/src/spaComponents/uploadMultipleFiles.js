@@ -5,16 +5,16 @@ import { BrowserRouter, Route, Switch, Redirect } from 'react-router-dom';
 import Cookies from 'universal-cookie';
 import Home from './Home';
 
-class UploadMultipleFiles extends Component {
+class uploadMultipleFiles extends Component {
   constructor(props) {
     super(props);
       this.state = {
         selectedFile: null,
         loaded:0
       }
-      this.nodeserverurl = "http://localhost:4000"
-      this.goapiurl = "http://localhost:8080"
-      this.pythonbackendurl = "http://localhost:8000"
+      this.nodeServerUrl = "http://localhost:4000"
+      this.goApiUrl = "http://localhost:8080"
+      this.pythonBackEndUrl = "http://localhost:8000"
   }
 
 Logout = () =>{
@@ -174,4 +174,4 @@ render() {
   }
 }
 
-export default UploadMultipleFiles;
+export default uploadMultipleFiles;

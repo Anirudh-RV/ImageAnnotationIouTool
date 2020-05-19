@@ -1,8 +1,8 @@
 import React,{ useState}  from 'react';
 import { NavLink, Switch, Route } from 'react-router-dom';
-import './App.css';
-import styles from './mystyle.module.css'
-import navstyle from './navbarcss.css'
+import '../cssComponents/App.css';
+import styles from '../cssComponents/myStyle.module.css'
+import navstyle from '../cssComponents/navBarCss.css'
 import ReactDOM, {render} from 'react-dom';
 import PropTypes from 'prop-types';
 import {Navbar, Nav, NavItem, NavDropdown,Form,FormControl,Button} from 'react-bootstrap';
@@ -184,10 +184,10 @@ const Navigationclass = () => (
    );
  }
 
-const NavigationBar = () => (
+const navigationBar = () => (
   <div>
     <NavigationBarComp />
   </div>
 );
 
-export default NavigationBar;
+export default navigationBar;

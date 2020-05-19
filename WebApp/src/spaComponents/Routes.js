@@ -4,10 +4,10 @@ import Cookies from 'universal-cookie';
 import { Link } from 'react-router-dom';
 import axios from 'axios';
 import Home from './Home';
-import UploadMultipleFiles from './UploadMultipleFiles';
-import Signin from './Signin';
-import SignUp from './SignUp';
-import CustomRouting from './CustomRouting';
+import uploadMultipleFiles from './uploadMultipleFiles';
+import signIn from './signIn';
+import signUp from './signUp';
+import customRouting from './customRouting';
 import Error from './Error';
 
 // Routes for the webpages in the project
@@ -22,9 +22,9 @@ class Routes extends Component {
          <div>
            <Switch />
              <Switch>
-             <Route path="/customrouting" component = {CustomRouting} />
+             <Route path="/customRouting" component = {customRouting} />
              <Redirect to={{
-                       pathname: '/customrouting',
+                       pathname: '/customRouting',
                        state: {usercredentials: cookies.get('username'),checkval : "Yes"}
                        }}
              />
@@ -39,9 +39,9 @@ class Routes extends Component {
               <Switch />
                 <Switch>
                  <Route exact path="/" component={Home} />
-                 <Route path="/customrouting" component = {CustomRouting} />
-                 <Route path="/signup" component = {SignUp} />
-                 <Route path="/signin" component= {Signin} />
+                 <Route path="/customRouting" component = {customRouting} />
+                 <Route path="/signUp" component = {signUp} />
+                 <Route path="/signIn" component= {signIn} />
                  <Route exact path = "/index.html" component = {Home} />
                  <Route path = "/error" component = {Error} />
                  <Route exact path = "/error.html" component = {Error} />

@@ -1,18 +1,18 @@
 import React, { Component } from 'react';
-import './App.css';
-import styles from './mystyle.module.css'
+import '../cssComponents/App.css';
+import styles from '../cssComponents/myStyle.module.css'
 import { BrowserRouter, Switch, Route, Redirect } from "react-router-dom";
 import { connect } from "react-redux";
-import UploadMultipleFiles from './UploadMultipleFiles';
-import EditPage from './EditPage';
+import uploadMultipleFiles from './uploadMultipleFiles';
+import editPage from './editPage';
 import Home from './Home';
-import DownloadVideoComponent from './DownloadVideoComponent';
-import WelcomePage from './WelcomePage';
+import downloadVideoComponent from './downloadVideoComponent';
+import welcomePage from './welcomePage';
 import Error from './Error';
 
 import { useLocation } from 'react-router-dom'
 
-class CustomRouting extends Component {
+class customRouting extends Component {
 //TODO : ADD Footer information
 
   render() {
@@ -25,12 +25,12 @@ class CustomRouting extends Component {
           <div>
             <Switch />
               <Switch>
-              <Route path="/upload" component={UploadMultipleFiles}/>
-              <Route path="/EditPage" component={EditPage}/>
-              <Route path="/DownloadVideoComponent" component={DownloadVideoComponent}/>
-              <Route path="/WelcomePage" component={WelcomePage}/>
+              <Route path="/upload" component={uploadMultipleFiles}/>
+              <Route path="/editPage" component={editPage}/>
+              <Route path="/downloadVideoComponent" component={downloadVideoComponent}/>
+              <Route path="/welcomePage" component={welcomePage}/>
               <Redirect to={{
-            pathname: '/WelcomePage',
+            pathname: '/welcomePage',
             state: {userName:this.props.location.state.usercredentials}
         }}
 />
@@ -60,4 +60,4 @@ class CustomRouting extends Component {
     }
   }
 }
-export default CustomRouting;
+export default customRouting;

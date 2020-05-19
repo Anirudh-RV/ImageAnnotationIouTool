@@ -3,23 +3,23 @@ import axios from 'axios';
 import {Progress} from 'reactstrap';
 import { BrowserRouter, Route, Switch, Redirect } from 'react-router-dom';
 import Cookies from 'universal-cookie';
-import './App.css';
+import '../cssComponents/App.css';
 import Form from 'react-bootstrap/Form'
 import Button from 'react-bootstrap/Button'
 import Bootstrap from "react-bootstrap";
 import {FormGroup, FormControl} from "react-bootstrap";
 import { Link } from 'react-router-dom';
 
-class DownloadVideoComponent extends Component {
+class downloadVideoComponent extends Component {
   constructor(props) {
     super(props);
       this.state = {
         selectedFile: null,
         loaded:0
       }
-      this.nodeserverurl = "http://localhost:4000"
-      this.goapiurl = "http://localhost:8080"
-      this.pythonbackendurl = "http://localhost:8000"
+      this.nodeServerUrl = "http://localhost:4000"
+      this.goApiUrl = "http://localhost:8080"
+      this.pythonBackEndUrl = "http://localhost:8000"
 }
 
 componentDidMount(){
@@ -35,16 +35,16 @@ dividetheframes = (type,name,current,total) =>{
 
   if(type == "VideoUpload"){
     var videoname =  name
-    var videourl = this.nodeserverurl+'/img/'+username+'/videos/'+videoname
+    var videourl = this.nodeServerUrl+'/img/'+username+'/videos/'+videoname
   }
   else if(type == "YouTube")
   {
     var videoname =  this.videoname.value
-    var videourl = this.nodeserverurl+'/videos/'+username+'/downloads/'+videoname+'.mp4'
+    var videourl = this.nodeServerUrl+'/videos/'+username+'/downloads/'+videoname+'.mp4'
   }
   var data = {'username':username,'videoname':videoname,'videourl':videourl,'imagetype':imagetype,'low':low,'high':high}
 
-  axios.post(this.pythonbackendurl+"/dividetheframes/",data)
+  axios.post(this.pythonBackEndUrl+"/dividetheframes/",data)
     .then(res => { // then print response status
       //toast.success('upload success')
       console.log("API message : ")
@@ -138,7 +138,7 @@ onClickHandler = () => {
     }
 
     // header carries information of username to backend with data
-    axios.post(this.nodeserverurl+"/upload",data,
+    axios.post(this.nodeServerUrl+"/upload",data,
     {
     headers: {
       userName: userName,
@@ -173,14 +173,14 @@ wait = (ms) =>{
 gotoeditpage = () =>{
   var userName = this.props.location.state.userName;
   this.props.history.push({
-    pathname: '/EditPage',
+    pathname: '/editPage',
     state: {userName: this.props.location.state.userName}
   })
 }
 
 handleSubmit = () =>{
   this.Message.innerHTML = "The process may take a few minutes..."
-  axios.post(this.nodeserverurl+"/download/",{
+  axios.post(this.nodeServerUrl+"/download/",{
     username : this.props.location.state.userName,
     videoname : this.videoname.value,
     videourl : this.videourl.value,
@@ -256,4 +256,4 @@ render() {
   }
 }
 
-export default DownloadVideoComponent;
+export default downloadVideoComponent;

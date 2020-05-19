@@ -1,15 +1,15 @@
 import React, { Component } from 'react';
-import './App.css';
+import '../cssComponents/App.css';
 import Form from 'react-bootstrap/Form'
 import Button from 'react-bootstrap/Button'
 import Bootstrap from "react-bootstrap";
 import {FormGroup, FormControl} from "react-bootstrap";
 import { Link } from 'react-router-dom';
-import IntroBar from './IntroBar';
+import introBar from './introBar';
 import axios from 'axios';
 import Cookies from 'universal-cookie';
 
-class SignUp extends Component {
+class signUp extends Component {
 //TODO : ADD Footer information
 
 componentDidMount(){
@@ -17,13 +17,14 @@ componentDidMount(){
 this.accountexists = false;
 this.userNameExists = false;
 this.handleEmail.bind(this);
-this.nodeserverurl = "http://localhost:4000"
-this.goapiurl = "http://localhost:8080"
-this.pythonbackendurl = "http://localhost:8000"
+
+this.nodeServerUrl = "http://localhost:4000"
+this.goApiUrl = "http://localhost:8080"
+this.pythonBackEndUrl = "http://localhost:8000"
 }
 
 //addusertodatabase
-signupUser = () =>{
+signUpUser = () =>{
     var email = this.emailId.value;
     var username = this.userName.value;
     var fullname = this.fullName.value;
@@ -64,8 +65,8 @@ checkforexistingUsername = (field,value) =>{
       }
       else{
         // EmailID,UserName,FullName,Password : good
-        // call signupUser
-        this.signupUser();
+        // call signUpUser
+        this.signUpUser();
       }
     })
     .catch(err => { // then print response status
@@ -177,7 +178,7 @@ render() {
       <div className="Login">
         <form>
         <p class = "SignInHead">Streamlining Manual Annotations</p>
-        <p class = "SignUpHead">Sign Up for some usage for the customer.</p>
+        <p class = "signUpHead">Sign Up for some usage for the customer.</p>
 
         <FormGroup controlId="email" bsSize="large">
           <FormControl
@@ -233,4 +234,4 @@ render() {
   }
 }
 
-export default SignUp;
+export default signUp;

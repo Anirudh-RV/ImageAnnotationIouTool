@@ -1,8 +1,8 @@
 import React,{ useState}  from 'react';
 import { NavLink, Switch, Route } from 'react-router-dom';
-import './App.css';
-import styles from './mystyle.module.css'
-import navstyle from './navbarcss.css'
+import '../cssComponents/App.css';
+import styles from '../cssComponents/myStyle.module.css'
+import navstyle from '../cssComponents/navBarCss.css'
 import ReactDOM, {render} from 'react-dom';
 import PropTypes from 'prop-types';
 import {Navbar, Nav, NavItem, NavDropdown,Form,FormControl,Button} from 'react-bootstrap';
@@ -182,10 +182,10 @@ import 'bootstrap/dist/css/bootstrap.min.css';
    );
  }
 
-const IntroBar = () => (
+const introBar = () => (
   <div>
       <NavigationBarComp />
   </div>
 );
 
-export default IntroBar;
+export default introBar;

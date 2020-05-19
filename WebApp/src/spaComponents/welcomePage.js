@@ -3,22 +3,22 @@ import axios from 'axios';
 import {Progress} from 'reactstrap';
 import { BrowserRouter, Route, Switch, Redirect } from 'react-router-dom';
 import Cookies from 'universal-cookie';
-import './App.css';
+import '../cssComponents/App.css';
 import Form from 'react-bootstrap/Form'
 import Button from 'react-bootstrap/Button'
 import Bootstrap from "react-bootstrap";
 import {FormGroup, FormControl} from "react-bootstrap";
 import { Link } from 'react-router-dom';
 
-class WelcomePage extends Component {
+class welcomePage extends Component {
 
 componentDidMount(){
 // OnLoad function
 // if counter exceeds 5, then stop process
 this.heading.innerHTML = this.props.location.state.userName+"</br>Annotation Tool";
-this.nodeserverurl = "http://localhost:4000"
-this.goapiurl = "http://localhost:8080"
-this.pythonbackendurl = "http://localhost:8000"
+this.nodeServerUrl = "http://localhost:4000"
+this.goApiUrl = "http://localhost:8080"
+this.pythonBackEndUrl = "http://localhost:8000"
 }
 
 UploadVideo = () =>{
@@ -79,4 +79,4 @@ render() {
   }
 }
 
-export default WelcomePage;
+export default welcomePage;

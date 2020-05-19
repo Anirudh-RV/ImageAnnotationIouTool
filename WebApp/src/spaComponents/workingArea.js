@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
-import './App.css';
+import '../cssComponents/App.css';
 import axios from 'axios';
 
-class WorkingArea extends Component {
+class workingArea extends Component {
 //TODO : ADD INTRODUCTION TO PROJECT
 
 constructor(){
@@ -10,9 +10,9 @@ constructor(){
   this.state= {
     index:0,
   }
-  this.nodeserverurl = "http://localhost:4000"
-  this.goapiurl = "http://localhost:8080"
-  this.pythonbackendurl = "http://localhost:8000"
+  this.nodeServerUrl = "http://localhost:4000"
+  this.goApiUrl = "http://localhost:8080"
+  this.pythonBackEndUrl = "http://localhost:8000"
 }
 
 onButton = () => {
@@ -277,4 +277,4 @@ render() {
   }
 }
 
-export default WorkingArea;
+export default workingArea;
