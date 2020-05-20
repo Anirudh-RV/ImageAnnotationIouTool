@@ -1,13 +1,12 @@
 package HandleUsers
 
 import (
+    "encoding/json"
     "context"
     "log"
     "net/http"
     "fmt"
-    "strings"
-    "io/ioutil"
-
+  
     // MongoDB drivers
     "go.mongodb.org/mongo-driver/bson"
 )
@@ -22,17 +21,20 @@ func ValidateInfo(w http.ResponseWriter, r *http.Request) {
   w.WriteHeader(http.StatusOK)
 
   // decoding the message and displaying
-  reqBody, err := ioutil.ReadAll(r.Body)
-   if err != nil {
-     log.Fatal(err)
-   }
-  str_name := BytesToString(reqBody)
-  splitData := strings.Split(str_name, ",")
-  field := splitData[0]
-  value := splitData[1]
+  var validate validateData
+  err := json.NewDecoder(r.Body).Decode(&validate)
+     if err != nil {
+         http.Error(w, err.Error(), http.StatusBadRequest)
+         return
+  }
 
-  fmt.Println(field)
-  fmt.Println(value)
+  fmt.Println("validate",validate)
+
+  field := validate.Field
+  value := validate.Value
+
+  fmt.Println("field",field)
+  fmt.Println("value",value)
 
   // setting mongo variables with Collection : UserData
   clientOptions := GetClientOptions()
@@ -41,7 +43,7 @@ func ValidateInfo(w http.ResponseWriter, r *http.Request) {
   fmt.Println("Connected to MongoDB.")
 
   // BSON filter for all documents with a value of name
-  var result User_Data
+  var result UserData
   f := bson.M{""+field: value}
   fmt.Println("Finding documents with filter:", f)
   // Call the DeleteMany() method to delete docs matching filter

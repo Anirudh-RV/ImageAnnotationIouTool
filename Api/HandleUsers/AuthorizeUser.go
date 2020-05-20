@@ -5,9 +5,7 @@ import (
     "log"
     "net/http"
     "fmt"
-    "strings"
-    "io/ioutil"
-
+    "encoding/json"
     // MongoDB drivers
     "go.mongodb.org/mongo-driver/bson"
 )
@@ -22,14 +20,14 @@ func AuthorizeUser(w http.ResponseWriter, r *http.Request) {
   w.WriteHeader(http.StatusOK)
 
   // decoding the message and displaying
-  reqBody, err := ioutil.ReadAll(r.Body)
-   if err != nil {
-     log.Fatal(err)
-   }
-  str_name := BytesToString(reqBody)
-  splitData := strings.Split(str_name, ",")
-  userName := splitData[0]
-  passWord := splitData[1]
+  var validate validateData
+  err := json.NewDecoder(r.Body).Decode(&validate)
+     if err != nil {
+         http.Error(w, err.Error(), http.StatusBadRequest)
+         return
+  }
+  userName := validate.Field
+  passWord := validate.Value
 
   // setting mongo variables with Collection : UserData
   clientOptions := GetClientOptions()
@@ -38,7 +36,7 @@ func AuthorizeUser(w http.ResponseWriter, r *http.Request) {
   fmt.Println("Connected to MongoDB.")
 
   // BSON filter for all documents with a value of name
-  var result User_Data
+  var result UserData
   f := bson.M{"username": userName}
   fmt.Println("Finding documents with filter:", f)
   // Call the DeleteMany() method to delete docs matching filter

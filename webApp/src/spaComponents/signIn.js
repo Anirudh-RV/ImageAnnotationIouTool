@@ -14,9 +14,11 @@ handleSubmit = () =>{
   this.nodeServerUrl = "http://localhost:4000"
   this.goApiUrl = "http://localhost:8080"
   this.pythonBackEndUrl = "http://localhost:8000"
-  var data = this.userCredentials.value+","+this.Password.value
-
-  axios.post(this.goApiUrl+"/authorizeuser",data)
+  
+  axios.post(this.goApiUrl+"/authorizeuser",{
+    'field':this.userCredentials.value,
+    'value':this.Password.value
+  })
     .then(res => { // then print response status
       if(res.data["message"] == "No"){
         this.Error.innerHTML = "UserName or Password incorrect."

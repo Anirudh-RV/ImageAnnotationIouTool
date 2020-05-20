@@ -17,16 +17,21 @@ type SentData struct {
 	data string
 }
 
-type User_Data struct{
+type UserData struct{
   Email string
   UserName string
   FullName string
   Password string
 }
 
-type Image_Names struct {
+type ImageNames struct {
     Name  string
     Img_Name string
+}
+
+type validateData struct {
+  Field string
+	Value string
 }
 
 /*

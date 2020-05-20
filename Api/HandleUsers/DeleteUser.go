@@ -4,12 +4,11 @@ import (
     "log"
     "net/http"
     "fmt"
-    "io/ioutil"
     "context"
+    "encoding/json"
 
     // MongoDB drivers
     "go.mongodb.org/mongo-driver/bson"
-
 )
 
 /*
@@ -22,12 +21,17 @@ func DeleteUser(w http.ResponseWriter, r *http.Request) {
     w.WriteHeader(http.StatusOK)
 
     // decoding the message and displaying
-    reqBody, err := ioutil.ReadAll(r.Body)
-    if err != nil {
-      log.Fatal(err)
+    // decoding the message and displaying
+    var validate validateData
+    err := json.NewDecoder(r.Body).Decode(&validate)
+       if err != nil {
+           http.Error(w, err.Error(), http.StatusBadRequest)
+           return
     }
-    fmt.Printf("%s\n", reqBody)
-    name := BytesToString(reqBody)
+
+    fmt.Println("validate",validate)
+
+    name := validate.Field
 
     // setting mongo variables with Collection : ImageNames
     clientOptions := GetClientOptions()

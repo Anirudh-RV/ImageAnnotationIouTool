@@ -5,8 +5,8 @@ import (
     "log"
     "net/http"
     "fmt"
-    "strings"
-    "io/ioutil"
+    "encoding/json"
+
 )
 
 /*
@@ -19,28 +19,26 @@ func AddUserToDatabase(w http.ResponseWriter, r *http.Request) {
   w.WriteHeader(http.StatusCreated)
 
   // decoding the message and displaying
-  reqBody, err := ioutil.ReadAll(r.Body)
-   if err != nil {
-     log.Fatal(err)
-   }
-  fmt.Printf("%s\n", reqBody)
-
-  // splitting data into user_name and an array of image names
-  data := BytesToString(reqBody)
-  splitData := strings.Split(data, ",")
-
-  Email := splitData[0]
-  UserName := splitData[1]
-  FullName := splitData[2]
-  Password := splitData[3]
+  var userdata UserData
+  err := json.NewDecoder(r.Body).Decode(&userdata)
+     if err != nil {
+         http.Error(w, err.Error(), http.StatusBadRequest)
+         return
+  }
+  
+  Email := userdata.Email
+  UserName := userdata.UserName
+  FullName := userdata.FullName
+  Password := userdata.Password
 
   // setting mongo variables with Collection : UserData
+
   clientOptions := GetClientOptions()
   client := GetClient(clientOptions)
   collection := GetCollection(client,"UserData")
   fmt.Println("Connected to MongoDB.")
 
-  structData := User_Data{Email,UserName,FullName,Password}
+  structData := UserData{Email,UserName,FullName,Password}
   fmt.Println(structData)
   // To insert a single record
   insertResult, err := collection.InsertOne(context.TODO(), structData)
@@ -55,5 +53,6 @@ func AddUserToDatabase(w http.ResponseWriter, r *http.Request) {
       log.Fatal(err)
   }
   fmt.Println("Connection to MongoDB closed.")
+
   w.Write([]byte(`{"message": "Yes"}`))
 }

@@ -13,7 +13,7 @@ import (
   "go.mongodb.org/mongo-driver/mongo/options"
 )
 
-type Image_Names struct {
+type ImageNames struct {
     Name  string
     Img_Name string
 }

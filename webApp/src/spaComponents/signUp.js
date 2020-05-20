@@ -28,9 +28,14 @@ signUpUser = () =>{
     var email = this.emailId.value;
     var userName = this.userName.value;
     var fullName = this.fullName.value;
-    var Password = this.Password.value;
-    var data = email+","+userName+","+fullName+","+Password
-    axios.post(this.goApiUrl+"/addusertodatabase",data)
+    var password = this.password.value;
+    //var data = email+","+userName+","+fullName+","+password
+    axios.post(this.goApiUrl+"/addusertodatabase",{
+      'email':email,
+      'username':userName,
+      'fullname':fullName,
+      'password':password}
+    )
       .then(res => { // then print response status
         const cookies = new Cookies()
         cookies.set('userName',this.userName.value, { path: '/' })
@@ -56,15 +61,19 @@ validateEmail = (email) => {
 }
 
 checkForExistingUserName = (field,value) =>{
-  var data = field+","+value;
-  axios.post(this.goApiUrl+"/validateinfo",data)
+  //var data = field+","+value;
+  var data = {'field':field,'value':value}
+  axios.post(this.goApiUrl+"/validateinfo",{
+    'field':field,
+    'value':value
+  })
     .then(res => { // then print response status
       if(res.data["message"] == "Yes"){
         // existing emailID
         this.userNameError.innerHTML = "userName already taken, please try another.";
       }
       else{
-        // EmailID,userName,fullName,Password : good
+        // EmailID,userName,fullName,password : good
         // call signUpUser
         this.signUpUser();
       }
@@ -75,8 +84,11 @@ checkForExistingUserName = (field,value) =>{
 }
 
 checkForExistingEmail = (field,value,userName) =>{
-  var data = field+","+value;
-  axios.post(this.goApiUrl+"/validateinfo",data)
+  var data = {'field':field,'value':value}
+  axios.post(this.goApiUrl+"/validateinfo",{
+    'field':field,
+    'value':value
+  })
     .then(res => { // then print response status
       if(res.data["message"] == "Yes"){
         // existing emailID
@@ -84,7 +96,7 @@ checkForExistingEmail = (field,value,userName) =>{
       }
       else{
         // EmailID is good, check for userName
-        this.checkForExistingUserName("userName",userName);
+        this.checkForExistingUserName("username",userName);
       }
 
     })
@@ -128,14 +140,14 @@ handlefullName = (fullName,flag) => {
   return flag;
 }
 
-handlePassword = (Password,flag) => {
-  if(this.len(Password)>=6){
-  this.PasswordError.innerHTML = "";
+handlepassword = (password,flag) => {
+  if(this.len(password)>=6){
+  this.passwordError.innerHTML = "";
   }
   else{
     flag = false;
     console.log("fullName Error");
-    this.PasswordError.innerHTML = "Password too weak";
+    this.passwordError.innerHTML = "password too weak";
   }
   return flag;
 }
@@ -144,7 +156,7 @@ handleSubmit = () =>{
   var email = this.emailId.value;
   var userName = this.userName.value;
   var fullName = this.fullName.value;
-  var Password = this.Password.value;
+  var password = this.password.value;
   var flag = true;
 
   // validating email
@@ -156,8 +168,8 @@ handleSubmit = () =>{
   // validating fullName
   flag = this.handlefullName(fullName,flag);
 
-  // validating Password
-  flag = this.handlePassword(Password,flag);
+  // validating password
+  flag = this.handlepassword(password,flag);
 
   if(flag){
     // allow to pass through the API
@@ -205,13 +217,13 @@ render() {
         </FormGroup>
         <p className = "errorMessage" ref = {c => this.fullNameError = c}></p>
 
-        <FormGroup controlId="Password" bsSize="large">
+        <FormGroup controlId="password" bsSize="large">
           <FormControl
-              placeholder="Password"
-              ref = {c => this.Password = c}
-              type="Password"
+              placeholder="password"
+              ref = {c => this.password = c}
+              type="password"
           />
-          <p className = "errorMessage" ref = {c => this.PasswordError = c}></p>
+          <p className = "errorMessage" ref = {c => this.passwordError = c}></p>
 
         </FormGroup>
           <Button block bsSize="large" onClick={this.handleSubmit} type="button">

@@ -19,7 +19,10 @@
 1. Fix the check IoU outputs, now also works in PNG files
 9. Uploading multiple videos and dividing into frames
 6. Make Textbox++ to work
-
+2. Fix the type of data being sent through API, make everything into JSON
+  a. signUp and signIn data is being sent through JSON
+  b. FIX JSON FOR : i)SaveAsTextFile in HandleUsers ii) HandleImages
+  
 **TODO**
 1) Fancy the readme.md file
 Action: IDK HOW
