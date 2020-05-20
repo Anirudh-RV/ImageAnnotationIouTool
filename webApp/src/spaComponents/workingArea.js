@@ -146,7 +146,7 @@ getYoloMlOutPut = () =>{
   var userName = this.props.name
   var imageName = this.state.imageNames[this.state.index]
   var url = this.nodeServerUrl+"/img/"+this.props.name+"/images/"+this.state.imageNames[this.state.index]
-  var mlOutPutUrl = this.nodeServerUrl+"/img/"+this.props.name+"/images/mloutput_"+this.props.name+"_"+imageName
+  var mlOutPutUrl = this.nodeServerUrl+"/img/"+this.props.name+"/images/yoloOutput_"+this.props.name+"_"+imageName
   var data = {'userName':userName,'imageName':imageName,'imageUrl':url,'Coordinates':this.outputdiv.innerHTML}
 
   axios.post(this.pythonBackEndUrl+"/yolo/",data)
@@ -163,10 +163,10 @@ getMlOutPut = () =>{
   var userName = this.props.name
   var imageName = this.state.imageNames[this.state.index]
   var url = this.nodeServerUrl+"/img/"+this.props.name+"/images/"+this.state.imageNames[this.state.index]
-  var mlOutPutUrl = this.nodeServerUrl+"/img/"+this.props.name+"/images/mloutput_"+this.props.name+"_"+imageName
+  var mlOutPutUrl = this.nodeServerUrl+"/img/"+this.props.name+"/images/TextBoxPPOutput_"+this.props.name+"_"+imageName
   var data = {'userName':userName,'imageName':imageName,'imageUrl':url}
 
-  axios.post(this.pythonBackEndUrl+"/index/",data)
+  axios.post(this.pythonBackEndUrl+"/textboxpp/",data)
     .then(res => { // then print response status
       console.log(res)
       window.open(mlOutPutUrl, '_blank');

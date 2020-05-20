@@ -20,7 +20,7 @@ from django.conf.urls import include,url
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    url(r'index/',v.index),
+    url(r'textboxpp/',v.textBoxPP),
     url(r'yolo/',v.yolo),
     url(r'dividetheframes/',v.dividetheframes),
 ]

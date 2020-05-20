@@ -28,7 +28,6 @@ import random
 import requests
 from darkflow.net.build import TFNet
 import tensorflow as tf
-print(tf.__version__)
 import numpy as np
 from timeit import default_timer as timer
 
@@ -112,6 +111,36 @@ def get_iou(bb1, bb2):
     assert iou >= 0.0
     assert iou <= 1.0
     return iou
+
+def iouForImage(top,bottom,coordinates):
+            # Calculate IoU here with top and bottom, compare each drawn image with top and bottom, select the max IoU
+            bb2 = {}
+            bb2['x1'] = top[0]
+            bb2['x2'] = bottom[0]
+            bb2['y1'] = top[1]
+            bb2['y2'] = bottom[1]
+
+            currentIou = 0
+            for boxes in coordinates:
+                boxesarr = boxes.split(" ")
+                top = ast.literal_eval(boxesarr[0])
+                bottom = ast.literal_eval(boxesarr[1])
+                bb1 = {}
+                bb1['x1'] = top[0]
+                bb1['x2'] = bottom[0]
+                bb1['y1'] = top[1]
+                bb1['y2'] = bottom[1]
+                result = get_iou(bb1,bb2)
+                currentIou = max(result,currentIou)
+            return currentIou
+
+def balanceDifference(count,numberOfAnnotation,IoU):
+    if count != numberOfAnnotation:
+        difference = numberOfAnnotation-count
+        if difference > 0:
+            for i in range(0,difference):
+                IoU.append(0)
+    return IoU
 
 @csrf_exempt
 def dividetheframes(request):
@@ -215,36 +244,28 @@ def yolo(request):
     imageurl = dictdata["imageUrl"]
     coordinates = dictdata["Coordinates"]
     imagetype = imagename.split('.')[1]
-    print("ImageUrl: "+imageurl)
-    print("ImageType: "+imagetype)
-    saveimageindjango = 'assets/mloutput_'+username+"_"+imagename
-    print("coordinates : "+coordinates)
+    saveimageindjango = 'assets/yoloOutput_'+username+"_"+imagename
 
     start_time = time.time()
     IoU = []
     coordinates = coordinates.split("\n")
     coordinates.pop(0)
-    numberofannotations = len(coordinates)
+    numberOfAnnotation = len(coordinates)
 
     # img1 will be entry from user
     url = imageurl
     req = urllib.request.urlopen(url)
     arr = np.asarray(bytearray(req.read()), dtype=np.uint8)
     img = cv2.imdecode(arr, -1) # 'Load it as it is'
-
-    print("SHAPE OF IMAGE (BEFORE): "+str(img.shape))
     img_h = img.shape[0]
     img_w = img.shape[1]
     img_d = img.shape[2]
 
     if imagetype == "png" or img_d == 4:
         cv2.imwrite(saveimageindjango, img)
-
-    img = cv2.imread(saveimageindjango)
-    print("SHAPE OF IMAGE (AFTER): "+str(img.shape))
+        img = cv2.imread(saveimageindjango)
 
     imgcv = img
-
     result = tfnet.return_predict(imgcv)
     count = 0
 
@@ -252,65 +273,24 @@ def yolo(request):
         if res["label"] == "whole":
             continue
         elif res["label"] == "person":
-            print("Deteced person")
             count = count + 1
-            color = int(255 * res["confidence"])
             top = (res["topleft"]["x"], res["topleft"]["y"])
             bottom = (res["bottomright"]["x"], res["bottomright"]["y"])
             cv2.rectangle(imgcv, top, bottom, (255,0,0) , 2)
 
-            # Calculate IoU here with top and bottom, compare each drawn image with top and bottom, select the max IoU
-            bb2 = {}
-            bb2['x1'] = top[0]
-            bb2['x2'] = bottom[0]
-            bb2['y1'] = top[1]
-            bb2['y2'] = bottom[1]
+            # CHECK FOR IOU HERE WITH THIS BOX AND PREVIOUS BOXES
+            IoU.append(iouForImage(top,bottom,coordinates))
 
-            currentIou = 0
-            for boxes in coordinates:
-                print("box: "+str(boxes))
-                boxesarr = boxes.split(" ")
-                top = ast.literal_eval(boxesarr[0])
-                bottom = ast.literal_eval(boxesarr[1])
-                bb1 = {}
-                bb1['x1'] = top[0]
-                bb1['x2'] = bottom[0]
-                bb1['y1'] = top[1]
-                bb1['y2'] = bottom[1]
-                result = get_iou(bb1,bb2)
-                currentIou = max(result,currentIou)
 
-            print("IoU: "+str(currentIou))
-            IoU.append(currentIou)
-            crop_img = imgcv[res["topleft"]["y"]:res["bottomright"]["y"],res["topleft"]["x"]:res["bottomright"]["x"]]
-
-            print(res["label"])
-            if len(crop_img) != 0:
-                #print("results/crp_"+res["label"]+"_"+str(count)+str(imgname))
-                pass
-            #cv2.putText(imgcv, res["label"], top, cv2.FONT_HERSHEY_DUPLEX, 1.0, (0,0,255))
-            print(count)
-
-    print("count : "+str(count))
-    print("annotations : "+str(numberofannotations))
-
-    if count != numberofannotations:
-        difference = numberofannotations-count
-        if difference > 0:
-            print("difference: "+str(difference))
-            for i in range(0,difference):
-                IoU.append(0)
-
-    print("IoU : ")
-    print(IoU)
+    IoU = balanceDifference(count,numberOfAnnotation,IoU)
     averageIoU = np.mean(IoU)
     print("Average : "+str(averageIoU))
-
     elapsed_time = time.time() - start_time
-    print("Performace measure : "+str(elapsed_time))
+    print("Performace measure : "+str(elapsed_time)+" seconds")
+
     print("Sending to back end...")
-    saveimageindjango = 'assets/mloutput_'+username+"_"+imagename
     cv2.imwrite(saveimageindjango, imgcv)
+
     files = {'file': open(saveimageindjango, 'rb')}
     headers = {
         'username': username,
@@ -322,35 +302,44 @@ def yolo(request):
         'username': username,
         'data' : str(averageIoU),
     }
-    response = requests.request("POST", 'http://localhost:4000/saveIoU',files=files,headers=headers)
+    response = requests.request("POST", 'http://localhost:4000/saveIoUYolo',files=files,headers=headers)
     print(response)
 
     print("Backend Process Complete")
     context = {"data":"data"}
     return render(request, 'index.html', context)
 
-
 @csrf_exempt
-def index(request):
-    decodeddata = request.body.decode('utf-8')
-    dictdata = ast.literal_eval(decodeddata)
-    username = dictdata["username"]
-    imagename = dictdata["imagename"]
-    imageurl = dictdata["imageurl"]
+def textBoxPP(request):
+    dictdata = {'userName':'user15','imageName':'100.jpg','imageUrl':'http://localhost:4000/img/user15/images/100.jpg','Coordinates':'\n(158,128) (411,181)\n(443,128) (501,169)\n(64,200) (363,243)\n(394,199) (487,239)\n(72,271) (382,312)'}
+
+    #decodeddata = request.body.decode('utf-8')
+    #dictdata = ast.literal_eval(decodeddata)
+    username = dictdata["userName"]
+    imagename = dictdata["imageName"]
+    imageurl = dictdata["imageUrl"]
+    coordinates = dictdata["Coordinates"]
+    imagetype = imagename.split('.')[1]
 
     start_time = time.time()
-    # Final TextBox++ Code : (Works on just image)
+
+    IoU = []
+    coordinates = coordinates.split("\n")
+    coordinates.pop(0)
+    numberOfAnnotation = len(coordinates)
+
     input_size = input_shape[:2]
-    print(input_size)
-    # getting the image
+
     url = imageurl
-    response = requests.get(url)
-    img = Image.open(BytesIO(response.content))
-    img = np.array(img)
+    req = urllib.request.urlopen(url)
+    arr = np.asarray(bytearray(req.read()), dtype=np.uint8)
+    img = cv2.imdecode(arr, -1) # 'Load it as it is'
     img_h = img.shape[0]
     img_w = img.shape[1]
+    img_d = img.shape[2]
+    img = np.array(img)
+
     img1 = np.copy(img)
-    img2 = np.zeros_like(img)
 
     # model to predict
     x = np.array([preprocess(img, input_size)])
@@ -368,52 +357,62 @@ def index(request):
     print("Performace measure : "+str(elapsed_time))
     #Model end
 
-
     start_time = time.time()
     result = prior_util.decode(y[0], confidence_threshold)
-
+    count = 0
     if len(result) > 0:
+        count = count + 1
         bboxs = result[:,0:4]
         quads = result[:,4:12]
         rboxes = result[:,12:17]
         boxes = np.asarray([rbox3_to_polygon(r) for r in rboxes])
+
         xy = boxes
         xy = xy * [img_w, img_h]
         xy = np.round(xy)
         xy = xy.astype(np.int32)
         cv2.polylines(img1, tuple(xy), True, (0,0,255))
-        rboxes = np.array([polygon_to_rbox(b) for b in np.reshape(boxes, (-1,4,2))])
-        bh = rboxes[:,3]
-        rboxes[:,2] += bh * 0.1
-        rboxes[:,3] += bh * 0.2
-        boxes = np.array([rbox_to_polygon(f) for f in rboxes])
-        boxes = np.flip(boxes, axis=1) # TODO: fix order of points, why?
-        boxes = np.reshape(boxes, (-1, 8))
-        boxes_mask_a = np.array([b[2] > b[3] for b in rboxes]) # width > height, in square world
-        boxes_mask_b = np.array([not (np.any(b < 0) or np.any(b > 512)) for b in boxes]) # box inside image
-        boxes_mask = np.logical_and(boxes_mask_a, boxes_mask_b)
-        boxes = boxes[boxes_mask]
-        rboxes = rboxes[boxes_mask]
-        xy = xy[boxes_mask]
+        for values in xy:
+            #cv2.putText(img1,"TL",(values[0][0],values[0][1]),cv2.FONT_HERSHEY_DUPLEX,1.0,(0,255,0))
+            #cv2.putText(img1,"BR",(values[2][0],values[2][1]),cv2.FONT_HERSHEY_DUPLEX,1.0,(0,255,0))
+            top = (values[0][0], values[0][1])
+            bottom = (values[2][0], values[2][1])
+            IoU.append(iouForImage(top,bottom,coordinates))
+
         if len(boxes) == 0:
             boxes = np.empty((0,8))
 
-    # draw
-    saveimageindjango = 'assets/mloutput_'+username+"_"+imagename
+    IoU = balanceDifference(count,numberOfAnnotation,IoU)
+    averageIoU = np.mean(IoU)
+    print("Average : "+str(averageIoU))
+
+    saveimageindjango = 'assets/textBoxPPOutput_'+username+"_"+imagename
     cv2.imwrite(saveimageindjango, img1)
     elapsed_time = time.time() - start_time
     print("Performace measure : "+str(elapsed_time))
     print("Sending to back end...")
+    plt.imshow(img1)
+    plt.show
+
     files = {'file': open(saveimageindjango, 'rb')}
     headers = {
         'username': username,
     }
     response = requests.request("POST", 'http://localhost:4000/upload', files=files, headers=headers)
     print(response)
+
+    headers = {
+        'username': username,
+        'data' : str(averageIoU),
+    }
+    response = requests.request("POST", 'http://localhost:4000/saveIoUTextBoxPP',files=files,headers=headers)
+    print(response)
+
     print("Backend Process Complete")
     context = {"data":"data"}
-    return render(request, 'index.html', context)
 
+    return render(request, 'index.html', context)
+    
 @csrf_exempt
 def runmodel(request):
     context = {"data":"data"}

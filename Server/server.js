@@ -69,8 +69,24 @@ var storage = multer.diskStorage({
 
 var upload = multer({ storage: storage }).array('file')
 
-app.post('/saveIoU',function(req,res){
-    var dir = 'public/uploaded/'+req.headers['username']+"/IoU";
+app.post('/saveIoUYolo',function(req,res){
+    var dir = 'public/uploaded/'+req.headers['username']+"/IoUYolo";
+    var fs = require('fs');
+    if (!fs.existsSync(dir)){
+        fs.mkdirSync(dir);
+    }
+    fs.writeFile(dir+"/IoU.txt",req.headers['data']+"\n",{flag: "a+"}, function(err) {
+        if(err) {
+            return console.log(err);
+        }
+        console.log("File Saved");
+    });
+
+    return res.send(req.body.username)
+})
+
+app.post('/saveIoUTextBoxPP',function(req,res){
+    var dir = 'public/uploaded/'+req.headers['username']+"/IoUTextBoxPP";
     var fs = require('fs');
     if (!fs.existsSync(dir)){
         fs.mkdirSync(dir);
