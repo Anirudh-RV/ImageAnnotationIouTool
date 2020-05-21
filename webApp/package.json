@@ -7,6 +7,7 @@
     "axios": "^0.19.1",
     "bootstrap": "^4.0.0-alpha.6",
     "jquery": "^3.4.1",
+    "json-loader": "^0.5.7",
     "prop-types": "^15.7.2",
     "react": "^16.11.0",
     "react-bootstrap": "^1.0.0-beta.14",

@@ -5,22 +5,23 @@ import Button from 'react-bootstrap/Button'
 import Bootstrap from "react-bootstrap";
 import {FormGroup, FormControl} from "react-bootstrap";
 import { Link } from 'react-router-dom';
-import introBar from './introBar';
 import axios from 'axios';
 import Cookies from 'universal-cookie';
+import IntroBar from './introBar'
 
 class SignUp extends Component {
 //TODO : ADD Footer information
 
 componentDidMount(){
-// OnLoad function
-this.accountexists = false;
-this.userNameExists = false;
-this.handleEmail.bind(this);
+  // OnLoad function
+  this.accountexists = false;
+  this.userNameExists = false;
+  this.handleEmail.bind(this);
 
-this.nodeServerUrl = "http://localhost:4000"
-this.goApiUrl = "http://localhost:8080"
-this.pythonBackEndUrl = "http://localhost:8000"
+  var data = require('../jsonData/urlData.json'); //(with path)
+  this.nodeServerUrl = data.nodeServerUrl
+  this.goApiUrl = data.goApiUrl
+  this.pythonBackEndUrl = data.mlBackEndUrl
 }
 
 //addusertodatabase
@@ -184,11 +185,13 @@ handleSubmit = () =>{
 render() {
     return (
       <div className = "BackgroundSign">
+      <div className="App">
+      <IntroBar/>
       <h1 className = "appName" >Annotation Tool</h1>
       <div className="logIn">
         <form>
         <p class = "signInHead">Streamlining Manual Annotations</p>
-        <p class = "signUpHead">Sign Up for some usage for the customer.</p>
+        <p class = "signUpHead">SignUp For Data Annotationn Solutions.</p>
 
         <FormGroup controlId="email" bsSize="large">
           <FormControl
@@ -235,9 +238,10 @@ render() {
 
       <div className="signUpSecondBox">
         <p className = "linkToAccount">  Have an account?&nbsp;
-          <Link className="linkToSignIn" to = './signin'>Log in</Link>
+          <Link className="linkToSignUp" to = './signin'>Log in</Link>
         </p>
       </div>
+    </div>
     </div>
     );
   }

@@ -3,7 +3,6 @@ import { BrowserRouter, Route, Switch, Redirect } from 'react-router-dom';
 import Cookies from 'universal-cookie';
 import { Link } from 'react-router-dom';
 import axios from 'axios';
-import Home from './Home';
 import UploadMultipleFiles from './uploadMultipleFiles';
 import SignIn from './signIn';
 import SignUp from './signUp';
@@ -39,11 +38,11 @@ class Routes extends Component {
             <div>
               <Switch />
                 <Switch>
-                 <Route exact path="/" component={Home} />
+                 <Route exact path="/" component={SignIn} />
                  <Route path="/customrouting" component = {CustomRouting} />
                  <Route path="/signup" component = {SignUp} />
                  <Route path="/signin" component= {SignIn} />
-                 <Route exact path = "/index.html" component = {Home} />
+                 <Route exact path = "/index.html" component = {SignIn} />
                  <Route component={Error} />
                </Switch>
             </div>

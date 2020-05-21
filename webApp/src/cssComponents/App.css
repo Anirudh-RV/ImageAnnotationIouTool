@@ -373,15 +373,31 @@ html {
 
 }
 
+.signInSecondBox {
+  background-color : #ffffff;
+  left : 30%;
+  position : relative;
+  float : center;
+  align: center;
+  padding: 20px 0;
+  max-width:350px;
+  margin: auto;
+  border-radius: 2px;
+  border: 1px solid #aaaabb;
+  margin-top : 10px;
+  margin-bottom : 0px;
+}
+
 .signIn {
   background-color : #ffffff;
-  left : 20%;
+  left : 30%;
   position : relative;
   float : center;
   align: center;
   padding: 60px 0;
   max-width:350px;
   margin: auto;
+  margin-bottom: 0px;
   border-radius: 2px;
   border: 1px solid #aaaabb;
   margin-top : 5%;
@@ -392,7 +408,7 @@ html {
 
 .logIn {
   background-color : #ffffff;
-  left : 20%;
+  left : 30%;
   position : relative;
   float : center;
   align: center;
@@ -447,7 +463,7 @@ float:left;
 
 .signUpSecondBox {
   background-color : #ffffff;
-  left : 20%;
+  left : 30%;
   position : relative;
   float : center;
   align: center;

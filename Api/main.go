@@ -17,19 +17,19 @@ import (
 func main() {
     r := mux.NewRouter()
 
-    r.HandleFunc("/", RestMethods.Get).Methods(http.MethodGet) //65
-    r.HandleFunc("/", RestMethods.Post).Methods(http.MethodPost) //71
-    r.HandleFunc("/", RestMethods.Put).Methods(http.MethodPut) //77
-    r.HandleFunc("/", RestMethods.Delete).Methods(http.MethodDelete) // 83
-    r.HandleFunc("/", RestMethods.NotFound) // 89
+    r.HandleFunc("/", RestMethods.Get).Methods(http.MethodGet)
+    r.HandleFunc("/", RestMethods.Post).Methods(http.MethodPost)
+    r.HandleFunc("/", RestMethods.Put).Methods(http.MethodPut)
+    r.HandleFunc("/", RestMethods.Delete).Methods(http.MethodDelete)
+    r.HandleFunc("/", RestMethods.NotFound)
 
-    r.HandleFunc("/getimages", HandleImages.GetImages).Methods(http.MethodPost) //97
-    r.HandleFunc("/insertimagedata",HandleImages.AddImagesToDataBase).Methods(http.MethodPost) // 149
+    r.HandleFunc("/getimages", HandleImages.GetImages).Methods(http.MethodPost)
+    r.HandleFunc("/insertimagedata",HandleImages.AddImagesToDataBase).Methods(http.MethodPost)
 
-    r.HandleFunc("/deleteuser",HandleUsers.DeleteUser).Methods(http.MethodPost) // 197
-    r.HandleFunc("/authorizeuser",HandleUsers.AuthorizeUser).Methods(http.MethodPost) // 280
-    r.HandleFunc("/validateinfo",HandleUsers.ValidateInfo).Methods(http.MethodPost) // 331
-    r.HandleFunc("/addusertodatabase",HandleUsers.AddUserToDatabase).Methods(http.MethodPost) // 377
+    r.HandleFunc("/deleteuser",HandleUsers.DeleteUser).Methods(http.MethodPost)
+    r.HandleFunc("/authorizeuser",HandleUsers.AuthorizeUser).Methods(http.MethodPost)
+    r.HandleFunc("/validateinfo",HandleUsers.ValidateInfo).Methods(http.MethodPost)
+    r.HandleFunc("/addusertodatabase",HandleUsers.AddUserToDatabase).Methods(http.MethodPost)
 
     // To Handle CORS (Cross Origin Resource Sharing)
     headers := handlers.AllowedHeaders([]string{"X-Requested-With", "Content-Type", "Authorization"})

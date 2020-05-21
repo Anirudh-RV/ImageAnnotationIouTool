@@ -17,8 +17,10 @@ class DownloadVideoComponent extends Component {
         selectedFile: null,
         loaded:0
       }
-      this.nodeServerUrl = "http://localhost:4000"
-      this.pythonBackEndUrl = "http://localhost:8000"
+      var data = require('../jsonData/urlData.json'); //(with path)
+      this.nodeServerUrl = data.nodeServerUrl
+      this.goApiUrl = data.goApiUrl
+      this.pythonBackEndUrl = data.mlBackEndUrl
 }
 
 componentDidMount(){

@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import '../cssComponents/App.css';
 import axios from 'axios';
-import Button from 'react-bootstrap/Button'
+import Button from 'react-bootstrap/Button';
 
 class WorkingArea extends Component {
 //TODO : ADD INTRODUCTION TO PROJECT
@@ -11,9 +11,10 @@ constructor(){
   this.state= {
     index:0,
   }
-  this.nodeServerUrl = "http://localhost:4000"
-  this.goApiUrl = "http://localhost:8080"
-  this.pythonBackEndUrl = "http://localhost:8000"
+  var data = require('../jsonData/urlData.json'); //(with path)
+  this.nodeServerUrl = data.nodeServerUrl
+  this.goApiUrl = data.goApiUrl
+  this.pythonBackEndUrl = data.mlBackEndUrl
 }
 
 onButton = () => {
@@ -252,7 +253,7 @@ render() {
     return (
       <div>
         <div className = "columnLeft">
-        <p>Left Side</p>
+        <p ref = {c => this.pTag = c} >Left Side</p>
           <div ref = {c => this.divCanvas = c} >
           <img className='name' ref = {c => this.ImageTag = c}/>
           </div>

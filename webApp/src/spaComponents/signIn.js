@@ -7,14 +7,20 @@ import {FormGroup, FormControl} from "react-bootstrap";
 import { Link } from 'react-router-dom';
 import axios from 'axios';
 import Cookies from 'universal-cookie';
+import IntroBar from './introBar'
 
 class SignIn extends Component {
 //TODO : ADD Footer information
+
+componentDidMount(){
+// OnLoad function
+  var data = require('../jsonData/urlData.json'); //(with path)
+  this.nodeServerUrl = data.nodeServerUrl
+  this.goApiUrl = data.goApiUrl
+  this.pythonBackEndUrl = data.mlBackEndUrl
+}
+
 handleSubmit = () =>{
-  this.nodeServerUrl = "http://localhost:4000"
-  this.goApiUrl = "http://localhost:8080"
-  this.pythonBackEndUrl = "http://localhost:8000"
-  
   axios.post(this.goApiUrl+"/authorizeuser",{
     'field':this.userCredentials.value,
     'value':this.Password.value
@@ -40,11 +46,14 @@ handleSubmit = () =>{
   render() {
     return (
       <div>
+      <div className="App">
+      <IntroBar/>
       <h1 className = "appName" >Annotation Tool</h1>
       <div className="signIn">
         <form onSubmit={this.handleSubmit}>
         <p class = "signInHead">Streamlining Manual Annotations</p>
-        <p class = "signUpHead">Sign In for some usage for the customer.</p>
+        <p class = "signUpHead">SignIn For Data Annotationn Solutions.</p>
+
           <FormGroup controlId="email" bsSize="large">
             <FormControl
               autoFocus
@@ -66,10 +75,11 @@ handleSubmit = () =>{
           <p className = "errorMessage" ref = {c => this.Error = c}></p>
         </form>
       </div>
-      <div className="signIn">
+      <div className="signInSecondBox">
         <p className = "linkToAccount"> Don't have an account?&nbsp;
           <Link className="linkToSignUp" to = './signup'>Sign up</Link>
         </p>
+      </div>
       </div>
       </div>
     );

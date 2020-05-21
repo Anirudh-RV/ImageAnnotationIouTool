@@ -165,7 +165,7 @@ def dividetheframes(request):
     print("high : "+str(high))
 
     # for storing all the image names
-    image_names = []
+    imagenames = []
 
     # reading video file
     cap = cv2.VideoCapture(vid_url)
@@ -202,18 +202,18 @@ def dividetheframes(request):
         ret, frame = cap.read()
         frame_count = frame_count + 1
         if frame is not None:
-            image_names.append("output_"+str(vid_name)+"_"+str(position)+"."+img_type)
+            imagenames.append("output_"+str(vid_name)+"_"+str(position)+"."+img_type)
             cv2.imwrite("assets/output_"+str(vid_name)+"_"+str(position)+"."+img_type, frame)
             position = position + 1
 
         print("frame_count : "+str(frame_count))
 
     print("Images derived :")
-    print(image_names)
+    print(imagenames)
     elapsed_time = time.time() - start_time
     print("Performace measure : "+str(elapsed_time))
 
-    for images in image_names:
+    for images in imagenames:
         print("Sending to back end...")
         print("image name : "+images)
         files = {'file': open('assets/'+images, 'rb')}
@@ -223,12 +223,17 @@ def dividetheframes(request):
         response = requests.request("POST", 'http://localhost:4000/upload', files=files, headers=headers)
         print(response)
 
-    sendImageDataToApi = username
-    for images in image_names:
-        sendImageDataToApi = sendImageDataToApi + ","+images
 
-    print("data being sent to Go API: "+sendImageDataToApi)
-    response = requests.request("POST","http://localhost:8080/insertimagedata",data = sendImageDataToApi)
+    fileNames = ""
+    for images in imagenames:
+        if fileNames == "":
+            fileNames = images
+        else:
+            fileNames = fileNames + ","+images
+
+    sendImageDataToApi = {'username':username,'filenames':fileNames}
+    print("data being sent to Go API: "+str(sendImageDataToApi))
+    response = requests.request("POST","http://localhost:8080/insertimagedata",json = {'username':username,'filenames':fileNames})
     print(response)
 
     print("Backend Process Complete")
@@ -412,7 +417,7 @@ def textBoxPP(request):
     context = {"data":"data"}
 
     return render(request, 'index.html', context)
-    
+
 @csrf_exempt
 def runmodel(request):
     context = {"data":"data"}

@@ -4,7 +4,6 @@ import '../cssComponents/App.css';
 import {Progress} from 'reactstrap';
 import { BrowserRouter, Route, Switch, Redirect } from 'react-router-dom';
 import Cookies from 'universal-cookie';
-import Home from './Home';
 import Button from 'react-bootstrap/Button';
 
 class UploadMultipleFiles extends Component {
@@ -14,9 +13,10 @@ class UploadMultipleFiles extends Component {
         selectedFile: null,
         loaded:0
       }
-      this.nodeServerUrl = "http://localhost:4000"
-      this.goApiUrl = "http://localhost:8080"
-      this.pythonBackEndUrl = "http://localhost:8000"
+      var data = require('../jsonData/urlData.json'); //(with path)
+      this.nodeServerUrl = data.nodeServerUrl
+      this.goApiUrl = data.goApiUrl
+      this.pythonBackEndUrl = data.mlBackEndUrl
 }
 
 componentDidMount(){
@@ -169,10 +169,6 @@ render() {
 
               <Button className="StartButton" block bsSize="large" onClick={this.onClickHandler} type="button">
                 Upload
-              </Button>
-
-              <Button className="StartButton" block bsSize="large" onClick={this.addToBackendUsingApi} type="button">
-                CheckUPLOAD
               </Button>
 
               <Button className="StartButton" block bsSize="large" onClick={this.redirecToEditPage} type="button">

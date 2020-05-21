@@ -13,8 +13,15 @@ class WelcomePage extends Component {
 
 componentDidMount(){
 // OnLoad function
-// if counter exceeds 5, then stop process
 this.heading.innerHTML = this.props.location.state.userName+"</br>Annotation Tool";
+}
+
+redirecToEditPage = () =>{
+  var userName = this.props.location.state.userName;
+  this.props.history.push({
+    pathname: '/editPage',
+    state: {userName: this.props.location.state.userName}
+  })
 }
 
 UploadVideo = () =>{
@@ -48,17 +55,17 @@ render() {
         <form>
         <p class = "signInHead">Annotation Tool</p>
         &nbsp;
-          <FormGroup controlId="url" bsSize="large">
           <Button className="StartButton" block bsSize="large" onClick={this.StartAnnotation} type="button">
             Upload Images
           </Button>
-          </FormGroup>
 
-          <FormGroup controlId="url" bsSize="large">
           <Button className="StartButton" block bsSize="large" onClick={this.UploadVideo} type="button">
             Upload Videos
           </Button>
-          </FormGroup>
+
+          <Button className="StartButton" block bsSize="large" onClick={this.redirecToEditPage} type="button">
+            View Images
+          </Button>
 
           <br/>
           <p className = "errorMessage" ref = {c => this.Message = c}></p>
@@ -66,7 +73,7 @@ render() {
       </div>
       <div className="signIn" ref = {c => this.Info = c}>
         <p className = "linkToAccount"> Click here when done &nbsp;
-          <Link className="linkToSignUp" onClick={this.logOut}>logOut</Link>
+          <Link className="linkToSignUp" onClick={this.logOut}>Logout</Link>
         </p>
       </div>
       </div>

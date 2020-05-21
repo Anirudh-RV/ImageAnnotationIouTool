@@ -10,6 +10,7 @@ import { Collapse, CardBody, Card } from 'reactstrap';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
  const NavigationBarComp = () => {
+
    // 1st element.
    const [isOpen1, setIsOpen1] = useState(false);
    const toggle1open = () => {
@@ -122,6 +123,35 @@ import 'bootstrap/dist/css/bootstrap.min.css';
     }
    const [collapse4, setCollapse4] = useState(false);
 
+   // 5th element.
+    const [isOpen5, setIsOpen5] = useState(false);
+    const toggle5open = () => {
+      if(isOpen5 == true)
+      {
+        // opened already, no need to open again.
+        // to close, because it is already open.
+        setIsOpen5(false);
+      }
+      else {
+        // isOpen4 is false.
+        // need to open now.
+        setIsOpen5(true);
+      }
+    }
+    const toggle5close = () => {
+      if(isOpen5 == true)
+      {
+        // opened already, no need to open again.
+        // need to close.
+        setIsOpen5(false);
+      }
+      else { // isOpen4 is false.
+        // closed already.
+      }
+    }
+   const [collapse5, setCollapse5] = useState(false);
+
+
    return (
      <nav>
        <ul className={styles.naviText}>
@@ -172,9 +202,18 @@ import 'bootstrap/dist/css/bootstrap.min.css';
         </ul>
          </Collapse>
          </li>
-          <li className={styles.naviElements}>
-            <NavLink class="navlink" exact activeClassName="current" to='/signin'>Login</NavLink>
-          </li>
+
+         <li className={styles.naviElements} onClick={toggle5open} onMouseLeave = {toggle5close}>
+         <button className={styles.btnClass}>About</button>
+         <Collapse className={styles.collapse} isOpen={isOpen5}>
+         <ul className={styles.dropDownNavi}>
+           <li><NavLink class="navlink" exact activeClassName="current" to='/'>Home5</NavLink></li>
+           <li><NavLink class="navlink" exact activeClassName="current" to='/about'>About5</NavLink></li>
+           <li><NavLink class="navlink" exact activeClassName="current" to='/Contact'>Contact5</NavLink></li>
+        </ul>
+         </Collapse>
+         </li>
+
        </ul>
 
      </nav>

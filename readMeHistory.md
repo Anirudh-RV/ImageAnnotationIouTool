@@ -1,28 +1,28 @@
 **TODO**
 1. Fix the check IoU outputs (DONE)
-2. Fix the type of data being sent through API, make everything into JSON
+2. Fix the type of data being sent through API, make everything into JSON (DONE)
 3. Removing boxes drawn
 4. annotation of each box drawn
 5. IoU check for each particular annotation
 6. Make Textbox++ to work (DONE)
-7. Improve UI
-8. Fix the static links in the ReactJS part. Make the links dynamic by pulling them from API each time.
+7. Improve UI (WORKING)
+8. Fix the static links in the ReactJS part. Make the links dynamic by pulling them from API each time.(DONE)
 9. Uploading multiple videos and dividing into frames (DONE)
 10. Fix LOGOUT
 11. Fix the asynchronous problem in uploading images, dividing videos, downloading youtube video and dividing
-12. Change the flow in the IoU calculation, separate the logic and algorithm
+12. Change the flow in the IoU calculation, separate the logic and algorithm (DONE)
 13. Dynamic Learning
 14. Deploy with AWS
 15. Make checking IoU through Yolo available for all labels
-
+16. Refactor ReactJS code
 **DONE**
 1. Fix the check IoU outputs, now also works in PNG files
 9. Uploading multiple videos and dividing into frames
 6. Make Textbox++ to work
 2. Fix the type of data being sent through API, make everything into JSON
-  a. signUp and signIn data is being sent through JSON
-  b. FIX JSON FOR : i)SaveAsTextFile in HandleUsers ii) HandleImages
-  
+12. Change the flow in the IoU calculation, separate the logic and algorithm
+8. Fix the static links in the ReactJS part. Make the links dynamic by pulling them from API each time.(DONE)
+
 **TODO**
 1) Fancy the readme.md file
 Action: IDK HOW
