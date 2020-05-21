@@ -15,9 +15,22 @@ import (
 
 type ImageNames struct {
     Name  string
-    Img_Name string
+    ImageName string
 }
 
+type ImageData struct {
+    UserName  string
+    FileNames string
+}
+
+type CollectedData struct {
+    Name  string
+    ImageNames []string
+}
+
+type User struct {
+  UserName string
+}
 /*
 
 Write function description here :

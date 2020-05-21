@@ -131,17 +131,6 @@ PrevImage= () => {
   this.outputdiv.innerHTML = "";
 }
 
-testSaveText = () =>{
-  var data = this.state.imageNames[this.state.index]+","+ this.outputdiv.innerHTML
-  axios.post(this.goApiUrl+"/saveAsTextFile",data)
-    .then(res => { // then print response status
-      console.log(res)
-    })
-    .catch(err => { // then print response status
-    console.log(err)
-    })
-}
-
 getYoloMlOutPut = () =>{
   var userName = this.props.name
   var imageName = this.state.imageNames[this.state.index]
@@ -149,8 +138,13 @@ getYoloMlOutPut = () =>{
   var mlOutPutUrl = this.nodeServerUrl+"/img/"+this.props.name+"/images/yoloOutput_"+this.props.name+"_"+imageName
   var data = {'userName':userName,'imageName':imageName,'imageUrl':url,'Coordinates':this.outputdiv.innerHTML}
 
-  axios.post(this.pythonBackEndUrl+"/yolo/",data)
-    .then(res => { // then print response status
+  axios.post(this.pythonBackEndUrl+"/yolo/",{
+    'userName':userName,
+    'imageName':imageName,
+    'imageUrl':url,
+    'Coordinates':this.outputdiv.innerHTML
+  })
+  .then(res => { // then print response status
       console.log(res)
       window.open(mlOutPutUrl, '_blank');
     })
@@ -159,15 +153,18 @@ getYoloMlOutPut = () =>{
     })
 }
 
-getMlOutPut = () =>{
+getTextBoxPPOutPut = () =>{
   var userName = this.props.name
   var imageName = this.state.imageNames[this.state.index]
   var url = this.nodeServerUrl+"/img/"+this.props.name+"/images/"+this.state.imageNames[this.state.index]
   var mlOutPutUrl = this.nodeServerUrl+"/img/"+this.props.name+"/images/TextBoxPPOutput_"+this.props.name+"_"+imageName
-  var data = {'userName':userName,'imageName':imageName,'imageUrl':url}
 
-  axios.post(this.pythonBackEndUrl+"/textboxpp/",data)
-    .then(res => { // then print response status
+  axios.post(this.pythonBackEndUrl+"/textboxpp/", {
+    'userName':userName,
+    'imageName':imageName,
+    'imageUrl':url
+  })
+  .then(res => { // then print response status
       console.log(res)
       window.open(mlOutPutUrl, '_blank');
     })
@@ -178,11 +175,13 @@ getMlOutPut = () =>{
 
 apiFuncGetImages = (userName) => {
   // data is going to be the userName
-  axios.post(this.goApiUrl+"/getimages",userName)
-    .then(res => { // then print response status
+  axios.post(this.goApiUrl+"/getimages",{
+  'username':userName
+  })
+  .then(res => { // then print response status
       console.log(res)
-       var imageNames = res.data["data"].split("</br>");
-       imageNames.pop();
+       var imageNames = res.data.ImageNames
+       console.log(imageNames)
        this.state.imageNames = imageNames
          if(this.ImageTag) {
           this.ImageTag.src = this.nodeServerUrl+"/img/"+this.props.name+"/images/"+this.state.imageNames[this.state.index];
@@ -280,7 +279,7 @@ render() {
          SAVE
        </Button>
 
-       <Button className="StartButton" block bsSize="large" onClick={this.getMlOutPut} type="button">
+       <Button className="StartButton" block bsSize="large" onClick={this.getTextBoxPPOutPut} type="button">
          CHECK TEXTBOX++ OUTPUT
        </Button>
 

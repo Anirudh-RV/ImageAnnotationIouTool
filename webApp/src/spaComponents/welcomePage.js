@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import axios from 'axios';
 import {Progress} from 'reactstrap';
 import { BrowserRouter, Route, Switch, Redirect } from 'react-router-dom';
 import Cookies from 'universal-cookie';
@@ -16,9 +15,6 @@ componentDidMount(){
 // OnLoad function
 // if counter exceeds 5, then stop process
 this.heading.innerHTML = this.props.location.state.userName+"</br>Annotation Tool";
-this.nodeServerUrl = "http://localhost:4000"
-this.goApiUrl = "http://localhost:8080"
-this.pythonBackEndUrl = "http://localhost:8000"
 }
 
 UploadVideo = () =>{

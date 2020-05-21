@@ -6,7 +6,7 @@ import (
     "log"
     "net/http"
     "fmt"
-  
+
     // MongoDB drivers
     "go.mongodb.org/mongo-driver/bson"
 )
@@ -27,14 +27,8 @@ func ValidateInfo(w http.ResponseWriter, r *http.Request) {
          http.Error(w, err.Error(), http.StatusBadRequest)
          return
   }
-
-  fmt.Println("validate",validate)
-
   field := validate.Field
   value := validate.Value
-
-  fmt.Println("field",field)
-  fmt.Println("value",value)
 
   // setting mongo variables with Collection : UserData
   clientOptions := GetClientOptions()

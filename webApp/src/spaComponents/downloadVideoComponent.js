@@ -18,7 +18,6 @@ class DownloadVideoComponent extends Component {
         loaded:0
       }
       this.nodeServerUrl = "http://localhost:4000"
-      this.goApiUrl = "http://localhost:8080"
       this.pythonBackEndUrl = "http://localhost:8000"
 }
 
@@ -42,10 +41,16 @@ divideTheFrames = (type,name,current,total) =>{
     var videoName =  this.videoName.value
     var videoUrl = this.nodeServerUrl+'/videos/'+userName+'/downloads/'+videoName+'.mp4'
   }
-  var data = {'userName':userName,'videoName':videoName,'videoUrl':videoUrl,'imageType':imageType,'low':low,'high':high}
 
-  axios.post(this.pythonBackEndUrl+"/dividetheframes/",data)
-    .then(res => { // then print response status
+  axios.post(this.pythonBackEndUrl+"/dividetheframes/",{
+    'userName':userName,
+    'videoName':videoName,
+    'videoUrl':videoUrl,
+    'imageType':imageType,
+    'low':low,
+    'high':high
+  })
+  .then(res => { // then print response status
       //toast.success('upload success')
       console.log("API message : ")
       console.log(res)

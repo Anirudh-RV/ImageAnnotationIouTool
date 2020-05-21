@@ -28,9 +28,6 @@ func DeleteUser(w http.ResponseWriter, r *http.Request) {
            http.Error(w, err.Error(), http.StatusBadRequest)
            return
     }
-
-    fmt.Println("validate",validate)
-
     name := validate.Field
 
     // setting mongo variables with Collection : ImageNames

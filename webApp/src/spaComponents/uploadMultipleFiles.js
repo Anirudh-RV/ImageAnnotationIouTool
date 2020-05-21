@@ -60,6 +60,7 @@ maxSelectFile=(event)=>{
       }
     return true;
  }
+
 checkFileSize=(event)=>{
   let files = event.target.files
   let size = 2000000
@@ -78,16 +79,21 @@ return true;
 
 // using Api, add names of the images being uploaded to a database
 addToBackendUsingApi = (files) =>{
+      files = this.state.selectedFile
       var userName = this.props.location.state.userName;
-      var fileNames = userName+",";
-
+      var fileNames = "";
+      console.log("Files length: "+files.length)
       for(var x =0; x<files.length-1;x++)
       {
         fileNames = fileNames +files[x].name+ ",";
       }
       fileNames = fileNames + files[files.length-1].name;
+      console.log("Filenames: "+fileNames)
       // api call
-      axios.post(this.goApiUrl+"/insertimagedata",fileNames)
+      axios.post(this.goApiUrl+"/insertimagedata",{
+        'username': userName,
+        'filenames' : fileNames
+      })
         .then(res => { // then print response status
           console.log(res)
       })
@@ -108,7 +114,7 @@ onChangeHandler=event=>{
   }
 }
 
-RedirecToEditPage = () =>{
+redirecToEditPage = () =>{
   var userName = this.props.location.state.userName;
   this.props.history.push({
     pathname: '/editPage',
@@ -165,7 +171,11 @@ render() {
                 Upload
               </Button>
 
-              <Button className="StartButton" block bsSize="large" onClick={this.RedirecToEditPage} type="button">
+              <Button className="StartButton" block bsSize="large" onClick={this.addToBackendUsingApi} type="button">
+                CheckUPLOAD
+              </Button>
+
+              <Button className="StartButton" block bsSize="large" onClick={this.redirecToEditPage} type="button">
                 View Images
               </Button>
               <Button className="StartButton" block bsSize="large" onClick={this.logOut} type="button">

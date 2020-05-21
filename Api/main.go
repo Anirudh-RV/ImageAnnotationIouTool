@@ -27,7 +27,6 @@ func main() {
     r.HandleFunc("/insertimagedata",HandleImages.AddImagesToDataBase).Methods(http.MethodPost) // 149
 
     r.HandleFunc("/deleteuser",HandleUsers.DeleteUser).Methods(http.MethodPost) // 197
-    r.HandleFunc("/saveastextfile",HandleUsers.SaveAsTextFile).Methods(http.MethodPost) // 235
     r.HandleFunc("/authorizeuser",HandleUsers.AuthorizeUser).Methods(http.MethodPost) // 280
     r.HandleFunc("/validateinfo",HandleUsers.ValidateInfo).Methods(http.MethodPost) // 331
     r.HandleFunc("/addusertodatabase",HandleUsers.AddUserToDatabase).Methods(http.MethodPost) // 377

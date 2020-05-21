@@ -6,7 +6,6 @@ import (
     "net/http"
     "fmt"
     "encoding/json"
-
 )
 
 /*
@@ -25,7 +24,6 @@ func AddUserToDatabase(w http.ResponseWriter, r *http.Request) {
          http.Error(w, err.Error(), http.StatusBadRequest)
          return
   }
-  
   Email := userdata.Email
   UserName := userdata.UserName
   FullName := userdata.FullName

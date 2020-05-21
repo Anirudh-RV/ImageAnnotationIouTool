@@ -4,10 +4,8 @@ import (
   "context"
   "log"
   "net/http"
-  "reflect"
-  "io/ioutil"
   "fmt"
-
+  "encoding/json"
   // MongoDB drivers
   "go.mongodb.org/mongo-driver/bson"
 )
@@ -23,14 +21,13 @@ func GetImages(w http.ResponseWriter, r *http.Request) {
   w.WriteHeader(http.StatusOK)
 
   // decoding the message and displaying
-  reqBody, err := ioutil.ReadAll(r.Body)
-   if err != nil {
-     log.Fatal(err)
-   }
-  fmt.Printf("Name to be queried : %s\n", reqBody)
-
-  str_name := BytesToString(reqBody)
-  fmt.Println(reflect.TypeOf(str_name))
+  var user User
+  err := json.NewDecoder(r.Body).Decode(&user)
+     if err != nil {
+         http.Error(w, err.Error(), http.StatusBadRequest)
+         return
+  }
+  userName := user.UserName
 
   // QUERYING MONGODB WITH name and returning the results
   // setting mongo variables with Collection : ImageNames
@@ -38,23 +35,22 @@ func GetImages(w http.ResponseWriter, r *http.Request) {
   client := GetClient(clientOptions)
   collection := GetCollection(client,"ImageNames")
   fmt.Println("Connected to MongoDB.")
-
+  
   // add logic here :
   // bson.M{} is the fiter that is being used
-  filterCursor, err := collection.Find(context.TODO(), bson.M{"name": str_name})
+  filterCursor, err := collection.Find(context.TODO(), bson.M{"name": userName})
   if err != nil {
       log.Fatal(err)
   }
+
   var ImageNamesFiltered []bson.M
   if err = filterCursor.All(context.TODO(), &ImageNamesFiltered); err != nil {
       log.Fatal(err)
   }
-  fmt.Print("Length : ")
-  fmt.Println(len(ImageNamesFiltered))
-  result := ""
+
+  var imageNames []string
   for i := 0;i<len(ImageNamesFiltered);i++{
-    fmt.Println(ImageNamesFiltered[i]["img_name"])
-    result = result + ImageNamesFiltered[i]["img_name"].(string) + "</br>"
+    imageNames = append(imageNames,ImageNamesFiltered[i]["imagename"].(string))
   }
 
   // To close the connection to MongoDB
@@ -62,7 +58,17 @@ func GetImages(w http.ResponseWriter, r *http.Request) {
   if err != nil {
       log.Fatal(err)
   }
+
+  var data CollectedData
+  data.Name = userName
+  data.ImageNames = imageNames
+
+  imageData, err := json.Marshal(data)
+	if err != nil{
+		panic(err)
+	}
+
   fmt.Println("Connection to MongoDB closed.")
   // return result as a json object
-  w.Write([]byte(fmt.Sprintf(`{"data":"%s"}`, result)))
+  w.Write(imageData)
 }

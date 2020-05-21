@@ -24,11 +24,6 @@ type UserData struct{
   Password string
 }
 
-type ImageNames struct {
-    Name  string
-    Img_Name string
-}
-
 type validateData struct {
   Field string
 	Value string

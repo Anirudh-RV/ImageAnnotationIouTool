@@ -5,8 +5,8 @@ import (
   "log"
   "net/http"
   "strings"
-  "io/ioutil"
   "fmt"
+  "encoding/json"
 )
 /*
 
@@ -18,18 +18,15 @@ func AddImagesToDataBase(w http.ResponseWriter, r *http.Request) {
   w.WriteHeader(http.StatusCreated)
 
   // decoding the message and displaying
-  reqBody, err := ioutil.ReadAll(r.Body)
-   if err != nil {
-     log.Fatal(err)
-   }
-  fmt.Printf("%s\n", reqBody)
-
-  // splitting data into user_name and an array of image names
-  data := BytesToString(reqBody)
-  splitData := strings.Split(data, ",")
-  fmt.Println("splitData : ",splitData)
-  userName := splitData[0]
-
+  var imagedata ImageData
+  err := json.NewDecoder(r.Body).Decode(&imagedata)
+     if err != nil {
+         http.Error(w, err.Error(), http.StatusBadRequest)
+         return
+  }
+  userName := imagedata.UserName
+  imagesNames := imagedata.FileNames
+  splitData := strings.Split(imagesNames, ",")
   // Opening connection to database
 
   // setting mongo variables with Collection : ImageNames
@@ -39,9 +36,8 @@ func AddImagesToDataBase(w http.ResponseWriter, r *http.Request) {
   fmt.Println("Connected to MongoDB.")
 
   // loop over each entry and insert into database
-  for i := 1;i<len(splitData);i++{
+  for i := 0;i<len(splitData);i++{
     structData := ImageNames{userName,splitData[i]}
-    fmt.Println(structData)
     // To insert a single record
     insertResult, err := collection.InsertOne(context.TODO(), structData)
     if err != nil {
