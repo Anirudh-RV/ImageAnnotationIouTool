@@ -3,11 +3,10 @@ import { BrowserRouter, Route, Switch, Redirect } from 'react-router-dom';
 import Cookies from 'universal-cookie';
 import { Link } from 'react-router-dom';
 import axios from 'axios';
-import UploadMultipleFiles from './uploadMultipleFiles';
-import SignIn from './signIn';
-import SignUp from './signUp';
-import CustomRouting from './customRouting';
-import Error from './Error';
+import SignIn from '../credentialsComponents/signIn';
+import SignUp from '../credentialsComponents/signUp';
+import CustomRouting from '../routingComponents/customRouting';
+import Error from '../credentialsComponents/Error';
 
 // Routes for the webpages in the project
 
@@ -42,7 +41,8 @@ class Routes extends Component {
                  <Route path="/customrouting" component = {CustomRouting} />
                  <Route path="/signup" component = {SignUp} />
                  <Route path="/signin" component= {SignIn} />
-                 <Route exact path = "/index.html" component = {SignIn} />
+                 <Route path="/welcomepage" component = {SignIn} />
+                 <Route path="/upload" component = {SignIn} />
                  <Route component={Error} />
                </Switch>
             </div>

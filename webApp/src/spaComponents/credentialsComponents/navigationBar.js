@@ -1,8 +1,8 @@
 import React,{ useState}  from 'react';
 import { NavLink, Switch, Route } from 'react-router-dom';
-import '../cssComponents/App.css';
-import styles from '../cssComponents/myStyle.module.css'
-import navstyle from '../cssComponents/navBarCss.css'
+import '../../cssComponents/App.css';
+import styles from '../../cssComponents/myStyle.module.css'
+import navstyle from '../../cssComponents/navBarCss.css'
 import ReactDOM, {render} from 'react-dom';
 import PropTypes from 'prop-types';
 import {Navbar, Nav, NavItem, NavDropdown,Form,FormControl,Button} from 'react-bootstrap';

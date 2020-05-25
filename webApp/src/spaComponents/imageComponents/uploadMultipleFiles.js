@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import axios from 'axios';
-import '../cssComponents/App.css';
+import '../../cssComponents/App.css';
 import {Progress} from 'reactstrap';
 import { BrowserRouter, Route, Switch, Redirect } from 'react-router-dom';
 import Cookies from 'universal-cookie';
@@ -13,7 +13,7 @@ class UploadMultipleFiles extends Component {
         selectedFile: null,
         loaded:0
       }
-      var data = require('../jsonData/urlData.json'); //(with path)
+      var data = require('../../jsonData/urlData.json'); //(with path)
       this.nodeServerUrl = data.nodeServerUrl
       this.goApiUrl = data.goApiUrl
       this.pythonBackEndUrl = data.mlBackEndUrl

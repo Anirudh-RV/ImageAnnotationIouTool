@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
-import '../cssComponents/App.css';
-import styles from '../cssComponents/myStyle.module.css';
-import NavigationBar from './navigationBar';
+import '../../cssComponents/App.css';
+import styles from '../../cssComponents/myStyle.module.css';
+import NavigationBar from '../credentialsComponents/navigationBar';
 import WorkingArea from './workingArea';
 
 class EditPage extends Component {

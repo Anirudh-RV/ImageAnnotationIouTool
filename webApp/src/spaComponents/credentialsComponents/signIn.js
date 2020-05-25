@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import '../cssComponents/App.css';
+import '../../cssComponents/App.css';
 import Form from 'react-bootstrap/Form'
 import Button from 'react-bootstrap/Button'
 import Bootstrap from "react-bootstrap";
@@ -14,7 +14,7 @@ class SignIn extends Component {
 
 componentDidMount(){
 // OnLoad function
-  var data = require('../jsonData/urlData.json'); //(with path)
+  var data = require('../../jsonData/urlData.json'); //(with path)
   this.nodeServerUrl = data.nodeServerUrl
   this.goApiUrl = data.goApiUrl
   this.pythonBackEndUrl = data.mlBackEndUrl

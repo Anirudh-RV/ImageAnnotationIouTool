@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import {Progress} from 'reactstrap';
 import { BrowserRouter, Route, Switch, Redirect } from 'react-router-dom';
 import Cookies from 'universal-cookie';
-import '../cssComponents/App.css';
+import '../../cssComponents/App.css';
 import Form from 'react-bootstrap/Form'
 import Button from 'react-bootstrap/Button'
 import Bootstrap from "react-bootstrap";

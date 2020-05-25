@@ -1,11 +1,11 @@
 import React, { Component } from 'react';
 import { BrowserRouter, Switch, Route, Redirect } from "react-router-dom";
 import { connect } from "react-redux";
-import UploadMultipleFiles from './uploadMultipleFiles';
-import EditPage from './editPage';
-import DownloadVideoComponent from './downloadVideoComponent';
-import WelcomePage from './welcomePage';
-import Error from './Error';
+import UploadMultipleFiles from '../imageComponents/uploadMultipleFiles';
+import EditPage from '../imageComponents/editPage';
+import DownloadVideoComponent from '../videoComponents/downloadVideoComponent';
+import WelcomePage from '../credentialsComponents/welcomePage';
+import Error from '../credentialsComponents/Error';
 
 import { useLocation } from 'react-router-dom'
 

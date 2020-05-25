@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import '../cssComponents/App.css';
+import '../../cssComponents/App.css';
 import axios from 'axios';
 import Button from 'react-bootstrap/Button';
 
@@ -11,7 +11,7 @@ constructor(){
   this.state= {
     index:0,
   }
-  var data = require('../jsonData/urlData.json'); //(with path)
+  var data = require('../../jsonData/urlData.json'); //(with path)
   this.nodeServerUrl = data.nodeServerUrl
   this.goApiUrl = data.goApiUrl
   this.pythonBackEndUrl = data.mlBackEndUrl
