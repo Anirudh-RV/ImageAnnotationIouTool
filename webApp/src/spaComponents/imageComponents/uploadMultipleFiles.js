@@ -82,20 +82,17 @@ addToBackendUsingApi = (files) =>{
       files = this.state.selectedFile
       var userName = this.props.location.state.userName;
       var fileNames = "";
-      console.log("Files length: "+files.length)
       for(var x =0; x<files.length-1;x++)
       {
         fileNames = fileNames +files[x].name+ ",";
       }
       fileNames = fileNames + files[files.length-1].name;
-      console.log("Filenames: "+fileNames)
       // api call
       axios.post(this.goApiUrl+"/insertimagedata",{
         'username': userName,
         'filenames' : fileNames
       })
-        .then(res => { // then print response status
-          console.log(res)
+        .then(res => {
       })
       .catch(err => { // then print response status
         console.log(err)
@@ -126,7 +123,6 @@ onClickHandler = () => {
     const data = new FormData()
     // getting userName from input
     var userName = this.props.location.state.userName;
-    console.log("UserName "+userName)
     // filling FormData with selectedFiles(Array of objects)
     for(var x = 0; x<this.state.selectedFile.length; x++) {
       data.append('file', this.state.selectedFile[x])

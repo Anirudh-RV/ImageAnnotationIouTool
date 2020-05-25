@@ -16,7 +16,6 @@ class CustomRouting extends Component {
     // if logged in, redirect back to edit page or go to signIN
     try{
     if(this.props.location.state.checkval=== "Yes"){
-      console.log("path: "+this.props.location.pathname);
       return (
          <BrowserRouter>
           <div>
@@ -27,7 +26,7 @@ class CustomRouting extends Component {
               <Route path="/downloadvideocomponent" component={DownloadVideoComponent}/>
               <Route path="/welcomepage" component={WelcomePage}/>
               <Redirect to={{
-            pathname: '/welcomepage',
+            pathname: '/editpage',
             state: {userName:this.props.location.state.userCredentials}
         }}
 />
@@ -47,7 +46,6 @@ class CustomRouting extends Component {
     }
   }
   catch(e){
-    console.log("catch")
       return (
          <div>
               <Redirect to="/" />

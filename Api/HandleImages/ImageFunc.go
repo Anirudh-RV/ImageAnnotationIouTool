@@ -5,7 +5,6 @@ import (
   "log"
   "reflect"
   "unsafe"
-  "fmt"
   "net"
 
   // MongoDB drivers
@@ -42,6 +41,7 @@ func GetLocalIP() string {
     if err != nil {
         return ""
     }
+
     for _, address := range addrs {
         // check the address type and if it is not a loopback the display it
         if ipnet, ok := address.(*net.IPNet); ok && !ipnet.IP.IsLoopback() {
@@ -59,8 +59,7 @@ Write function description here :
 
 */
 func GetClientOptions() *options.ClientOptions {
-  ipAddress := GetLocalIP()
-  fmt.Println("Connecting to : "+ipAddress)
+  //ipAddress := GetLocalIP()
   // give the Mongo Atlas API here
   clientOptions := options.Client().ApplyURI("mongodb://localhost:27017")
   return clientOptions

@@ -147,7 +147,7 @@ handlepassword = (password,flag) => {
   }
   else{
     flag = false;
-    console.log("fullName Error");
+    console.log("Error");
     this.passwordError.innerHTML = "password too weak";
   }
   return flag;
@@ -178,7 +178,7 @@ handleSubmit = () =>{
   }
   else{
     // show error (do nothing)
-    console.log("invalid entry");
+    console.log("Error");
   }
 }
 

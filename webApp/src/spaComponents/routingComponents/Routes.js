@@ -14,7 +14,6 @@ class Routes extends Component {
   render() {
     const cookies = new Cookies()
     if(cookies.get('userName')){
-      console.log(cookies.get('userName'))
       return (
         <BrowserRouter>
          <div>

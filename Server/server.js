@@ -29,15 +29,6 @@ app.use(bodyParser.json())
 // for scaling it to multiple users, send user_id to the backend and save under a new folder with the user_id name.
 var storage = multer.diskStorage({
     destination: function (req, file, cb) {
-      console.log('Request Header'+req.headers['type']);
-      console.log('username: '+req.headers['username']);
-      console.log('headers: ');
-/*
-      for(var key in req.headers) {
-          var value = req.headers[key];
-          console.log("key: "+key+"value: "+value)
-      }
-*/
       if(req.headers['type'] == 'videoUpload'){
         var fs = require('fs');
         var dir = 'public/uploaded/'+req.headers['username'];
@@ -79,7 +70,7 @@ app.post('/saveIoUYolo',function(req,res){
         if(err) {
             return console.log(err);
         }
-        console.log("File Saved");
+        console.log("Done");
     });
 
     return res.send(req.body.username)
@@ -95,7 +86,7 @@ app.post('/saveIoUTextBoxPP',function(req,res){
         if(err) {
             return console.log(err);
         }
-        console.log("File Saved");
+        console.log("Done");
     });
 
     return res.send(req.body.username)
@@ -111,7 +102,7 @@ app.post('/saveastextfile',function(req,res){
         if(err) {
             return console.log(err);
         }
-        console.log("File Saved");
+        console.log("Done");
     });
 
     return res.send(req.body.userName)
@@ -152,10 +143,7 @@ app.post('/download',function(req,res){
   var username = req.body.username
   var videoname = req.body.videoname
   var videourl = req.body.videourl
-  console.log(username);
   var dir = 'public/Downloaded/'+username;
-  console.log(dir)
-
   const fs = require('fs')
   const youtubedl = require('youtube-dl')
 
@@ -175,9 +163,6 @@ app.post('/download',function(req,res){
 
   // Will be called when the download starts.
   video.on('info', function(info) {
-    console.log('Download started')
-    console.log('filename: ' + info._filename)
-    console.log('size: ' + info.size)
   })
 video.pipe(fs.createWriteStream(dir+'/'+videoname+'.mp4'))
 return res.send('Done')

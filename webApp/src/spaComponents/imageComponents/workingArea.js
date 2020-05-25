@@ -93,8 +93,7 @@ saveAsTextFile = () =>{
     imageName : this.state.imageNames[this.state.index],
     imageData : this.outputdiv.innerHTML
     })
-    .then(res => { // then print response status
-      console.log(res)
+    .then(res => {
     })
     .catch(err => { // then print response status
     console.log(err)
@@ -145,8 +144,7 @@ getYoloMlOutPut = () =>{
     'imageUrl':url,
     'Coordinates':this.outputdiv.innerHTML
   })
-  .then(res => { // then print response status
-      console.log(res)
+  .then(res => {
       window.open(mlOutPutUrl, '_blank');
     })
     .catch(err => { // then print response status
@@ -165,8 +163,7 @@ getTextBoxPPOutPut = () =>{
     'imageName':imageName,
     'imageUrl':url
   })
-  .then(res => { // then print response status
-      console.log(res)
+  .then(res => {
       window.open(mlOutPutUrl, '_blank');
     })
     .catch(err => { // then print response status
@@ -179,10 +176,8 @@ apiFuncGetImages = (userName) => {
   axios.post(this.goApiUrl+"/getimages",{
   'username':userName
   })
-  .then(res => { // then print response status
-      console.log(res)
+  .then(res => {
        var imageNames = res.data.ImageNames
-       console.log(imageNames)
        this.state.imageNames = imageNames
          if(this.ImageTag) {
           this.ImageTag.src = this.nodeServerUrl+"/img/"+this.props.name+"/images/"+this.state.imageNames[this.state.index];
@@ -190,42 +185,40 @@ apiFuncGetImages = (userName) => {
     })
     .catch(err => { // then print response status
     console.log(err)
-    })
-  }
+  })
+}
+
+wait = (ms) =>{
+  var d = new Date();
+  var d2 = null;
+  do { d2 = new Date(); }
+  while(d2-d < ms);
+}
+
+downloadComponent = (url,type) =>{
+  axios({
+  url: url, //your url
+  method: 'GET',
+  responseType: 'blob', // important
+  })
+  .then((response) => {
+   const url = window.URL.createObjectURL(new Blob([response.data]));
+   const link = document.createElement('a');
+   link.href = url;
+   link.setAttribute('download', this.props.name+type+'.zip'); //or any other extension
+   document.body.appendChild(link);
+   link.click();
+  });
+}
 
 downloadFiles = () =>{
     axios.post(this.nodeServerUrl+"/downloadfiles/",{
-      userName : this.props.name
+      username : this.props.name
     })
-      .then(res => { // then print response status
-        console.log(res)
-        // after creating the zip file, now download
-        window.open(this.nodeServerUrl+'/img/'+this.props.name+'.zip', '_blank');
-
-      })
-      .catch(err => {
-      // then print response status
-      console.log(err)
-      })
-}
-
-Wait = (ms) =>{
-var d = new Date();
-var d2 = null;
-do { d2 = new Date(); }
-while(d2-d < ms);
-}
-
-downloadAllFiles = () =>{
-  axios.post(this.nodeServerUrl+"/downloadallfiles/",{
-    userName : this.props.name
-  })
-    .then(res => { // then print response status
-      //toast.success('upload success')
-      console.log(res)
-      // after creating the zip file, now download, delay for zip file creation
-      this.Wait(5000);
-      this.openZipLink();
+    .then(res => {
+      // after creating the zip file, now download
+      this.wait(5000);
+      this.downloadComponent(this.nodeServerUrl+'/img/'+this.props.name+'.zip','Annotations');
     })
     .catch(err => {
     // then print response status
@@ -233,8 +226,19 @@ downloadAllFiles = () =>{
   })
 }
 
-openZipLink = () =>{
-  window.open(this.nodeServerUrl+'/img/all_'+this.props.name+'.zip');
+downloadAllFiles = () =>{
+  axios.post(this.nodeServerUrl+"/downloadallfiles/",{
+    userName : this.props.name
+  })
+    .then(res => { // then print response status
+      // after creating the zip file, now download, delay for zip file creation
+      this.wait(5000);
+      this.downloadComponent(this.nodeServerUrl+'/img/all_'+this.props.name+'.zip','');
+    })
+    .catch(err => {
+    // then print response status
+    console.log(err)
+  })
 }
 
 componentDidMount(){
@@ -295,6 +299,7 @@ render() {
        <Button className="StartButton" block bsSize="large" onClick={this.downloadAllFiles} type="button">
          DOWNLOAD ALL-Please disable adblock for download
        </Button>
+
         </div>
         <p hidden ref = {c =>this.outputdiv = c}>
         </p>

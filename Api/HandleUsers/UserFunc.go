@@ -5,7 +5,6 @@ import (
     "unsafe"
     "reflect"
     "context"
-    "fmt"
     "net"
 
     // MongoDB drivers
@@ -57,8 +56,7 @@ Write function description here :
 
 */
 func GetClientOptions() *options.ClientOptions {
-  ipAddress := GetLocalIP()
-  fmt.Println("Connecting to : "+ipAddress)
+  //ipAddress := GetLocalIP()
   // give the Mongo Atlas API here
   clientOptions := options.Client().ApplyURI("mongodb://localhost:27017")
   return clientOptions

@@ -157,13 +157,6 @@ def dividetheframes(request):
     low = int(dictdata["low"])
     high = int(dictdata["high"])
 
-    print("username : " + username)
-    print("vid_url : "+vid_url)
-    print("vid_name :"+vid_name)
-    print("img_type : "+img_type)
-    print("low : "+str(low))
-    print("high : "+str(high))
-
     # for storing all the image names
     imagenames = []
 
@@ -175,7 +168,6 @@ def dividetheframes(request):
     # getting the frame length of the video
     position = 1
     length = int(cap.get(cv2.CAP_PROP_FRAME_COUNT))
-    print( length )
     frame_count = 1
 
     # Video Capture using OpenCV VideoCapture
@@ -191,14 +183,11 @@ def dividetheframes(request):
         # per second 30 frames
         skip = random.randint(low*30,high*30)
         current_count = 1
-        print("skip : "+str(skip))
-
         while current_count != skip:
             ret, frame = cap.read()
             frame_count = frame_count + 1
             current_count = current_count + 1
 
-        print("current_count : "+str(current_count))
         ret, frame = cap.read()
         frame_count = frame_count + 1
         if frame is not None:
@@ -206,23 +195,14 @@ def dividetheframes(request):
             cv2.imwrite("assets/output_"+str(vid_name)+"_"+str(position)+"."+img_type, frame)
             position = position + 1
 
-        print("frame_count : "+str(frame_count))
-
-    print("Images derived :")
-    print(imagenames)
     elapsed_time = time.time() - start_time
-    print("Performace measure : "+str(elapsed_time))
 
     for images in imagenames:
-        print("Sending to back end...")
-        print("image name : "+images)
         files = {'file': open('assets/'+images, 'rb')}
         headers = {
             'username': username,
         }
         response = requests.request("POST", 'http://localhost:4000/upload', files=files, headers=headers)
-        print(response)
-
 
     fileNames = ""
     for images in imagenames:
@@ -232,11 +212,8 @@ def dividetheframes(request):
             fileNames = fileNames + ","+images
 
     sendImageDataToApi = {'username':username,'filenames':fileNames}
-    print("data being sent to Go API: "+str(sendImageDataToApi))
     response = requests.request("POST","http://localhost:8080/insertimagedata",json = {'username':username,'filenames':fileNames})
-    print(response)
 
-    print("Backend Process Complete")
     context = {"data":"data"}
     return render(request, 'index.html', context)
 
@@ -289,28 +266,21 @@ def yolo(request):
 
     IoU = balanceDifference(count,numberOfAnnotation,IoU)
     averageIoU = np.mean(IoU)
-    print("Average : "+str(averageIoU))
     elapsed_time = time.time() - start_time
-    print("Performace measure : "+str(elapsed_time)+" seconds")
-
-    print("Sending to back end...")
     cv2.imwrite(saveimageindjango, imgcv)
 
     files = {'file': open(saveimageindjango, 'rb')}
     headers = {
         'username': username,
     }
-    response = requests.request("POST", 'http://localhost:4000/upload', files=files, headers=headers)
-    print(response)
 
+    response = requests.request("POST", 'http://localhost:4000/upload', files=files, headers=headers)
     headers = {
         'username': username,
         'data' : str(averageIoU),
     }
     response = requests.request("POST", 'http://localhost:4000/saveIoUYolo',files=files,headers=headers)
-    print(response)
 
-    print("Backend Process Complete")
     context = {"data":"data"}
     return render(request, 'index.html', context)
 
@@ -350,7 +320,6 @@ def textBoxPP(request):
     x = np.array([preprocess(img, input_size)])
 
     elapsed_time = time.time() - start_time
-    print("Performace measure : "+str(elapsed_time))
 
     #Model start
     start_time = time.time()
@@ -359,7 +328,6 @@ def textBoxPP(request):
             y = sl_model.predict(x)
 
     elapsed_time = time.time() - start_time
-    print("Performace measure : "+str(elapsed_time))
     #Model end
 
     start_time = time.time()
@@ -389,33 +357,24 @@ def textBoxPP(request):
 
     IoU = balanceDifference(count,numberOfAnnotation,IoU)
     averageIoU = np.mean(IoU)
-    print("Average : "+str(averageIoU))
 
     saveimageindjango = 'assets/textBoxPPOutput_'+username+"_"+imagename
     cv2.imwrite(saveimageindjango, img1)
     elapsed_time = time.time() - start_time
-    print("Performace measure : "+str(elapsed_time))
-    print("Sending to back end...")
-    plt.imshow(img1)
-    plt.show
 
     files = {'file': open(saveimageindjango, 'rb')}
     headers = {
         'username': username,
     }
-    response = requests.request("POST", 'http://localhost:4000/upload', files=files, headers=headers)
-    print(response)
 
+    response = requests.request("POST", 'http://localhost:4000/upload', files=files, headers=headers)
     headers = {
         'username': username,
         'data' : str(averageIoU),
     }
     response = requests.request("POST", 'http://localhost:4000/saveIoUTextBoxPP',files=files,headers=headers)
-    print(response)
 
-    print("Backend Process Complete")
     context = {"data":"data"}
-
     return render(request, 'index.html', context)
 
 @csrf_exempt

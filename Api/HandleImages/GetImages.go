@@ -4,7 +4,6 @@ import (
   "context"
   "log"
   "net/http"
-  "fmt"
   "encoding/json"
   // MongoDB drivers
   "go.mongodb.org/mongo-driver/bson"
@@ -34,9 +33,7 @@ func GetImages(w http.ResponseWriter, r *http.Request) {
   clientOptions := GetClientOptions()
   client := GetClient(clientOptions)
   collection := GetCollection(client,"ImageNames")
-  fmt.Println("Connected to MongoDB.")
-  
-  // add logic here :
+
   // bson.M{} is the fiter that is being used
   filterCursor, err := collection.Find(context.TODO(), bson.M{"name": userName})
   if err != nil {
@@ -68,7 +65,6 @@ func GetImages(w http.ResponseWriter, r *http.Request) {
 		panic(err)
 	}
 
-  fmt.Println("Connection to MongoDB closed.")
   // return result as a json object
   w.Write(imageData)
 }
