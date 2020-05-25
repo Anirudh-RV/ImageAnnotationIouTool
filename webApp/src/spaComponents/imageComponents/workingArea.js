@@ -6,29 +6,115 @@ import Button from 'react-bootstrap/Button';
 class WorkingArea extends Component {
 //TODO : ADD INTRODUCTION TO PROJECT
 
+/*
+compare
+1. offsetLeft
+2. offsetWidth
+3. offsetHeight
+4. Id
+and then determine which child
+*/
+
 constructor(){
   super();
   this.state= {
     index:0,
+    counter:0,
   }
   var data = require('../../jsonData/urlData.json'); //(with path)
   this.nodeServerUrl = data.nodeServerUrl
   this.goApiUrl = data.goApiUrl
   this.pythonBackEndUrl = data.mlBackEndUrl
+  this.drawnComponentCounter = 0
 }
 
 onButton = () => {
   this.flag = true;
-  this.initDraw(this.divCanvas,this.flag,this.outputdiv);
+  this.initDraw(this.divCanvas,this.flag,this.drawnComponentCounter,this.divButtons,this.selectedBox);
 
 }
 
 offButton = () => {
   this.flag= false;
-  this.initDraw(this.divCanvas,this.flag,this.outputdiv );
+  this.initDraw(this.divCanvas,this.flag,this.drawnComponentCounter,this.divButtons,this.selectedBox);
 }
 
-initDraw= (drawElement,flag,outputdiv) => {
+deleteComponent = () =>{
+  var div = this.divCanvas // getElementById, etc
+  var children = div.childNodes;
+  var selectedBox = this.selectedBox.innerHTML;
+  for (var i=1; i<div.childNodes.length; i++) {
+    var child = div.childNodes[i];
+    if(child.Id == selectedBox){
+      div.removeChild(child);
+    }
+  }
+}
+
+getCoordinates = () =>{
+  var div = this.divCanvas // getElementById, etc
+  var children = div.childNodes;
+  var coordinates = ""
+  for (var i=1; i<div.childNodes.length; i++) {
+    var child = div.childNodes[i];
+      var x1 = child.offsetLeft;
+      var x2 = child.offsetLeft + child.offsetWidth;
+      var y1 = child.offsetTop;
+      var y2 = child.offsetTop + child.offsetHeight;
+      var dataDrawn = "("+x1+","+(y1-125)+") ("+x2+","+(y2-125)+")"
+      coordinates = coordinates + "\n"+dataDrawn
+  }
+  return coordinates;
+}
+
+initDraw= (drawElement,flag,drawnComponentCounter,divButtons,selectedBox) => {
+
+    function eraseComponent (x,y) {
+      var div = drawElement // getElementById, etc
+      var children = div.childNodes;
+      var elements = [];
+      var areaOfCoverage = 0;
+
+      for (var i=1; i<div.childNodes.length; i++) {
+        var child = div.childNodes[i];
+        var x1 = child.offsetLeft;
+        var x2 = child.offsetLeft + child.offsetWidth;
+        var y1 = child.offsetTop;
+        var y2 = child.offsetTop + child.offsetHeight;
+        var checkCoverage = findPoint(x1,y1,x2,y2,x,y);
+
+        if (checkCoverage){
+          var currentCoverage = (x2-x1) * (y2-y1);
+          if(areaOfCoverage!=0){
+            if(currentCoverage<areaOfCoverage){
+              areaOfCoverage = currentCoverage;
+              selectedBox.innerHTML = child.Id;
+              child.style.borderColor = "blue";
+            }
+            else{
+              // lies outside
+            }
+          }else{
+            areaOfCoverage = currentCoverage;
+            selectedBox.innerHTML = child.Id;
+            child.style.borderColor = "blue";
+          }
+        }
+        else{
+          // lies outside
+        }
+        //div.removeChild(child);
+      }
+    }
+    var counter = 0;
+
+    function findPoint(x1,y1,x2,y2,x,y){
+        if (x > x1 && x < x2 && y > y1 && y < y2){
+            return true;
+          }
+        return false;
+    }
+
     function setMousePosition(e) {
         var ev = e || window.event; //Moz || IE
         if (ev.pageX) { //Moz
@@ -40,6 +126,7 @@ initDraw= (drawElement,flag,outputdiv) => {
             mouse.y = ev.clientY ;
         }
     };
+
     var mouse = {
         x: 0,
         y: 0,
@@ -66,15 +153,16 @@ initDraw= (drawElement,flag,outputdiv) => {
             drawElement.style.cursor = "default";
             this.EndX = mouse.x;
             this.EndY = mouse.y - 125;
-            var dataDrawn = "("+this.StartX+","+this.StartY+") ("+this.EndX+","+this.EndY+")"
-            this.imageTextData = dataDrawn
-            outputdiv.innerHTML = outputdiv.innerHTML +"\n"+dataDrawn
         }
         else {
+            counter = counter + 1;
             mouse.startX = mouse.x;
             mouse.startY = mouse.y;
             element = document.createElement('div');
-            element.className = 'rectangle'
+            element.style.borderColor = "red";
+            element.className = 'rectangle';
+            element.name = "Boxes";
+            element.Id = "BoxesID_"+counter;
             element.style.left = mouse.x + 'px';
             element.style.top = mouse.y + 'px';
             drawElement.appendChild(element)
@@ -82,6 +170,19 @@ initDraw= (drawElement,flag,outputdiv) => {
             this.StartX = mouse.x;
             this.StartY = mouse.y - 125;
       }
+    }
+    else {
+      var div = drawElement
+      var children = div.childNodes;
+
+      for (var i=1; i<div.childNodes.length; i++) {
+        var child = div.childNodes[i];
+        child.style.borderColor = "red";
+      }
+
+      setMousePosition(e);
+      eraseComponent(mouse.x,mouse.y);
+
     }
   }
 }
@@ -91,7 +192,7 @@ saveAsTextFile = () =>{
   axios.post(this.nodeServerUrl+"/saveastextfile/",{
     userName : this.props.name,
     imageName : this.state.imageNames[this.state.index],
-    imageData : this.outputdiv.innerHTML
+    imageData : this.getCoordinates()
     })
     .then(res => {
     })
@@ -100,7 +201,7 @@ saveAsTextFile = () =>{
     })
 }
 
-NextImage= () => {
+nextImage= () => {
   // clearing out previously draw boxes and adding back the image tag
   this.divCanvas.innerHTML = "";
   this.divCanvas.appendChild(this.ImageTag);
@@ -113,10 +214,9 @@ NextImage= () => {
      this.ImageTag.src = this.nodeServerUrl+"/img/"+this.props.name+"/images/"+this.state.imageNames[this.state.index];
       }
     }
-  this.outputdiv.innerHTML = "";
 }
 
-PrevImage= () => {
+prevImage= () => {
   // clearing out previously draw boxes and adding back the image tag
   this.divCanvas.innerHTML = "";
   this.divCanvas.appendChild(this.ImageTag);
@@ -128,7 +228,6 @@ PrevImage= () => {
    this.ImageTag.src = this.nodeServerUrl+"/img/"+this.props.name+"/images/"+this.state.imageNames[this.state.index];
     }
   }
-  this.outputdiv.innerHTML = "";
 }
 
 getYoloMlOutPut = () =>{
@@ -142,7 +241,7 @@ getYoloMlOutPut = () =>{
     'userName':userName,
     'imageName':imageName,
     'imageUrl':url,
-    'Coordinates':this.outputdiv.innerHTML
+    'Coordinates':this.getCoordinates()
   })
   .then(res => {
       window.open(mlOutPutUrl, '_blank');
@@ -161,7 +260,8 @@ getTextBoxPPOutPut = () =>{
   axios.post(this.pythonBackEndUrl+"/textboxpp/", {
     'userName':userName,
     'imageName':imageName,
-    'imageUrl':url
+    'imageUrl':url,
+    'Coordinates':this.getCoordinates()
   })
   .then(res => {
       window.open(mlOutPutUrl, '_blank');
@@ -258,17 +358,22 @@ render() {
       <div>
         <div className = "columnLeft">
         <p ref = {c => this.pTag = c} >Left Side</p>
-          <div ref = {c => this.divCanvas = c} >
+          <div ref = {c => this.divCanvas = c}>
           <img className='name' ref = {c => this.ImageTag = c}/>
           </div>
         </div>
-        <div className = "columnRight">
+        <div ref = {c => this.divButtons = c} className = "columnRight">
         <p>Right Side</p>
-        <Button className="StartButton" block bsSize="large" onClick={this.NextImage} type="button">
-         NEXT
-       </Button>
 
-       <Button className="StartButton" block bsSize="large" onClick={this.PrevImage} type="button">
+        <Button className="StartButton" block bsSize="large" onClick={this.deleteComponent} type="button">
+         ERASE
+        </Button>
+
+        <Button className="StartButton" block bsSize="large" onClick={this.nextImage} type="button">
+         NEXT
+        </Button>
+
+       <Button className="StartButton" block bsSize="large" onClick={this.prevImage} type="button">
          PREVIOUS
        </Button>
 
@@ -301,8 +406,7 @@ render() {
        </Button>
 
         </div>
-        <p hidden ref = {c =>this.outputdiv = c}>
-        </p>
+        <p hidden ref = {c =>this.selectedBox = c}></p>
       </div>
     );
   }

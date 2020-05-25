@@ -1,8 +1,9 @@
 **TODO**
-3. Removing boxes drawn
 4. annotation of each box drawn
+  a. Have a text box to label each box
+  b. Display the label on top of the box 
 5. IoU check for each particular annotation
-(4,5,6 under new draw features)
+(4,5 under new draw features)
 11. Fix the asynchronous problem in uploading images, dividing videos, downloading youtube video and dividing
 (Learn Asynchronous programming)
 13. Deploy with AWS on API(DONE), SERVER(DONE), WEBAPP(Deployment-DONE, Routing-TODO), MLSystem (TODO)
@@ -10,6 +11,7 @@
 **DONE**
 1. Fix the check IoU outputs, now also works in PNG files (DONE)
 2. Fix the type of data being sent through API, make everything into JSON (DONE)
+3. Removing boxes drawn (DONE)
 6. Make Textbox++ to work (DONE)
 7. Improve UI (WORKING)
 8. Fix the static links in the ReactJS part. Make the links dynamic by pulling them from API each time (DONE)
