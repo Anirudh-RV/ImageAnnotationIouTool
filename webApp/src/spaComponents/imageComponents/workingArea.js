@@ -2,50 +2,45 @@ import React, { Component } from 'react';
 import '../../cssComponents/App.css';
 import axios from 'axios';
 import Button from 'react-bootstrap/Button';
+import {FormGroup, FormControl} from "react-bootstrap";
 
 class WorkingArea extends Component {
-//TODO : ADD INTRODUCTION TO PROJECT
-
-/*
-compare
-1. offsetLeft
-2. offsetWidth
-3. offsetHeight
-4. Id
-and then determine which child
-*/
 
 constructor(){
   super();
   this.state= {
     index:0,
-    counter:0,
   }
   var data = require('../../jsonData/urlData.json'); //(with path)
   this.nodeServerUrl = data.nodeServerUrl
   this.goApiUrl = data.goApiUrl
   this.pythonBackEndUrl = data.mlBackEndUrl
-  this.drawnComponentCounter = 0
+  this.annotationHashMap = {}
 }
 
 onButton = () => {
   this.flag = true;
-  this.initDraw(this.divCanvas,this.flag,this.drawnComponentCounter,this.divButtons,this.selectedBox);
+  this.initDraw(this.divCanvas,this.flag,this.divButtons,this.selectedBox);
 
 }
 
 offButton = () => {
   this.flag= false;
-  this.initDraw(this.divCanvas,this.flag,this.drawnComponentCounter,this.divButtons,this.selectedBox);
+  this.initDraw(this.divCanvas,this.flag,this.divButtons,this.selectedBox);
 }
 
 deleteComponent = () =>{
   var div = this.divCanvas // getElementById, etc
-  var children = div.childNodes;
   var selectedBox = this.selectedBox.innerHTML;
   for (var i=1; i<div.childNodes.length; i++) {
     var child = div.childNodes[i];
     if(child.Id == selectedBox){
+      var x1 = child.offsetLeft;
+      var x2 = child.offsetLeft + child.offsetWidth;
+      var y1 = child.offsetTop;
+      var y2 = child.offsetTop + child.offsetHeight;
+      var dataDrawn = "("+x1+","+(y1-125)+") ("+x2+","+(y2-125)+")"
+      delete this.annotationHashMap[dataDrawn];
       div.removeChild(child);
     }
   }
@@ -53,7 +48,6 @@ deleteComponent = () =>{
 
 getCoordinates = () =>{
   var div = this.divCanvas // getElementById, etc
-  var children = div.childNodes;
   var coordinates = ""
   for (var i=1; i<div.childNodes.length; i++) {
     var child = div.childNodes[i];
@@ -67,7 +61,35 @@ getCoordinates = () =>{
   return coordinates;
 }
 
-initDraw= (drawElement,flag,drawnComponentCounter,divButtons,selectedBox) => {
+assignAnnotation = () =>{
+  var div = this.divCanvas // getElementById, etc
+  var selectedBox = this.selectedBox.innerHTML;
+  var annotationLabel = this.annotationLabel.value;
+  for (var i=1; i<div.childNodes.length; i++) {
+    var child = div.childNodes[i];
+    if(child.Id == selectedBox){
+      var x1 = child.offsetLeft;
+      var x2 = child.offsetLeft + child.offsetWidth;
+      var y1 = child.offsetTop;
+      var y2 = child.offsetTop + child.offsetHeight;
+      var dataDrawn = "("+x1+","+(y1-125)+") ("+x2+","+(y2-125)+")"
+      this.annotationHashMap[dataDrawn] = annotationLabel;
+      var para = document.createElement("p");
+      var node = document.createTextNode(annotationLabel);
+      if(child.childNodes.length == 0){
+      para.appendChild(node);
+      child.appendChild(para);
+      }
+      else{
+        child.innerHTML = "";
+        para.appendChild(node);
+        child.appendChild(para);
+      }
+    }
+  }
+}
+
+initDraw= (drawElement,flag,divButtons,selectedBox) => {
 
     function eraseComponent (x,y) {
       var div = drawElement // getElementById, etc
@@ -94,7 +116,8 @@ initDraw= (drawElement,flag,drawnComponentCounter,divButtons,selectedBox) => {
             else{
               // lies outside
             }
-          }else{
+          }
+          else{
             areaOfCoverage = currentCoverage;
             selectedBox.innerHTML = child.Id;
             child.style.borderColor = "blue";
@@ -106,7 +129,6 @@ initDraw= (drawElement,flag,drawnComponentCounter,divButtons,selectedBox) => {
         //div.removeChild(child);
       }
     }
-    var counter = 0;
 
     function findPoint(x1,y1,x2,y2,x,y){
         if (x > x1 && x < x2 && y > y1 && y < y2){
@@ -146,6 +168,7 @@ initDraw= (drawElement,flag,drawnComponentCounter,divButtons,selectedBox) => {
         }
       }
     }
+
     drawElement.onclick = function (e) {
       if(flag) {
         if (element !== null) {
@@ -155,16 +178,17 @@ initDraw= (drawElement,flag,drawnComponentCounter,divButtons,selectedBox) => {
             this.EndY = mouse.y - 125;
         }
         else {
-            counter = counter + 1;
+            var id = Math.floor((Math.random() * 10000) + 1);
             mouse.startX = mouse.x;
             mouse.startY = mouse.y;
             element = document.createElement('div');
             element.style.borderColor = "red";
             element.className = 'rectangle';
             element.name = "Boxes";
-            element.Id = "BoxesID_"+counter;
+            element.Id = "BoxesID_"+id;
             element.style.left = mouse.x + 'px';
             element.style.top = mouse.y + 'px';
+            element.style.borderWidth = "thick";
             drawElement.appendChild(element)
             drawElement.style.cursor = "crosshair";
             this.StartX = mouse.x;
@@ -179,10 +203,8 @@ initDraw= (drawElement,flag,drawnComponentCounter,divButtons,selectedBox) => {
         var child = div.childNodes[i];
         child.style.borderColor = "red";
       }
-
       setMousePosition(e);
       eraseComponent(mouse.x,mouse.y);
-
     }
   }
 }
@@ -235,13 +257,13 @@ getYoloMlOutPut = () =>{
   var imageName = this.state.imageNames[this.state.index]
   var url = this.nodeServerUrl+"/img/"+this.props.name+"/images/"+this.state.imageNames[this.state.index]
   var mlOutPutUrl = this.nodeServerUrl+"/img/"+this.props.name+"/images/yoloOutput_"+this.props.name+"_"+imageName
-  var data = {'userName':userName,'imageName':imageName,'imageUrl':url,'Coordinates':this.outputdiv.innerHTML}
 
   axios.post(this.pythonBackEndUrl+"/yolo/",{
     'userName':userName,
     'imageName':imageName,
     'imageUrl':url,
-    'Coordinates':this.getCoordinates()
+    'Coordinates':this.getCoordinates(),
+    'annotationLabels':this.annotationHashMap
   })
   .then(res => {
       window.open(mlOutPutUrl, '_blank');
@@ -261,7 +283,9 @@ getTextBoxPPOutPut = () =>{
     'userName':userName,
     'imageName':imageName,
     'imageUrl':url,
-    'Coordinates':this.getCoordinates()
+    'Coordinates':this.getCoordinates(),
+    'annotationLabels':this.annotationHashMap
+
   })
   .then(res => {
       window.open(mlOutPutUrl, '_blank');
@@ -365,6 +389,18 @@ render() {
         <div ref = {c => this.divButtons = c} className = "columnRight">
         <p>Right Side</p>
 
+        <FormGroup controlId="annotation" bsSize="large">
+          <FormControl
+            autoFocus
+            placeholder="Label"
+            ref = {c => this.annotationLabel = c}
+          />
+        </FormGroup>
+
+        <Button className="StartButton" block bsSize="large" onClick={this.assignAnnotation} type="button">
+         ASSIGN
+        </Button>
+
         <Button className="StartButton" block bsSize="large" onClick={this.deleteComponent} type="button">
          ERASE
         </Button>
@@ -402,7 +438,7 @@ render() {
        </Button>
 
        <Button className="StartButton" block bsSize="large" onClick={this.downloadAllFiles} type="button">
-         DOWNLOAD ALL-Please disable adblock for download
+         DOWNLOAD
        </Button>
 
         </div>
