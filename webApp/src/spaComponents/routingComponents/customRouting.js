@@ -26,7 +26,7 @@ class CustomRouting extends Component {
               <Route path="/downloadvideocomponent" component={DownloadVideoComponent}/>
               <Route path="/welcomepage" component={WelcomePage}/>
               <Redirect to={{
-            pathname: '/editpage',
+            pathname: '/welcomepage',
             state: {userName:this.props.location.state.userCredentials}
         }}
 />
