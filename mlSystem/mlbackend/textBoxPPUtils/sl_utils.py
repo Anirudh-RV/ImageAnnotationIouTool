@@ -1,7 +1,6 @@
 """Some utils for SSD."""
 
 import numpy as np
-import matplotlib.pyplot as plt
 import tensorflow as tf
 import keras.backend as K
 import h5py

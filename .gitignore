@@ -1,5 +1,3 @@
-*.cfg
-cfg/
 *.h5
 *.weights
 *.avi

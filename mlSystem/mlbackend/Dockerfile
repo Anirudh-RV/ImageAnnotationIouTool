@@ -2,11 +2,11 @@
 FROM python:3.6
 
 # create and set working directory
-RUN mkdir /mlbackend
-WORKDIR /mlbackend
+RUN mkdir /app
+WORKDIR /app
 
 # Add current directory code to working directory
-ADD . /mlbackend/
+ADD . /app/
 
 # set default environment variables
 ENV PYTHONUNBUFFERED 1
@@ -35,8 +35,20 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
 RUN pip3 install --upgrade pip
 RUN pip3 install pipenv
 
+RUN git clone https://github.com/thtrieu/darkflow
+RUN cd darkflow
+RUN pip3 install Cython
+RUN pip3 install numpy
+RUN pip3 install tensorflow==1.12.0
+RUN pip3 install opencv-python
+RUN pip3 install .
+RUN python setup.py build_ext --inplace
+
+RUN pip3 install keras==2.2.4
+RUN pip3 install Pillow
+
 # Install project dependencies
 RUN pipenv install --skip-lock --system --dev
 
 EXPOSE 8888
-CMD gunicorn models.wsgi:application --bind 0.0.0.0:$PORT
+CMD gunicorn mlbackend.wsgi:application --bind 0.0.0.0:$PORT
