@@ -14,7 +14,7 @@ from keras.layers import ZeroPadding2D
 from keras.models import Model
 
 from utils.layers import Normalize
-from ssd_model import ssd300_body
+from textBoxPPUtils.ssd_model import ssd300_body
 
 
 def multibox_head(source_layers, num_priors, num_classes, normalizations=None, softmax=True):
@@ -24,12 +24,12 @@ def multibox_head(source_layers, num_priors, num_classes, normalizations=None, s
     for i in range(len(source_layers)):
         x = source_layers[i]
         name = x.name.split('/')[0]
-        
+
         # normalize
         if normalizations is not None and normalizations[i] > 0:
             name = name + '_norm'
             x = Normalize(normalizations[i], name=name)(x)
-            
+
         # confidence
         name1 = name + '_mbox_conf'
         x1 = Conv2D(num_priors[i] * num_classes, (1, 5), padding='same', name=name1)(x)
@@ -53,7 +53,7 @@ def multibox_head(source_layers, num_priors, num_classes, normalizations=None, s
         mbox_conf = Activation('sigmoid', name='mbox_conf_final')(mbox_conf)
 
     predictions = concatenate([mbox_loc, mbox_conf], axis=2, name='predictions')
-    
+
     return predictions
 
 
@@ -63,24 +63,24 @@ def TB300(input_shape=(300, 300, 3), num_classes=2, softmax=True):
     # Arguments
         input_shape: Shape of the input image.
         num_classes: Number of classes including background.
-    
+
     # References
         - [TextBoxes: A Fast Text Detector with a Single Deep Neural Network](https://arxiv.org/abs/1611.06779)
     """
-    
+
     K.clear_session()
-    
+
     # SSD body
     x = input_tensor = Input(shape=input_shape)
     source_layers = ssd300_body(x)
-    
+
     # Add multibox head for classification and regression
     num_priors = [12, 12, 12, 12, 12, 12]
     normalizations = [20, -1, -1, -1, -1, -1]
     output_tensor = multibox_head(source_layers, num_priors, num_classes, normalizations, softmax)
     model = Model(input_tensor, output_tensor)
     model.num_classes = num_classes
-    
+
     # parameters for prior boxes
     num_maps = len(source_layers)
     model.image_size = input_shape[:2]
@@ -90,6 +90,5 @@ def TB300(input_shape=(300, 300, 3), num_classes=2, softmax=True):
     model.shifts = [[(0.0, -0.25)] * 6 + [(0.0, 0.25)] * 6] * num_maps
     #model.minmax_sizes = [(30, 60), (60, 111), (111, 162), (162, 213), (213, 264), (264, 315)]
     model.steps = [8, 16, 32, 64, 128, 256, 512]
-    
-    return model
 
+    return model

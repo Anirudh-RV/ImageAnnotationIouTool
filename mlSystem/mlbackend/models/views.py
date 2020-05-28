@@ -20,6 +20,17 @@ import time
 import ast
 import urllib.request
 
+# textbox++ models
+from textBoxPPUtils.tbpp_model import TBPP512, TBPP512_dense
+from textBoxPPUtils.tbpp_utils import PriorUtil
+
+# ssd for help
+from textBoxPPUtils.ssd_data import preprocess
+from textBoxPPUtils.sl_utils import rbox3_to_polygon, polygon_to_rbox, rbox_to_polygon
+from textBoxPPUtils.ssd_data import preprocess
+
+from io import BytesIO
+
 # to read images from urls
 import PIL
 from PIL import Image
@@ -31,24 +42,14 @@ import tensorflow as tf
 import numpy as np
 from timeit import default_timer as timer
 
-# textbox++ models
-from tbpp_model import TBPP512, TBPP512_dense
-from tbpp_utils import PriorUtil
-
-# ssd for help
-from ssd_data import preprocess
-from sl_utils import rbox3_to_polygon, polygon_to_rbox, rbox_to_polygon
-from io import BytesIO
-from ssd_data import preprocess
-
 #for yolo9000
-yolo9000 = {"model" : "cfg/yolo9000.cfg", "load" : "yolo9000.weights", "threshold": 0.01}
+yolo9000 = {"model" : "cfg/yolo9000.cfg", "load" : "Weights/yolo9000.weights", "threshold": 0.01}
 tfnet = TFNet(yolo9000)
 
 # Starting the model here.1
 Model = TBPP512_dense
 input_shape = (512,512,3)
-weights_path = 'weights.022.h5'
+weights_path = 'Weights/weights.022.h5'
 confidence_threshold = 0.35
 confidence_threshold = 0.25
 sl_graph = tf.Graph()
@@ -58,9 +59,9 @@ with sl_graph.as_default():
         sl_model = Model(input_shape)
         prior_util = PriorUtil(sl_model)
         sl_model.load_weights(weights_path, by_name=True)
+
 input_width = 256
 input_height = 32
-weights_path = 'weights.022.h5'
 
 def get_iou(bb1, bb2):
     """

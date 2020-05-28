@@ -12,14 +12,14 @@ from keras.layers import ZeroPadding2D
 from keras.models import Model
 
 from utils.layers import Normalize
-from ssd_model_dense import dsod300_body, dsod512_body
-from ssd_model_resnet import ssd512_resnet_body
+from textBoxPPUtils.ssd_model_dense import dsod300_body, dsod512_body
+from textBoxPPUtils.ssd_model_resnet import ssd512_resnet_body
 
 
 def ssd300_body(x):
-    
+
     source_layers = []
-    
+
     # Block 1
     x = Conv2D(64, 3, strides=1, padding='same', name='conv1_1', activation='relu')(x)
     x = Conv2D(64, 3, strides=1, padding='same', name='conv1_2', activation='relu')(x)
@@ -67,14 +67,14 @@ def ssd300_body(x):
     x = Conv2D(128, 1, strides=1, padding='same', name='conv9_1', activation='relu')(x)
     x = Conv2D(256, 3, strides=1, padding='valid', name='conv9_2', activation='relu')(x)
     source_layers.append(x)
-    
+
     return source_layers
 
 
 def ssd512_body(x):
-    
+
     source_layers = []
-    
+
     # Block 1
     x = Conv2D(64, 3, strides=1, padding='same', name='conv1_1', activation='relu')(x)
     x = Conv2D(64, 3, strides=1, padding='same', name='conv1_2', activation='relu')(x)
@@ -124,12 +124,12 @@ def ssd512_body(x):
     x = ZeroPadding2D((1,1))(x)
     x = Conv2D(256, 3, strides=2, padding='valid', name='conv9_2', activation='relu')(x)
     source_layers.append(x)
-    # Block 10 
+    # Block 10
     x = Conv2D(128, 1, strides=1, padding='same', name='conv10_1', activation='relu')(x)
     x = ZeroPadding2D((1,1))(x)
     x = Conv2D(256, 4, strides=2, padding='valid', name='conv10_2', activation='relu')(x)
     source_layers.append(x)
-    
+
     return source_layers
 
 
@@ -142,12 +142,12 @@ def multibox_head(source_layers, num_priors, num_classes, normalizations=None, s
     for i in range(len(source_layers)):
         x = source_layers[i]
         name = x.name.split('/')[0]
-        
+
         # normalize
         if normalizations is not None and normalizations[i] > 0:
             name = name + '_norm'
             x = Normalize(normalizations[i], name=name)(x)
-            
+
         # confidence
         name1 = name + '_mbox_conf'
         x1 = Conv2D(num_priors[i] * num_classes, 3, padding='same', name=name1)(x)
@@ -166,9 +166,9 @@ def multibox_head(source_layers, num_priors, num_classes, normalizations=None, s
     mbox_conf = concatenate(mbox_conf, axis=1, name='mbox_conf')
     mbox_conf = Reshape((-1, num_classes), name='mbox_conf_logits')(mbox_conf)
     mbox_conf = Activation(class_activation, name='mbox_conf_final')(mbox_conf)
-    
+
     predictions = concatenate([mbox_loc, mbox_conf], axis=2, name='predictions')
-    
+
     return predictions
 
 
@@ -178,17 +178,17 @@ def SSD300(input_shape=(300, 300, 3), num_classes=21, softmax=True):
     # Arguments
         input_shape: Shape of the input image.
         num_classes: Number of classes including background.
-    
+
     # Notes
-        In order to stay compatible with pre-trained models, the parameters 
+        In order to stay compatible with pre-trained models, the parameters
         were chosen as in the caffee implementation.
-    
+
     # References
         https://arxiv.org/abs/1512.02325
     """
     x = input_tensor = Input(shape=input_shape)
     source_layers = ssd300_body(x)
-    
+
     # Add multibox head for classification and regression
     num_priors = [4, 6, 6, 6, 4, 4]
     normalizations = [20, -1, -1, -1, -1, -1]
@@ -204,7 +204,7 @@ def SSD300(input_shape=(300, 300, 3), num_classes=21, softmax=True):
     model.minmax_sizes = [(30, 60), (60, 111), (111, 162), (162, 213), (213, 264), (264, 315)]
     model.steps = [8, 16, 32, 64, 100, 300]
     model.special_ssd_boxes = True
-    
+
     return model
 
 
@@ -214,17 +214,17 @@ def SSD512(input_shape=(512, 512, 3), num_classes=21, softmax=True):
     # Arguments
         input_shape: Shape of the input image.
         num_classes: Number of classes including background.
-    
+
     # Notes
-        In order to stay compatible with pre-trained models, the parameters 
+        In order to stay compatible with pre-trained models, the parameters
         were chosen as in the caffee implementation.
-    
+
     # References
         https://arxiv.org/abs/1512.02325
     """
     x = input_tensor = Input(shape=input_shape)
     source_layers = ssd512_body(x)
-    
+
     # Add multibox head for classification and regression
     num_priors = [4, 6, 6, 6, 6, 4, 4]
     normalizations = [20, -1, -1, -1, -1, -1, -1]
@@ -241,7 +241,7 @@ def SSD512(input_shape=(512, 512, 3), num_classes=21, softmax=True):
     model.minmax_sizes = [(20.48, 51.2), (51.2, 133.12), (133.12, 215.04), (215.04, 296.96), (296.96, 378.88), (378.88, 460.8), (460.8, 542.72)]
     model.steps = [8, 16, 32, 64, 128, 256, 512]
     model.special_ssd_boxes = True
-    
+
     return model
 
 
@@ -252,7 +252,7 @@ def DSOD300(input_shape=(300, 300, 3), num_classes=21, activation='relu', softma
         input_shape: Shape of the input image.
         num_classes: Number of classes including background.
         activation: Type of activation functions.
-    
+
     # References
         https://arxiv.org/abs/1708.01241
     """
@@ -273,7 +273,7 @@ def DSOD300(input_shape=(300, 300, 3), num_classes=21, activation='relu', softma
     model.minmax_sizes = [(30, 60), (60, 111), (111, 162), (162, 213), (213, 264), (264, 315)]
     model.steps = [8, 16, 32, 64, 100, 300]
     model.special_ssd_boxes = True
-    
+
     return model
 
 SSD300_dense = DSOD300
@@ -286,7 +286,7 @@ def DSOD512(input_shape=(512, 512, 3), num_classes=21, activation='relu', softma
         input_shape: Shape of the input image.
         num_classes: Number of classes including background.
         activation: Type of activation functions.
-    
+
     # References
         https://arxiv.org/abs/1708.01241
     """
@@ -307,19 +307,19 @@ def DSOD512(input_shape=(512, 512, 3), num_classes=21, activation='relu', softma
     model.minmax_sizes = [(35, 76), (76, 153), (153, 230), (230, 307), (307, 384), (384, 460), (460, 537)]
     model.steps = [8, 16, 32, 64, 128, 256, 512]
     model.special_ssd_boxes = True
-    
+
     return model
 
 SSD512_dense = DSOD512
 
 
 def SSD512_resnet(input_shape=(512, 512, 3), num_classes=21, softmax=True):
-    
+
     # TODO: it does not converge!
-    
+
     x = input_tensor = Input(shape=input_shape)
     source_layers = ssd512_resnet_body(x)
-    
+
     # Add multibox head for classification and regression
     num_priors = [4, 6, 6, 6, 6, 4, 4]
     normalizations = [20, 20, 20, 20, 20, 20, 20]
@@ -335,5 +335,5 @@ def SSD512_resnet(input_shape=(512, 512, 3), num_classes=21, softmax=True):
     model.minmax_sizes = [(35, 76), (76, 153), (153, 230), (230, 307), (307, 384), (384, 460), (460, 537)]
     model.steps = [8, 16, 32, 64, 128, 256, 512]
     model.special_ssd_boxes = True
-    
+
     return model

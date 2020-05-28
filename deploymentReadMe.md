@@ -120,7 +120,7 @@ Use Mongo Atlas for cloud monogoDB
 3. Local: docker run --rm -p 8080:8080 anirudhrv1234/goapi
 
 **To run NodeServer (Node JS)**
-1. To build: docker build -t anirudhrv/nodeserver .
+1. To build: docker build -t anirudhrv1234/nodeserver .
 
 2. Local: docker run -p 80:4000 anirudhrv1234/nodeserver
 
@@ -162,7 +162,7 @@ Use Mongo Atlas for cloud monogoDB
 1. docker system prune
 
 **To stop an image**
-1. docker stop CONTAINERID
+1. docker stop CONTAINERIDNAMES
 
 <br />
 **RAW**
@@ -179,7 +179,6 @@ PublicReadForGetBucketObjects
    }
   ]
 }
-
 
 # Resources :
 1. https://docs.docker.com/docker-for-mac/
