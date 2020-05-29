@@ -175,19 +175,7 @@ Use Mongo Atlas for cloud monogoDB
 <br />
 **RAW**
 <br />
-
-{
-   "Version": "2012-10-17",
-  "Statement":[
-  {
-   "Sid":"AddPerm",
-    "Effect":"Allow",
-    "Principal": "*",
-    "Action":["s3:GetObject"],
-    "Resource":["arn:aws:s3:::<BUCKET-NAME>/*"]
-   }
-  ]
-}
+Please find RAW in bucketpolicy
 
 # Resources :
 1. https://docs.docker.com/docker-for-mac/
