@@ -1,6 +1,5 @@
 **TODO**
-14. Deploy with AWS on API(DONE), SERVER(DONE), WEBAPP(Deployment-DONE, Routing-TODO), MLSystem (TODO)
-  a. Make docker container of Mlsystem
+
 <br />
 **DONE**
 1. Fix the check IoU outputs, now also works in PNG files (DONE)
@@ -16,6 +15,17 @@
 11. Change the flow in the IoU calculation, separate the logic and algorithm (DONE)
 12. Refactor ReactJS code (DONE)
 13. Update how the zip folder is downloaded. (DONE)
+14. Deploy with AWS on API(DONE), SERVER(DONE), WEBAPP(Deployment-DONE), MLSystem (DONE)
+
+**Deployment**
+NOTE: Run 4 different containers to get links in advance
+1. When deploying the website using AWS or other cloud services, configure the components to the
+particular URLs
+2. Change Mongo Atlas allowed hosts to the Go API url (Mongo Atlas cloud Api)
+3. Change the Go Api url to the Mongo Atlas Api Url and build image and deploy container (EC2)
+4. Deploy Node Server with the container (No changes needed for node server) (EC2)
+5. Change the links in the jsonData in the WebApp to access the cloud deployed Api's, run build and deploy on S3
+6. Change the allowed hosts in django and build the image and deploy the container (EC2)
 
 **TODO**
 1) Fancy the readme.md file

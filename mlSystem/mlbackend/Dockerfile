@@ -35,20 +35,26 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
 RUN pip3 install --upgrade pip
 RUN pip3 install pipenv
 
-RUN git clone https://github.com/thtrieu/darkflow
-RUN cd darkflow
+RUN pip3 install requests
+RUN pip3 install urllib3
+
 RUN pip3 install Cython
 RUN pip3 install numpy
 RUN pip3 install tensorflow==1.12.0
 RUN pip3 install opencv-python
-RUN pip3 install .
-RUN python setup.py build_ext --inplace
+RUN pip3 install gunicorn
+
+RUN git clone https://github.com/thtrieu/darkflow.git \
+    && cd darkflow \
+    && pip install .
 
 RUN pip3 install keras==2.2.4
 RUN pip3 install Pillow
+RUN pip3 install django-cors-headers
+RUN pip3 install tqdm
+
 
 # Install project dependencies
-RUN pipenv install --skip-lock --system --dev
 
-EXPOSE 8888
-CMD gunicorn mlbackend.wsgi:application --bind 0.0.0.0:$PORT
+EXPOSE 8000
+CMD gunicorn mlbackend.wsgi:application --bind 0.0.0.0:$PORT --timeout 90

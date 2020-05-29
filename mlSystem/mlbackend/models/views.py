@@ -113,6 +113,28 @@ def get_iou(bb1, bb2):
     assert iou <= 1.0
     return iou
 
+def iouForImageTextBoxPP(top,bottom,coordinates):
+            # Calculate IoU here with top and bottom, compare each drawn image with top and bottom, select the max IoU
+            bb2 = {}
+            bb2['x1'] = top[0]
+            bb2['x2'] = bottom[0]
+            bb2['y1'] = top[1]
+            bb2['y2'] = bottom[1]
+
+            currentIou = 0
+            for boxes in coordinates:
+                boxesarr = boxes.split(" ")
+                top = ast.literal_eval(boxesarr[0])
+                bottom = ast.literal_eval(boxesarr[1])
+                bb1 = {}
+                bb1['x1'] = top[0]
+                bb1['x2'] = bottom[0]
+                bb1['y1'] = top[1]
+                bb1['y2'] = bottom[1]
+                result = get_iou(bb1,bb2)
+                currentIou = max(result,currentIou)
+            return currentIou
+
 def iouForImage(top,bottom,coordinates,label,annotationsLabel):
             # Calculate IoU here with top and bottom, compare each drawn image with top and bottom, select the max IoU
             # Computer Label
@@ -160,6 +182,8 @@ def dividetheframes(request):
     decodeddata = request.body.decode('utf-8')
     dictdata = ast.literal_eval(decodeddata)
     username = dictdata["userName"]
+    serverurl = dictdata["server"]
+    apiurl = dictdata["api"]
 
     # Video input
     vid_name = dictdata["videoName"]
@@ -218,7 +242,7 @@ def dividetheframes(request):
         headers = {
             'username': username,
         }
-        response = requests.request("POST", 'http://localhost:4000/upload', files=files, headers=headers)
+        response = requests.request("POST", serverurl+'/upload', files=files, headers=headers)
 
     # Adding to DB through API
     fileNames = ""
@@ -229,7 +253,7 @@ def dividetheframes(request):
             fileNames = fileNames + ","+images
 
     sendImageDataToApi = {'username':username,'filenames':fileNames}
-    response = requests.request("POST","http://localhost:8080/insertimagedata",json = {'username':username,'filenames':fileNames})
+    response = requests.request("POST",apiurl+"/insertimagedata",json = {'username':username,'filenames':fileNames})
 
     context = {"data":"data"}
     return render(request, 'index.html', context)
@@ -243,8 +267,10 @@ def yolo(request):
     imagename = dictdata["imageName"]
     imageurl = dictdata["imageUrl"]
     coordinates = dictdata["Coordinates"]
-    imagetype = imagename.split('.')[1]
+    serverurl = dictdata["server"]
+    apiurl = dictdata["api"]
     annotationsLabel = dictdata["annotationLabels"]
+    imagetype = imagename.split('.')[1]
     saveimageindjango = 'assets/yoloOutput_'+username+"_"+imagename
 
     # Pre-processing variables
@@ -290,6 +316,8 @@ def yolo(request):
     # Balance the difference if the algorithm has missed any annotated objects and find average
     IoU = balanceDifference(count,numberOfAnnotation,IoU)
     averageIoU = np.mean(IoU)
+    print("process complete")
+
 
     # Sending to NodeServer
     elapsed_time = time.time() - start_time
@@ -298,14 +326,16 @@ def yolo(request):
     headers = {
         'username': username,
     }
-    response = requests.request("POST", 'http://localhost:4000/upload', files=files, headers=headers)
+    response = requests.request("POST", serverurl+'/upload', files=files, headers=headers)
 
     # Saving IoU
     headers = {
         'username': username,
         'data' : str(averageIoU),
     }
-    response = requests.request("POST", 'http://localhost:4000/saveIoUYolo',files=files,headers=headers)
+    response = requests.request("POST", serverurl+'/saveIoUYolo',files=files,headers=headers)
+    print("return complete")
+
     context = {"data":"data"}
     return render(request, 'index.html', context)
 
@@ -319,6 +349,8 @@ def textBoxPP(request):
     imageurl = dictdata["imageUrl"]
     coordinates = dictdata["Coordinates"]
     annotationLabels = dictdata["annotationLabels"]
+    serverurl = dictdata["server"]
+    apiurl = dictdata["api"]
     imagetype = imagename.split('.')[1]
 
     start_time = time.time()
@@ -376,7 +408,7 @@ def textBoxPP(request):
         for values in xy:
             top = (values[0][0], values[0][1])
             bottom = (values[2][0], values[2][1])
-            IoU.append(iouForImage(top,bottom,coordinates))
+            IoU.append(iouForImageTextBoxPP(top,bottom,coordinates))
 
         if len(boxes) == 0:
             boxes = np.empty((0,8))
@@ -384,7 +416,7 @@ def textBoxPP(request):
     # Balance the difference if the algorithm has missed any annotated objects and find average
     IoU = balanceDifference(count,numberOfAnnotation,IoU)
     averageIoU = np.mean(IoU)
-
+    print("process complete")
     # Saving to backend
     saveimageindjango = 'assets/textBoxPPOutput_'+username+"_"+imagename
     cv2.imwrite(saveimageindjango, img1)
@@ -396,13 +428,14 @@ def textBoxPP(request):
     }
 
     # Sending to NodeServer
-    response = requests.request("POST", 'http://localhost:4000/upload', files=files, headers=headers)
+    response = requests.request("POST", serverurl+'/upload', files=files, headers=headers)
     headers = {
         'username': username,
         'data' : str(averageIoU),
     }
     # Saving IoU
-    response = requests.request("POST", 'http://localhost:4000/saveIoUTextBoxPP',files=files,headers=headers)
+    response = requests.request("POST", serverurl+'/saveIoUTextBoxPP',files=files,headers=headers)
+    print("return complete")
 
     context = {"data":"data"}
     return render(request, 'index.html', context)

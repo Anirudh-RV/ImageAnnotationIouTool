@@ -1,9 +1,6 @@
 """Tools for vizualisation of convolutional neural network filter in keras models."""
 
 import numpy as np
-import matplotlib.pyplot as plt
-import matplotlib.cm as cm
-from mpl_toolkits.axes_grid1 import make_axes_locatable
 import itertools
 
 

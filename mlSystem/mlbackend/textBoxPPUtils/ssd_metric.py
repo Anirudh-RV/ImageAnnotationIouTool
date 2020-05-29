@@ -1,7 +1,6 @@
 """Tools for model evaluation."""
 
 import numpy as np
-from mpl_toolkits.axes_grid1 import make_axes_locatable
 import itertools
 
 from ssd_utils import iou

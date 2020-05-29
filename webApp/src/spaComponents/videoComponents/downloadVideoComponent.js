@@ -50,7 +50,9 @@ divideTheFrames = (type,name,current,total) =>{
     'videoUrl':videoUrl,
     'imageType':imageType,
     'low':low,
-    'high':high
+    'high':high,
+    'server':this.nodeServerUrl,
+    'api':this.goApiUrl
   })
   .then(res => { // then print response status
       //toast.success('upload success')

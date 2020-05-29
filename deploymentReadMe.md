@@ -1,3 +1,13 @@
+# Deployment steps
+NOTE: Run 4 different containers to get links in advance
+1. When deploying the website using AWS or other cloud services, configure the components to the
+particular URLs
+2. Change Mongo Atlas allowed hosts to the Go API url (Mongo Atlas cloud Api)
+3. Change the Go Api url to the Mongo Atlas Api Url and build image and deploy container (EC2)
+4. Deploy Node Server with the container (No changes needed for node server) (EC2)
+5. Change the links in the jsonData in the WebApp to access the cloud deployed Api's, run build and deploy on S3
+6. Change the allowed hosts in django and build the image and deploy the container (EC2)
+
 # AWS COMMANDS
 **S3 - ReactJS set up with CloudFront for URL redirecting**
 1. Create bucket
@@ -16,12 +26,6 @@
 &nbsp;  ]<br />
 }<br />
 <br />
-
-**NOTE**
-<br />
-The \ in the bucket policy is ignored before asterisk and angle brackets of BUCKET-NAME
-<br />
-<br />
 4. build the static website : Change all the urls according to the EC2 instances
 npm run build
 <br />
@@ -31,13 +35,11 @@ npm run build
 <br />
 
 **To run : WebApp on EC2**
-1. ssh -i CreatedKey.pem ec2-user@54.175.125.107
+1. ssh -i CreatedKey.pem ec2-user@IP-Address
 2. sudo service docker start
-3. docker run -p 80:3000 anirudhrv1234/reactjs
-
+3. docker run -p 80:3000 dockeruser/dockercontainer
 
 **CloudFront**
-
 1. Setup a user using the CloudFront serivce
 2. Set the origin domain name as : bucketname.s3.amazonaws.com
 3. Set the origin path : https://bucketname.s3.amazonaws.com/index.html
@@ -52,41 +54,48 @@ Ex: d3sn2yu94s8xdo.cloudfront.net
 The solution is go to Cloud front -> Select you cloud distribution detail -> select tab General -> Select edit -> In this form Setup the property Default Root Object to index.html
 
 **EC2 - GO API IP:GET IP WHEN INSTANCE IS RUNNING**
-
 1. Create an EC2 instance and allow HTTP:80 connections in the security options
-2. chmod 400 goapikey.pem
-3. ssh -i goapikey.pem ec2-user@<IP-Address>
+2. chmod 400 authenticationkey.pem
+3. ssh -i authenticationkey.pem ec2-user@Ip-Address
 4. sudo yum update -y
 5. sudo yum install -y docker
 6. sudo service docker start
 7. sudo usermod -a -G docker ec2-user
 8. exit
-9. ssh -i goapikey.pem ec2-user@54.197.42.159
-10. docker run -p 80:8080 anirudhrv1234/goapi
+9. ssh -i authenticationkey.pem ec2-user@Ip-Address
+10. docker run -p 80:8080 dockeruser/dockercontainer
 *Important :*
 update atlas with the public IP of Go API for Permissions
 
-**To run : Update atlas with the public key for Permissions**
-1. ssh -i goapikey.pem ec2-user@34.227.160.149
-2. sudo service docker start
-3. docker run -p 80:8080 anirudhrv1234/goapi
-
 **EC2 - NodeServer IP: GET IP WHEN INSTANCE IS RUNNING**
 1. Create an EC2 instance and allow HTTP:80 connections in the security options
-2. chmod 400 Detectanamolyoutputvideo.pem
-3. ssh -i Detectanamolyoutputvideo.pem ec2-user@<IP-Address>
+2. chmod 400 authenticationkey.pem
+3. ssh -i authenticationkey.pem ec2-user@Ip-Address
 4. sudo yum update -y
 5. sudo yum install -y docker
 6. sudo service docker start
 7. sudo usermod -a -G docker ec2-user
 8. exit
-9. ssh -i Detectanamolyoutputvideo.pem ec2-user@<IP-Address>
-10. docker run -p 80:4000 anirudhrv1234/nodeserver
+9. ssh -i authenticationkey.pem ec2-user@Ip-Address
+10. docker run -p 80:4000 dockeruser/dockercontainer
+
+**EC2 - Django API IP:GET IP WHEN INSTANCE IS RUNNING**
+
+1. Create an EC2 instance and allow HTTP:80 connections in the security options
+2. chmod 400 authenticationkey.pem
+3. ssh -i authenticationkey.pem ec2-user@Ip-Address
+4. sudo yum update -y
+5. sudo yum install -y docker
+6. sudo service docker start
+7. sudo usermod -a -G docker ec2-user
+8. exit
+9. ssh -i authenticationkey.pem ec2-user@Ip-Address
+10. docker run -p 80:8080 dockeruser/dockercontainer
 
 **To run :**
-1. ssh -i Detectanamolyoutputvideo.pem ec2-user@52.204.217.170
+1. ssh -i authenticationkey.pem ec2-user@Ip-Address
 2. sudo service docker start
-3. docker run -p 80:4000 anirudhrv1234/nodeserver
+3. docker run -p 80:4000 dockeruser/dockercontainer
 
 **For localtunnel (Making local server port publicly avaiable):**
 1. brew install ruby
@@ -113,21 +122,21 @@ To run:
 Use Mongo Atlas for cloud monogoDB
 
 **To run GO API**
-1. To build: docker build -t anirudhrv1234/goapi .
+1. To build: docker build -t dockeruser/dockercontainer .
 
-2. Remote: docker run --rm -it -p 80:8080 anirudhrv1234/goapi
+2. Remote: docker run --rm -it -p 80:8080 dockeruser/dockercontainer
 
-3. Local: docker run --rm -p 8080:8080 anirudhrv1234/goapi
+3. Local: docker run --rm -p 8080:8080 dockeruser/dockercontainer
 
 **To run NodeServer (Node JS)**
-1. To build: docker build -t anirudhrv1234/nodeserver .
+1. To build: docker build -t dockeruser/dockercontainer .
 
-2. Local: docker run -p 80:4000 anirudhrv1234/nodeserver
+2. Local: docker run -p 80:4000 dockeruser/dockercontainer
 
 **To run Client (React JS)**
-1. To build: docker build -t anirudhrv1234/reactjs .
+1. To build: docker build -t dockeruser/dockercontainer .
 
-2. Local: docker run -p 80:3000 anirudhrv1234/reactjs
+2. Local: docker run -p 80:3000 dockeruser/dockercontainer
 
 **Commands to run a Docker app (GENERAL):**
 
@@ -162,8 +171,7 @@ Use Mongo Atlas for cloud monogoDB
 1. docker system prune
 
 **To stop an image**
-1. docker stop CONTAINERIDNAMES
-
+1. docker stop CONTAINER_ID_NAMES
 <br />
 **RAW**
 PublicReadForGetBucketObjects

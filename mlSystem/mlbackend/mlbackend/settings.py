@@ -136,4 +136,5 @@ STATICFILES_DIRS = (
     os.path.join(BASE_DIR,'assets'),
 )
 
-ALLOWED_HOSTS = ['10.60.2.32', 'localhost', '127.0.0.1','172.20.10.3','http://localhost:3000','192.168.1.8']
+# Add the url of the website from where django will be called
+ALLOWED_HOSTS = ['localhost', '127.0.0.1','172.20.10.3','http://localhost:3000','192.168.1.8']

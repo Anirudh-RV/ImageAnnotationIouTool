@@ -263,7 +263,9 @@ getYoloMlOutPut = () =>{
     'imageName':imageName,
     'imageUrl':url,
     'Coordinates':this.getCoordinates(),
-    'annotationLabels':this.annotationHashMap
+    'annotationLabels':this.annotationHashMap,
+    'server':this.nodeServerUrl,
+    'api':this.goApiUrl
   })
   .then(res => {
       window.open(mlOutPutUrl, '_blank');
@@ -278,17 +280,20 @@ getTextBoxPPOutPut = () =>{
   var imageName = this.state.imageNames[this.state.index]
   var url = this.nodeServerUrl+"/img/"+this.props.name+"/images/"+this.state.imageNames[this.state.index]
   var mlOutPutUrl = this.nodeServerUrl+"/img/"+this.props.name+"/images/TextBoxPPOutput_"+this.props.name+"_"+imageName
+  var openmlOutPutUrl = this.nodeServerUrl+"/img/"+this.props.name+"/images/textBoxPPOutput_"+this.props.name+"_"+imageName
 
   axios.post(this.pythonBackEndUrl+"/textboxpp/", {
     'userName':userName,
     'imageName':imageName,
     'imageUrl':url,
     'Coordinates':this.getCoordinates(),
-    'annotationLabels':this.annotationHashMap
+    'annotationLabels':this.annotationHashMap,
+    'server':this.nodeServerUrl,
+    'api':this.goApiUrl
 
   })
   .then(res => {
-      window.open(mlOutPutUrl, '_blank');
+      window.open(openmlOutPutUrl, '_blank');
     })
     .catch(err => { // then print response status
     console.log(err)
