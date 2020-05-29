@@ -25,14 +25,14 @@ particular URLs
 &nbsp;&nbsp;    }<br />
 &nbsp;  ]<br />
 }<br />
-<br />
 4. build the static website : Change all the urls according to the EC2 instances
 npm run build
 <br />
 5. Copy and paste the contents of build/ into S3
 <br />
 6. Check the index.html file for Link
-
+<br />
+<br />
 **To run : WebApp on EC2**
 1. ssh -i CreatedKey.pem ec2-user@IP-Address
 2. sudo service docker start
