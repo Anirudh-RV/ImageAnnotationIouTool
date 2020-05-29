@@ -12,27 +12,11 @@ particular URLs
 **S3 - ReactJS set up with CloudFront for URL redirecting**
 1. Create bucket
 2. Allow public access
-3. Change bucket policy to : (Permissions/bucketpolicy)<br />
-{<br />
-&nbsp;&nbsp;  "Version": "2012-10-17",<br />
-&nbsp;&nbsp;"Statement":[<br />
-&nbsp;&nbsp;{<br />
-&nbsp;&nbsp;&nbsp;"Sid":"AddPerm",<br />
-&nbsp;&nbsp;&nbsp;      "Effect":"Allow",<br />
-&nbsp;&nbsp;&nbsp;      "Principal": "\*",<br />
-&nbsp;&nbsp;&nbsp;      "Action":["s3:GetObject"],<br />
-&nbsp;&nbsp;&nbsp;      "Resource":["arn:aws:s3:::\<BUCKET-NAME\>/\*"]<br />
-&nbsp;&nbsp;    }<br />
-&nbsp;  ]<br />
-}<br />
-4. build the static website : Change all the urls according to the EC2 instances
-npm run build
-<br />
+3. Change bucket policy to : (Permissions/bucketpolicy) : Please check file-bucketpolicy
+4. build the static website : Change all the urls according to the EC2 instances :npm run build
 5. Copy and paste the contents of build/ into S3
-<br />
 6. Check the index.html file for Link
-<br />
-<br />
+
 **To run : WebApp on EC2**
 1. ssh -i CreatedKey.pem ec2-user@IP-Address
 2. sudo service docker start
@@ -103,7 +87,7 @@ update atlas with the public IP of Go API for Permissions
 4. lt -h "http://serverless.social" -p <port number>
 5. Update the allowed hosts in Django before running
 
-To run:
+**To run :**
 1. lt -h "http://serverless.social" -p <port number>
 2. Update Django server allowed hosts in setting.py
 
@@ -171,10 +155,6 @@ Use Mongo Atlas for cloud monogoDB
 
 **To stop an image**
 1. docker stop CONTAINER_ID_NAMES
-<br />
-**RAW**
-<br />
-Please find RAW in bucketpolicy
 
 # Resources :
 1. https://docs.docker.com/docker-for-mac/
