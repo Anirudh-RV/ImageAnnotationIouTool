@@ -32,7 +32,6 @@ npm run build
 5. Copy and paste the contents of build/ into S3
 <br />
 6. Check the index.html file for Link
-<br />
 
 **To run : WebApp on EC2**
 1. ssh -i CreatedKey.pem ec2-user@IP-Address
