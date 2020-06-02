@@ -17,6 +17,12 @@
 
 3. Place the weights in the Django/mlbackend folder with the other .py files
 
+**To run Everything**
+1. source startApp.sh
+2. Press enter once everything runs to get control back of the terminal
+3. Jobs will be running in the background
+4. To verify, run command jobs in the terminal to see the processes running
+
 **WebApp (Reactjs) : port-3000**
 1. cd Client
 2. npm install
