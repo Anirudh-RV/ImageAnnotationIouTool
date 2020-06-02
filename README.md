@@ -39,6 +39,9 @@
 
 **Server (NodeJS): port-4000**
 1. cd NodeServer
+To setup npm_modules:
+1. source install.sh
+**(OR)**
 2. npm install
 3. npm install express-zip
 4. npm install multer
@@ -46,6 +49,7 @@
 6. npm install cors
 7. npm install express
 8. npm install serve-index
+**To start server**
 9. node server.js
 
 **if npm build is failing, install by : npm install <absent library>**
