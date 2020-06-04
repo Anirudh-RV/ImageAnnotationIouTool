@@ -1,13 +1,13 @@
-import React, { Component } from 'react';
-import '../../cssComponents/App.css';
-import axios from 'axios';
-import Button from 'react-bootstrap/Button';
-import {FormGroup, FormControl} from "react-bootstrap";
+import React, { Component } from 'react'
+import '../../cssComponents/App.css'
+import axios from 'axios'
+import Button from 'react-bootstrap/Button'
+import {FormGroup, FormControl} from "react-bootstrap"
 
 class WorkingArea extends Component {
 
 constructor(){
-  super();
+  super()
   this.state= {
     index:0,
   }
@@ -19,29 +19,29 @@ constructor(){
 }
 
 onButton = () => {
-  this.flag = true;
-  this.initDraw(this.divCanvas,this.flag,this.divButtons,this.selectedBox);
+  this.flag = true
+  this.initDraw(this.divCanvas,this.flag,this.divButtons,this.selectedBox)
 
 }
 
 offButton = () => {
-  this.flag= false;
-  this.initDraw(this.divCanvas,this.flag,this.divButtons,this.selectedBox);
+  this.flag= false
+  this.initDraw(this.divCanvas,this.flag,this.divButtons,this.selectedBox)
 }
 
 deleteComponent = () =>{
   var div = this.divCanvas // getElementById, etc
-  var selectedBox = this.selectedBox.innerHTML;
+  var selectedBox = this.selectedBox.innerHTML
   for (var i=1; i<div.childNodes.length; i++) {
-    var child = div.childNodes[i];
+    var child = div.childNodes[i]
     if(child.Id == selectedBox){
-      var x1 = child.offsetLeft;
-      var x2 = child.offsetLeft + child.offsetWidth;
-      var y1 = child.offsetTop;
-      var y2 = child.offsetTop + child.offsetHeight;
+      var x1 = child.offsetLeft
+      var x2 = child.offsetLeft + child.offsetWidth
+      var y1 = child.offsetTop
+      var y2 = child.offsetTop + child.offsetHeight
       var dataDrawn = "("+x1+","+(y1-125)+") ("+x2+","+(y2-125)+")"
-      delete this.annotationHashMap[dataDrawn];
-      div.removeChild(child);
+      delete this.annotationHashMap[dataDrawn]
+      div.removeChild(child)
     }
   }
 }
@@ -50,40 +50,40 @@ getCoordinates = () =>{
   var div = this.divCanvas // getElementById, etc
   var coordinates = ""
   for (var i=1; i<div.childNodes.length; i++) {
-    var child = div.childNodes[i];
-      var x1 = child.offsetLeft;
-      var x2 = child.offsetLeft + child.offsetWidth;
-      var y1 = child.offsetTop;
-      var y2 = child.offsetTop + child.offsetHeight;
+    var child = div.childNodes[i]
+      var x1 = child.offsetLeft
+      var x2 = child.offsetLeft + child.offsetWidth
+      var y1 = child.offsetTop
+      var y2 = child.offsetTop + child.offsetHeight
       var dataDrawn = "("+x1+","+(y1-125)+") ("+x2+","+(y2-125)+")"
       coordinates = coordinates + "\n"+dataDrawn
   }
-  return coordinates;
+  return coordinates
 }
 
 assignAnnotation = () =>{
   var div = this.divCanvas // getElementById, etc
-  var selectedBox = this.selectedBox.innerHTML;
-  var annotationLabel = this.annotationLabel.value;
+  var selectedBox = this.selectedBox.innerHTML
+  var annotationLabel = this.annotationLabel.value
   for (var i=1; i<div.childNodes.length; i++) {
-    var child = div.childNodes[i];
+    var child = div.childNodes[i]
     if(child.Id == selectedBox){
-      var x1 = child.offsetLeft;
-      var x2 = child.offsetLeft + child.offsetWidth;
-      var y1 = child.offsetTop;
-      var y2 = child.offsetTop + child.offsetHeight;
+      var x1 = child.offsetLeft
+      var x2 = child.offsetLeft + child.offsetWidth
+      var y1 = child.offsetTop
+      var y2 = child.offsetTop + child.offsetHeight
       var dataDrawn = "("+x1+","+(y1-125)+") ("+x2+","+(y2-125)+")"
-      this.annotationHashMap[dataDrawn] = annotationLabel;
-      var para = document.createElement("p");
-      var node = document.createTextNode(annotationLabel);
+      this.annotationHashMap[dataDrawn] = annotationLabel
+      var para = document.createElement("p")
+      var node = document.createTextNode(annotationLabel)
       if(child.childNodes.length == 0){
-      para.appendChild(node);
-      child.appendChild(para);
+      para.appendChild(node)
+      child.appendChild(para)
       }
       else{
-        child.innerHTML = "";
-        para.appendChild(node);
-        child.appendChild(para);
+        child.innerHTML = ""
+        para.appendChild(node)
+        child.appendChild(para)
       }
     }
   }
@@ -93,78 +93,78 @@ initDraw= (drawElement,flag,divButtons,selectedBox) => {
 
     function eraseComponent (x,y) {
       var div = drawElement // getElementById, etc
-      var children = div.childNodes;
-      var elements = [];
-      var areaOfCoverage = 0;
+      var children = div.childNodes
+      var elements = []
+      var areaOfCoverage = 0
 
       for (var i=1; i<div.childNodes.length; i++) {
-        var child = div.childNodes[i];
-        var x1 = child.offsetLeft;
-        var x2 = child.offsetLeft + child.offsetWidth;
-        var y1 = child.offsetTop;
-        var y2 = child.offsetTop + child.offsetHeight;
-        var checkCoverage = findPoint(x1,y1,x2,y2,x,y);
+        var child = div.childNodes[i]
+        var x1 = child.offsetLeft
+        var x2 = child.offsetLeft + child.offsetWidth
+        var y1 = child.offsetTop
+        var y2 = child.offsetTop + child.offsetHeight
+        var checkCoverage = findPoint(x1,y1,x2,y2,x,y)
 
         if (checkCoverage){
-          var currentCoverage = (x2-x1) * (y2-y1);
+          var currentCoverage = (x2-x1) * (y2-y1)
           if(areaOfCoverage!=0){
             if(currentCoverage<areaOfCoverage){
-              areaOfCoverage = currentCoverage;
-              selectedBox.innerHTML = child.Id;
-              child.style.borderColor = "blue";
+              areaOfCoverage = currentCoverage
+              selectedBox.innerHTML = child.Id
+              child.style.borderColor = "blue"
             }
             else{
               // lies outside
             }
           }
           else{
-            areaOfCoverage = currentCoverage;
-            selectedBox.innerHTML = child.Id;
-            child.style.borderColor = "blue";
+            areaOfCoverage = currentCoverage
+            selectedBox.innerHTML = child.Id
+            child.style.borderColor = "blue"
           }
         }
         else{
           // lies outside
         }
-        //div.removeChild(child);
+        //div.removeChild(child)
       }
     }
 
     function findPoint(x1,y1,x2,y2,x,y){
         if (x > x1 && x < x2 && y > y1 && y < y2){
-            return true;
+            return true
           }
-        return false;
+        return false
     }
 
     function setMousePosition(e) {
         var ev = e || window.event; //Moz || IE
         if (ev.pageX) { //Moz
-            mouse.x = ev.pageX;
-            mouse.y = ev.pageY;
+            mouse.x = ev.pageX
+            mouse.y = ev.pageY
         }
         else if (ev.clientX) { //IE
-            mouse.x = ev.clientX ;
-            mouse.y = ev.clientY ;
+            mouse.x = ev.clientX
+            mouse.y = ev.clientY
         }
-    };
+    }
 
     var mouse = {
         x: 0,
         y: 0,
         startX: 0,
         startY: 0
-    };
-    var element = null;
+    }
+    var element = null
     drawElement.onmousemove = function (e) {
       // draw only when flad is On
       if(flag) {
-        setMousePosition(e);
+        setMousePosition(e)
         if (element !== null) {
-            element.style.width = Math.abs(mouse.x - mouse.startX) + 'px';
-            element.style.height = Math.abs(mouse.y - mouse.startY) + 'px';
-            element.style.left = (mouse.x - mouse.startX < 0) ? mouse.x + 'px' : mouse.startX + 'px';
-            element.style.top = (mouse.y - mouse.startY < 0) ? mouse.y + 'px' : mouse.startY + 'px';
+            element.style.width = Math.abs(mouse.x - mouse.startX) + 'px'
+            element.style.height = Math.abs(mouse.y - mouse.startY) + 'px'
+            element.style.left = (mouse.x - mouse.startX < 0) ? mouse.x + 'px' : mouse.startX + 'px'
+            element.style.top = (mouse.y - mouse.startY < 0) ? mouse.y + 'px' : mouse.startY + 'px'
         }
       }
     }
@@ -172,39 +172,39 @@ initDraw= (drawElement,flag,divButtons,selectedBox) => {
     drawElement.onclick = function (e) {
       if(flag) {
         if (element !== null) {
-            element = null;
-            drawElement.style.cursor = "default";
-            this.EndX = mouse.x;
-            this.EndY = mouse.y - 125;
+            element = null
+            drawElement.style.cursor = "default"
+            this.EndX = mouse.x
+            this.EndY = mouse.y - 125
         }
         else {
-            var id = Math.floor((Math.random() * 10000) + 1);
-            mouse.startX = mouse.x;
-            mouse.startY = mouse.y;
-            element = document.createElement('div');
-            element.style.borderColor = "red";
-            element.className = 'rectangle';
-            element.name = "Boxes";
-            element.Id = "BoxesID_"+id;
-            element.style.left = mouse.x + 'px';
-            element.style.top = mouse.y + 'px';
-            element.style.borderWidth = "thick";
+            var id = Math.floor((Math.random() * 10000) + 1)
+            mouse.startX = mouse.x
+            mouse.startY = mouse.y
+            element = document.createElement('div')
+            element.style.borderColor = "red"
+            element.className = 'rectangle'
+            element.name = "Boxes"
+            element.Id = "BoxesID_"+id
+            element.style.left = mouse.x + 'px'
+            element.style.top = mouse.y + 'px'
+            element.style.borderWidth = "thick"
             drawElement.appendChild(element)
-            drawElement.style.cursor = "crosshair";
-            this.StartX = mouse.x;
-            this.StartY = mouse.y - 125;
+            drawElement.style.cursor = "crosshair"
+            this.StartX = mouse.x
+            this.StartY = mouse.y - 125
       }
     }
     else {
       var div = drawElement
-      var children = div.childNodes;
+      var children = div.childNodes
 
       for (var i=1; i<div.childNodes.length; i++) {
-        var child = div.childNodes[i];
-        child.style.borderColor = "red";
+        var child = div.childNodes[i]
+        child.style.borderColor = "red"
       }
-      setMousePosition(e);
-      eraseComponent(mouse.x,mouse.y);
+      setMousePosition(e)
+      eraseComponent(mouse.x,mouse.y)
     }
   }
 }
@@ -225,29 +225,29 @@ saveAsTextFile = () =>{
 
 nextImage= () => {
   // clearing out previously draw boxes and adding back the image tag
-  this.divCanvas.innerHTML = "";
-  this.divCanvas.appendChild(this.ImageTag);
+  this.divCanvas.innerHTML = ""
+  this.divCanvas.appendChild(this.ImageTag)
   if(this.state.index>this.state.imageNames.length-2) {
     // Do nothing
   }
   else {
     this.state.index = this.state.index + 1
     if(this.ImageTag) {
-     this.ImageTag.src = this.nodeServerUrl+"/img/"+this.props.name+"/images/"+this.state.imageNames[this.state.index];
+     this.ImageTag.src = this.nodeServerUrl+"/img/"+this.props.name+"/images/"+this.state.imageNames[this.state.index]
       }
     }
 }
 
 prevImage= () => {
   // clearing out previously draw boxes and adding back the image tag
-  this.divCanvas.innerHTML = "";
-  this.divCanvas.appendChild(this.ImageTag);
+  this.divCanvas.innerHTML = ""
+  this.divCanvas.appendChild(this.ImageTag)
   if(this.state.index == 0) {
   }
   else {
   this.state.index = this.state.index - 1
   if(this.ImageTag) {
-   this.ImageTag.src = this.nodeServerUrl+"/img/"+this.props.name+"/images/"+this.state.imageNames[this.state.index];
+   this.ImageTag.src = this.nodeServerUrl+"/img/"+this.props.name+"/images/"+this.state.imageNames[this.state.index]
     }
   }
 }
@@ -268,7 +268,7 @@ getYoloMlOutPut = () =>{
     'api':this.goApiUrl
   })
   .then(res => {
-      window.open(mlOutPutUrl, '_blank');
+      window.open(mlOutPutUrl, '_blank')
     })
     .catch(err => { // then print response status
     console.log(err)
@@ -293,7 +293,7 @@ getTextBoxPPOutPut = () =>{
 
   })
   .then(res => {
-      window.open(openmlOutPutUrl, '_blank');
+      window.open(openmlOutPutUrl, '_blank')
     })
     .catch(err => { // then print response status
     console.log(err)
@@ -309,7 +309,7 @@ apiFuncGetImages = (userName) => {
        var imageNames = res.data.ImageNames
        this.state.imageNames = imageNames
          if(this.ImageTag) {
-          this.ImageTag.src = this.nodeServerUrl+"/img/"+this.props.name+"/images/"+this.state.imageNames[this.state.index];
+          this.ImageTag.src = this.nodeServerUrl+"/img/"+this.props.name+"/images/"+this.state.imageNames[this.state.index]
        }
     })
     .catch(err => { // then print response status
@@ -318,10 +318,10 @@ apiFuncGetImages = (userName) => {
 }
 
 wait = (ms) =>{
-  var d = new Date();
-  var d2 = null;
+  var d = new Date()
+  var d2 = null
   do { d2 = new Date(); }
-  while(d2-d < ms);
+  while(d2-d < ms)
 }
 
 downloadComponent = (url,type) =>{
@@ -331,13 +331,13 @@ downloadComponent = (url,type) =>{
   responseType: 'blob', // important
   })
   .then((response) => {
-   const url = window.URL.createObjectURL(new Blob([response.data]));
-   const link = document.createElement('a');
-   link.href = url;
+   const url = window.URL.createObjectURL(new Blob([response.data]))
+   const link = document.createElement('a')
+   link.href = url
    link.setAttribute('download', this.props.name+type+'.zip'); //or any other extension
-   document.body.appendChild(link);
-   link.click();
-  });
+   document.body.appendChild(link)
+   link.click()
+  })
 }
 
 downloadFiles = () =>{
@@ -346,8 +346,8 @@ downloadFiles = () =>{
     })
     .then(res => {
       // after creating the zip file, now download
-      this.wait(5000);
-      this.downloadComponent(this.nodeServerUrl+'/img/'+this.props.name+'.zip','Annotations');
+      this.wait(5000)
+      this.downloadComponent(this.nodeServerUrl+'/img/'+this.props.name+'.zip','Annotations')
     })
     .catch(err => {
     // then print response status
@@ -361,8 +361,8 @@ downloadAllFiles = () =>{
   })
     .then(res => { // then print response status
       // after creating the zip file, now download, delay for zip file creation
-      this.wait(5000);
-      this.downloadComponent(this.nodeServerUrl+'/img/all_'+this.props.name+'.zip','');
+      this.wait(5000)
+      this.downloadComponent(this.nodeServerUrl+'/img/all_'+this.props.name+'.zip','')
     })
     .catch(err => {
     // then print response status
@@ -374,12 +374,12 @@ componentDidMount(){
     // Call GO API to get all the image names of userName
     this.apiFuncGetImages(this.props.name)
     // setting environment variables
-    this.flag = false;
-    this.startX = 0;
-    this.EndX = 0;
-    this.StartY = 0;
-    this.EndY = 0;
-    this.imageTextData = " ";
+    this.flag = false
+    this.startX = 0
+    this.EndX = 0
+    this.StartY = 0
+    this.EndY = 0
+    this.imageTextData = " "
 }
 
 render() {
@@ -449,8 +449,8 @@ render() {
         </div>
         <p hidden ref = {c =>this.selectedBox = c}></p>
       </div>
-    );
+    )
   }
 }
 
-export default WorkingArea;
+export default WorkingArea

@@ -1,12 +1,12 @@
-import React, { Component } from 'react';
-import '../../cssComponents/App.css';
+import React, { Component } from 'react'
+import '../../cssComponents/App.css'
 import Form from 'react-bootstrap/Form'
 import Button from 'react-bootstrap/Button'
-import Bootstrap from "react-bootstrap";
-import {FormGroup, FormControl} from "react-bootstrap";
-import { Link } from 'react-router-dom';
-import axios from 'axios';
-import Cookies from 'universal-cookie';
+import Bootstrap from "react-bootstrap"
+import {FormGroup, FormControl} from "react-bootstrap"
+import { Link } from 'react-router-dom'
+import axios from 'axios'
+import Cookies from 'universal-cookie'
 import IntroBar from './introBar'
 
 class SignUp extends Component {
@@ -14,9 +14,9 @@ class SignUp extends Component {
 
 componentDidMount(){
   // OnLoad function
-  this.accountexists = false;
-  this.userNameExists = false;
-  this.handleEmail.bind(this);
+  this.accountexists = false
+  this.userNameExists = false
+  this.handleEmail.bind(this)
 
   var data = require('../../jsonData/urlData.json'); //(with path)
   this.nodeServerUrl = data.nodeServerUrl
@@ -26,10 +26,10 @@ componentDidMount(){
 
 //addusertodatabase
 signUpUser = () =>{
-    var email = this.emailId.value;
-    var userName = this.userName.value;
-    var fullName = this.fullName.value;
-    var password = this.password.value;
+    var email = this.emailId.value
+    var userName = this.userName.value
+    var fullName = this.fullName.value
+    var password = this.password.value
     //var data = email+","+userName+","+fullName+","+password
     axios.post(this.goApiUrl+"/addusertodatabase",{
       'email':email,
@@ -53,16 +53,16 @@ signUpUser = () =>{
 }
 
 len = (checkvar) => {
-  return checkvar.length;
+  return checkvar.length
 }
 
 validateEmail = (email) => {
-  var re = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-  return re.test(email);
+  var re = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
+  return re.test(email)
 }
 
 checkForExistingUserName = (field,value) =>{
-  //var data = field+","+value;
+  //var data = field+","+value
   var data = {'field':field,'value':value}
   axios.post(this.goApiUrl+"/validateinfo",{
     'field':field,
@@ -71,12 +71,12 @@ checkForExistingUserName = (field,value) =>{
     .then(res => { // then print response status
       if(res.data["message"] == "Yes"){
         // existing emailID
-        this.userNameError.innerHTML = "userName already taken, please try another.";
+        this.userNameError.innerHTML = "userName already taken, please try another."
       }
       else{
         // EmailID,userName,fullName,password : good
         // call signUpUser
-        this.signUpUser();
+        this.signUpUser()
       }
     })
     .catch(err => { // then print response status
@@ -93,11 +93,11 @@ checkForExistingEmail = (field,value,userName) =>{
     .then(res => { // then print response status
       if(res.data["message"] == "Yes"){
         // existing emailID
-        this.emailError.innerHTML = "Already existing email, do you want to login?";
+        this.emailError.innerHTML = "Already existing email, do you want to login?"
       }
       else{
         // EmailID is good, check for userName
-        this.checkForExistingUserName("username",userName);
+        this.checkForExistingUserName("username",userName)
       }
 
     })
@@ -108,77 +108,77 @@ checkForExistingEmail = (field,value,userName) =>{
 
 handleEmail = (email,flag) => {
   if(this.validateEmail(email)){
-  this.emailError.innerHTML = "";
+  this.emailError.innerHTML = ""
 
   // check for exisiting emailId
   }
   else{
-    flag = false;
-    this.emailError.innerHTML = "Invalid emailId";
+    flag = false
+    this.emailError.innerHTML = "Invalid emailId"
   }
-  return flag;
+  return flag
 }
 
 handleuserName = (userName,flag) => {
   if(this.len(userName)>=4){
-  this.userNameError.innerHTML = "";
+  this.userNameError.innerHTML = ""
   }
   else{
-    flag = false;
-    this.userNameError.innerHTML = "Invalid userName";
+    flag = false
+    this.userNameError.innerHTML = "Invalid userName"
   }
-  return flag;
+  return flag
 }
 
 handlefullName = (fullName,flag) => {
   if(this.len(fullName)!=0){
-  this.fullNameError.innerHTML = "";
+  this.fullNameError.innerHTML = ""
   }
   else{
-    flag = false;
-    this.fullNameError.innerHTML = "Please fill your name";
+    flag = false
+    this.fullNameError.innerHTML = "Please fill your name"
   }
-  return flag;
+  return flag
 }
 
 handlepassword = (password,flag) => {
   if(this.len(password)>=6){
-  this.passwordError.innerHTML = "";
+  this.passwordError.innerHTML = ""
   }
   else{
-    flag = false;
-    console.log("Error");
-    this.passwordError.innerHTML = "password too weak";
+    flag = false
+    console.log("Error")
+    this.passwordError.innerHTML = "password too weak"
   }
-  return flag;
+  return flag
 }
 
 handleSubmit = () =>{
-  var email = this.emailId.value;
-  var userName = this.userName.value;
-  var fullName = this.fullName.value;
-  var password = this.password.value;
-  var flag = true;
+  var email = this.emailId.value
+  var userName = this.userName.value
+  var fullName = this.fullName.value
+  var password = this.password.value
+  var flag = true
 
   // validating email
-  flag = this.handleEmail(email,flag);
+  flag = this.handleEmail(email,flag)
 
   // validating userName
-  flag = this.handleuserName(userName,flag);
+  flag = this.handleuserName(userName,flag)
 
   // validating fullName
-  flag = this.handlefullName(fullName,flag);
+  flag = this.handlefullName(fullName,flag)
 
   // validating password
-  flag = this.handlepassword(password,flag);
+  flag = this.handlepassword(password,flag)
 
   if(flag){
     // allow to pass through the API
-    this.checkForExistingEmail("email",email,userName);
+    this.checkForExistingEmail("email",email,userName)
   }
   else{
     // show error (do nothing)
-    console.log("Error");
+    console.log("Error")
   }
 }
 
@@ -243,8 +243,8 @@ render() {
       </div>
     </div>
     </div>
-    );
+    )
   }
 }
 
-export default SignUp;
+export default SignUp

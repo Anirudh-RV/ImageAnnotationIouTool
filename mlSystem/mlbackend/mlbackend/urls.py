@@ -15,12 +15,14 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path
-from models import views as v
+from models import yoloComponent as yc
+from models import textBoxPPComponent as tbppc
+from models import divideFramesComponent as dfc
 from django.conf.urls import include,url
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    url(r'textboxpp/',v.textBoxPP),
-    url(r'yolo/',v.yolo),
-    url(r'dividetheframes/',v.dividetheframes),
+    url(r'textboxpp/',tbppc.textBoxPP),
+    url(r'yolo/',yc.yolo),
+    url(r'dividetheframes/',dfc.dividetheframes),
 ]

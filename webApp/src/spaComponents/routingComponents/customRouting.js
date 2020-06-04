@@ -1,11 +1,11 @@
-import React, { Component } from 'react';
-import { BrowserRouter, Switch, Route, Redirect } from "react-router-dom";
-import { connect } from "react-redux";
-import UploadMultipleFiles from '../imageComponents/uploadMultipleFiles';
-import EditPage from '../imageComponents/editPage';
-import DownloadVideoComponent from '../videoComponents/downloadVideoComponent';
-import WelcomePage from '../credentialsComponents/welcomePage';
-import Error from '../credentialsComponents/Error';
+import React, { Component } from 'react'
+import { BrowserRouter, Switch, Route, Redirect } from "react-router-dom"
+import { connect } from "react-redux"
+import UploadMultipleFiles from '../imageComponents/uploadMultipleFiles'
+import EditPage from '../imageComponents/editPage'
+import DownloadVideoComponent from '../videoComponents/downloadVideoComponent'
+import WelcomePage from '../credentialsComponents/welcomePage'
+import Error from '../credentialsComponents/Error'
 
 import { useLocation } from 'react-router-dom'
 
@@ -33,7 +33,7 @@ class CustomRouting extends Component {
              </Switch>
           </div>
         </BrowserRouter>
-      );
+      )
     }
     else{
       console.log("failure")
@@ -42,7 +42,7 @@ class CustomRouting extends Component {
               <Redirect to="/" />
               <Route component={Error} />
          </div>
-      );
+      )
     }
   }
   catch(e){
@@ -51,8 +51,8 @@ class CustomRouting extends Component {
               <Redirect to="/" />
               <Route component={Error} />
          </div>
-      );
+      )
     }
   }
 }
-export default CustomRouting;
+export default CustomRouting

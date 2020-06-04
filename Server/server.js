@@ -1,23 +1,23 @@
-var express = require('express');
-var app = express();
+var express = require('express')
+var app = express()
 var multer = require('multer')
-var cors = require('cors');
-var path = require('path');
+var cors = require('cors')
+var path = require('path')
 const bodyParser = require('body-parser')
-var zip = require('express-zip');
-const child_process = require('child_process');
-var zipFolder = require('zip-folder');
-var serveIndex = require('serve-index');
-var port = 4000;
+var zip = require('express-zip')
+const child_process = require('child_process')
+var zipFolder = require('zip-folder')
+var serveIndex = require('serve-index')
+var port = 4000
 
 app.use(cors())
 
 //Serve static content for the app from the "public" directory in the application directory.
-app.use(express.static(__dirname + '/public'));
-app.use('/static', express.static(__dirname + '/public'));
+app.use(express.static(__dirname + '/public'))
+app.use('/static', express.static(__dirname + '/public'))
 app.use('/videos',express.static(__dirname+ '/public/Downloaded'))
-app.use('/img',express.static(path.join(__dirname, 'public/uploaded')));
-app.use('/file',express.static(path.join(__dirname,'public/file')));
+app.use('/img',express.static(path.join(__dirname, 'public/uploaded')))
+app.use('/file',express.static(path.join(__dirname,'public/file')))
 app.use(
   bodyParser.urlencoded({
     extended: true
@@ -30,25 +30,25 @@ app.use(bodyParser.json())
 var storage = multer.diskStorage({
     destination: function (req, file, cb) {
       if(req.headers['type'] == 'videoUpload'){
-        var fs = require('fs');
-        var dir = 'public/uploaded/'+req.headers['username'];
+        var fs = require('fs')
+        var dir = 'public/uploaded/'+req.headers['username']
         if (!fs.existsSync(dir)){
-            fs.mkdirSync(dir);
+            fs.mkdirSync(dir)
         }
-        var dir = 'public/uploaded/'+req.headers['username']+'/videos';
+        var dir = 'public/uploaded/'+req.headers['username']+'/videos'
         if (!fs.existsSync(dir)){
-            fs.mkdirSync(dir);
+            fs.mkdirSync(dir)
         }
       }
       else{
-        var fs = require('fs');
-        var dir = 'public/uploaded/'+req.headers['username'];
+        var fs = require('fs')
+        var dir = 'public/uploaded/'+req.headers['username']
         if (!fs.existsSync(dir)){
-            fs.mkdirSync(dir);
+            fs.mkdirSync(dir)
         }
-        var dir = 'public/uploaded/'+req.headers['username']+'/images';
+        var dir = 'public/uploaded/'+req.headers['username']+'/images'
         if (!fs.existsSync(dir)){
-            fs.mkdirSync(dir);
+            fs.mkdirSync(dir)
         }
       }
       cb(null,dir)
@@ -61,78 +61,78 @@ var storage = multer.diskStorage({
 var upload = multer({ storage: storage }).array('file')
 
 app.post('/saveIoUYolo',function(req,res){
-    var dir = 'public/uploaded/'+req.headers['username']+"/IoUYolo";
-    var fs = require('fs');
+    var dir = 'public/uploaded/'+req.headers['username']+"/IoUYolo"
+    var fs = require('fs')
     if (!fs.existsSync(dir)){
-        fs.mkdirSync(dir);
+        fs.mkdirSync(dir)
     }
     fs.writeFile(dir+"/IoU.txt",req.headers['data']+"\n",{flag: "a+"}, function(err) {
         if(err) {
-            return console.log(err);
+            return console.log(err)
         }
-        console.log("Done");
-    });
+        console.log("Done")
+    })
 
     return res.send(req.body.username)
 })
 
 app.post('/saveIoUTextBoxPP',function(req,res){
-    var dir = 'public/uploaded/'+req.headers['username']+"/IoUTextBoxPP";
-    var fs = require('fs');
+    var dir = 'public/uploaded/'+req.headers['username']+"/IoUTextBoxPP"
+    var fs = require('fs')
     if (!fs.existsSync(dir)){
-        fs.mkdirSync(dir);
+        fs.mkdirSync(dir)
     }
     fs.writeFile(dir+"/IoU.txt",req.headers['data']+"\n",{flag: "a+"}, function(err) {
         if(err) {
-            return console.log(err);
+            return console.log(err)
         }
-        console.log("Done");
-    });
+        console.log("Done")
+    })
 
     return res.send(req.body.username)
 })
 
 app.post('/saveastextfile',function(req,res){
-    var dir = 'public/uploaded/'+req.body.userName+"/output";
-    var fs = require('fs');
+    var dir = 'public/uploaded/'+req.body.userName+"/output"
+    var fs = require('fs')
     if (!fs.existsSync(dir)){
-        fs.mkdirSync(dir);
+        fs.mkdirSync(dir)
     }
     fs.writeFile(dir+"/output_"+req.body.imageName+".txt",req.body.imageData, function(err) {
         if(err) {
-            return console.log(err);
+            return console.log(err)
         }
-        console.log("Done");
-    });
+        console.log("Done")
+    })
 
     return res.send(req.body.userName)
 })
 
-var folderpath = './public/uploaded';
+var folderpath = './public/uploaded'
 
 app.post('/downloadallfiles', function(req, res) {
   var userfolderpath = folderpath+"/"+req.body.userName
    zipFolder(userfolderpath, folderpath+'/all_'+req.body.userName+'.zip', function(err) {
      if(err) {
-         console.log('error: ', err);
+         console.log('error: ', err)
      } else {
-         console.log('Done');
+         console.log('Done')
      }
-   });
-   res.download(folderpath + '/all_'+req.body.userName+'.zip');
-});
+   })
+   res.download(folderpath + '/all_'+req.body.userName+'.zip')
+})
 
 app.post('/downloadfiles', function(req, res) {
   var userfolderpath = folderpath+"/"+req.body.username+"/output"
   zipFolder(userfolderpath, folderpath+'/'+req.body.username+'.zip', function(err) {
     if(err) {
-        console.log('error: ', err);
+        console.log('error: ', err)
     } else {
-        console.log('Done');
+        console.log('Done')
     }
-  });
-  res.download(folderpath + '/'+req.body.username+'.zip');
-});
+  })
+  res.download(folderpath + '/'+req.body.username+'.zip')
+})
 
 app.get('/',function(req,res){
     return res.send('Hello Server')
@@ -143,16 +143,16 @@ app.post('/download',function(req,res){
   var username = req.body.username
   var videoname = req.body.videoname
   var videourl = req.body.videourl
-  var dir = 'public/Downloaded/'+username;
+  var dir = 'public/Downloaded/'+username
   const fs = require('fs')
   const youtubedl = require('youtube-dl')
 
   if (!fs.existsSync(dir)){
-      fs.mkdirSync(dir);
+      fs.mkdirSync(dir)
   }
-  var dir = 'public/Downloaded/'+username+'/downloads';
+  var dir = 'public/Downloaded/'+username+'/downloads'
   if (!fs.existsSync(dir)){
-      fs.mkdirSync(dir);
+      fs.mkdirSync(dir)
   }
 
   const video = youtubedl(videourl,
@@ -181,8 +181,8 @@ app.post('/upload',function(req, res) {
         return res.status(200).send(req.file)
         // Everything went fine.
       })
-});
+})
 
 app.listen(port, function() {
-    console.log('running on port: '+port);
-});
+    console.log('running on port: '+port)
+})

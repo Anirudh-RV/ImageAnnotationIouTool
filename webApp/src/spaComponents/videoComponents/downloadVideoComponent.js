@@ -1,18 +1,18 @@
-import React, { Component } from 'react';
-import axios from 'axios';
-import {Progress} from 'reactstrap';
-import { BrowserRouter, Route, Switch, Redirect } from 'react-router-dom';
-import Cookies from 'universal-cookie';
-import '../../cssComponents/App.css';
+import React, { Component } from 'react'
+import axios from 'axios'
+import {Progress} from 'reactstrap'
+import { BrowserRouter, Route, Switch, Redirect } from 'react-router-dom'
+import Cookies from 'universal-cookie'
+import '../../cssComponents/App.css'
 import Form from 'react-bootstrap/Form'
 import Button from 'react-bootstrap/Button'
-import Bootstrap from "react-bootstrap";
-import {FormGroup, FormControl} from "react-bootstrap";
-import { Link } from 'react-router-dom';
+import Bootstrap from "react-bootstrap"
+import {FormGroup, FormControl} from "react-bootstrap"
+import { Link } from 'react-router-dom'
 
 class DownloadVideoComponent extends Component {
   constructor(props) {
-    super(props);
+    super(props)
       this.state = {
         selectedFile: null,
         loaded:0
@@ -24,7 +24,7 @@ class DownloadVideoComponent extends Component {
 }
 
 componentDidMount(){
-this.heading.innerHTML = this.props.location.state.userName+"</br>Annotate Data Directly From Videos";
+this.heading.innerHTML = this.props.location.state.userName+"</br>Annotate Data Directly From Videos"
 }
 
 divideTheFrames = (type,name,current,total) =>{
@@ -60,11 +60,11 @@ divideTheFrames = (type,name,current,total) =>{
       console.log(res)
 
     if(type == "YouTube"){
-        this.goToeditPage();
+        this.goToeditPage()
       }
     else{
       if(current == total-1){
-        this.goToeditPage();
+        this.goToeditPage()
       }
     }
     })
@@ -86,14 +86,14 @@ checkMimeType=(event)=>{
      // compare file type find doesn't matach
          if (types.every(type => files[x].type !== type)) {
          // create error message and assign to container
-         err[x] = files[x].type+' is not a supported format\n';
+         err[x] = files[x].type+' is not a supported format\n'
        }
-     };
+     }
      for(var z = 0; z<err.length; z++) {// if message not same old that mean has error
          // discard selected file
         event.target.value = null
     }
-   return true;
+   return true
 }
 
 maxSelectFile=(event)=>{
@@ -101,25 +101,25 @@ maxSelectFile=(event)=>{
         if (files.length > 101) {
            const msg = 'Only 10 images can be uploaded at a time'
            event.target.value = null
-           return false;
+           return false
       }
-    return true;
+    return true
 }
 
 checkFileSize=(event)=>{
   let files = event.target.files
   let size = 2000000
-  let err = [];
+  let err = []
   for(var x = 0; x<files.length; x++) {
   if (files[x].size > size) {
-   err[x] = files[x].type+'is too large, please pick a smaller file\n';
+   err[x] = files[x].type+'is too large, please pick a smaller file\n'
     }
-  };
+  }
   for(var z = 0; z<err.length; z++) {// if message not same old that mean has error
     // discard selected file
    event.target.value = null
   }
-  return true;
+  return true
 }
 
 onChangeHandler=event=>{
@@ -137,7 +137,7 @@ onClickHandler = () => {
     const data = new FormData()
 
     // getting userName from input
-    var userName = this.props.location.state.userName;
+    var userName = this.props.location.state.userName
     var videoNames = []
     // filling FormData with selectedFiles(Array of objects)
     for(var x = 0; x<this.state.selectedFile.length; x++) {
@@ -172,7 +172,7 @@ onClickHandler = () => {
 }
 
 goToeditPage = () =>{
-  var userName = this.props.location.state.userName;
+  var userName = this.props.location.state.userName
   this.props.history.push({
     pathname: '/editPage',
     state: {userName: this.props.location.state.userName}
@@ -219,7 +219,7 @@ render() {
         <form onSubmit={this.handleSubmit}>
         <p class = "signInHead">Annotation Tool</p>
         <p class = "signUpHead">Upload A Video From YouTube</p>
-        &nbsp;
+        &nbsp
           <FormGroup controlId="url" bsSize="large">
             <FormControl
               autoFocus
@@ -254,8 +254,8 @@ render() {
         </p>
       </div>
       </div>
-    );
+    )
   }
 }
 
-export default DownloadVideoComponent;
+export default DownloadVideoComponent

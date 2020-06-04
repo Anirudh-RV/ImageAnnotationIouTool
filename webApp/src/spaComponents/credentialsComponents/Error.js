@@ -1,11 +1,11 @@
-import React, { Component } from 'react';
-import '../../cssComponents/App.css';
+import React, { Component } from 'react'
+import '../../cssComponents/App.css'
 import Form from 'react-bootstrap/Form'
 import Button from 'react-bootstrap/Button'
-import Bootstrap from "react-bootstrap";
-import {FormGroup, FormControl} from "react-bootstrap";
-import { Link } from 'react-router-dom';
-import axios from 'axios';
+import Bootstrap from "react-bootstrap"
+import {FormGroup, FormControl} from "react-bootstrap"
+import { Link } from 'react-router-dom'
+import axios from 'axios'
 
 class Error extends Component {
 //TODO : ADD Footer information
@@ -21,7 +21,7 @@ class Error extends Component {
         </p>
       </div>
       </div>
-    );
+    )
   }
 }
-export default Error;
+export default Error

@@ -1,6 +1,3 @@
-**TODO**
-
-<br />
 **DONE**
 1. Fix the check IoU outputs, now also works in PNG files (DONE)
 2. Fix the type of data being sent through API, make everything into JSON (DONE)
@@ -16,6 +13,7 @@
 12. Refactor ReactJS code (DONE)
 13. Update how the zip folder is downloaded. (DONE)
 14. Deploy with AWS on API(DONE), SERVER(DONE), WEBAPP(Deployment-DONE), MLSystem (DONE)
+15. Code Cleaned
 
 **Deployment**
 NOTE: Run 4 different containers to get links in advance
@@ -71,7 +69,7 @@ Action : Kept the public/uploaded folders, all other files and folders created a
 # README HISTORY
 ########--------------------------------------------------------------------------------------------------
 
-General guide : To Kill Ports : lsof -P | grep ':8000' | awk '{print $2}' | xargs kill -9
+General guide : To Kill Ports : lsof -P | grep ':8080' | awk '{print $2}' | xargs kill -9
 
 To remove cache:
 git rm -r --cached .

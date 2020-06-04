@@ -1,8 +1,8 @@
-import React, { Component } from 'react';
-import '../../cssComponents/App.css';
-import styles from '../../cssComponents/myStyle.module.css';
-import NavigationBar from './navigationBar';
-import WorkingArea from './workingArea';
+import React, { Component } from 'react'
+import '../../cssComponents/App.css'
+import styles from '../../cssComponents/myStyle.module.css'
+import NavigationBar from './navigationBar'
+import WorkingArea from './workingArea'
 
 class EditPage extends Component {
 //TODO : ADD Footer information
@@ -16,7 +16,7 @@ class EditPage extends Component {
          <WorkingArea name={this.props.location.state.userName}/>
       </body>
      </div>
-    );
+    )
   }
 }
-export default EditPage;
+export default EditPage
