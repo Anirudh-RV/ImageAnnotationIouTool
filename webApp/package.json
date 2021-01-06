@@ -4,7 +4,7 @@
   "private": true,
   "proxy": "http://localhost:3001/",
   "dependencies": {
-    "axios": "^0.19.1",
+    "axios": "^0.21.1",
     "bootstrap": "^4.0.0-alpha.6",
     "jquery": "^3.4.1",
     "json-loader": "^0.5.7",
